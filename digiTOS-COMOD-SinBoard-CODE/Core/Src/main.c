@@ -136,7 +136,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   //Init ADC
-  StartADC();
+  //StartADC();
+
 
   SinWave=swNOP;
 
