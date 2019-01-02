@@ -135,7 +135,7 @@ int main(void)
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
 
-  //Init ADC , start DMA
+  //Init ADC, start DMA
   //and prepare all data
   StartADC();
 
