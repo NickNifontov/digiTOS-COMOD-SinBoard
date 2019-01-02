@@ -1,0 +1,5 @@
+stm32f0xx_hal_buttons.c:59:6:buttonInit	0	static
+stm32f0xx_hal_buttons.c:203:14:_button_state	8	static
+stm32f0xx_hal_buttons.c:106:16:buttonUpdate	16	static
+stm32f0xx_hal_buttons.c:172:9:buttonSinglePress	8	static
+stm32f0xx_hal_buttons.c:187:9:buttonSingleLongPress	8	static
