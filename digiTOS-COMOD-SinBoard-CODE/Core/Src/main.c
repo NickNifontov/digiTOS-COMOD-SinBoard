@@ -141,6 +141,7 @@ int main(void)
 
   SinWave=swNOP;
 
+  // Start generator and then stop to setup default GND level for transistor and dead times
   PWM_50Hz_Init();
   PWM_50Hz_ON();
   PWM_50Hz_OFF();
