@@ -4144,11 +4144,11 @@ void AddUART_CRC() {
  8001ece:	0028      	movs	r0, r5
  8001ed0:	2164      	movs	r1, #100	; 0x64
  8001ed2:	f7ff ffd5 	bl	8001e80 <TM_CRC_Calculate8>
-	sprintf(crc_buff, "@crc@%08X@\r\n",  crc);
+	sprintf(crc_buff, "@crc@%08X@\r\n",  (unsigned int) crc);
  8001ed6:	4907      	ldr	r1, [pc, #28]	; (8001ef4 <AddUART_CRC+0x38>)
 	uint32_t crc=TM_CRC_Calculate8((uint8_t *) &uart_buff, sizeof(uart_buff), 1);
  8001ed8:	0002      	movs	r2, r0
-	sprintf(crc_buff, "@crc@%08X@\r\n",  crc);
+	sprintf(crc_buff, "@crc@%08X@\r\n",  (unsigned int) crc);
  8001eda:	0020      	movs	r0, r4
  8001edc:	f004 fa64 	bl	80063a8 <siprintf>
 	strcat(uart_buff,crc_buff);
@@ -4186,7 +4186,7 @@ void Get_ChipID(void) {
  8001f0c:	b507      	push	{r0, r1, r2, lr}
 	ClearUART_Buff();
  8001f0e:	f7ff fff3 	bl	8001ef8 <ClearUART_Buff>
-	sprintf(uart_buff, "@id@%08X-%08X-%08X",   TM_ID_GetUnique32(0),
+	sprintf(uart_buff, "@id@%08X-%08X-%08X",   (unsigned int) TM_ID_GetUnique32(0),
  8001f12:	4b07      	ldr	r3, [pc, #28]	; (8001f30 <Get_ChipID+0x24>)
  8001f14:	4907      	ldr	r1, [pc, #28]	; (8001f34 <Get_ChipID+0x28>)
  8001f16:	681a      	ldr	r2, [r3, #0]
