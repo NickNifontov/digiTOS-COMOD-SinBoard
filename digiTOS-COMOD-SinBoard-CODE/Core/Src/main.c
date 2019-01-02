@@ -139,6 +139,7 @@ int main(void)
   //and prepare all data
   StartADC();
 
+
   SinWave=swNOP;
 
   // Start generator and then stop to setup default GND level for transistor and dead times
