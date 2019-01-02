@@ -1,2 +1,1 @@
-# digiTOS-COMOD-SinBoard
-firmware for UPS Txx 
+## firmware for UPS Txx 
