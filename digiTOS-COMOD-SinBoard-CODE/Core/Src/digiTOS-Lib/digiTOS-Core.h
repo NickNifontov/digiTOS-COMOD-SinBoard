@@ -10,13 +10,29 @@
 
 #include "stm32f0xx_hal.h"
 
-#include "usart.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdint.h>
-#include "iwdg.h"
+//***** DEFINES - BEGIN *****//
+#define Linear_V_Out  // V_Out liner from 0V...3.3V
+//#define Sinus_V_Out // V_out sinus form
 
-#include "stm32f0xx_hal_buttons.h"
+#ifdef Sinus_V_Out
+	#define V1_etalon 190
+	#define V2_etalon 549
+	#define V3_etalon 549
+	#define V4_etalon 190
+#endif
+
+#ifdef Linear_V_Out
+	#define V1_etalon 2048
+	#define V2_etalon 2048
+	#define V3_etalon 2048
+	#define V4_etalon 2048
+#endif
+
+#define ADC_ChannelCnt 3
+
+#define Amp_min 0.8
+#define Amp_max 1.2
+#define Amp_Coef 0.00009765625 //(float) (0.2/V_base)
 
 #define ID_UNIQUE_ADDRESS 0x1FFFF7AC
 //#define ID_PACKAGE_ADDRESS 0x1FFF7BF0
@@ -39,6 +55,16 @@
 
 #define DelaySecBeforeAttemRst 10 //DelaySecBeforeStartAfterFault
 #define DelaySecBeforeStartAfterFault 10 //DelaySecBeforeStartAfterFault
+//***** DEFINES - END *****//
+
+#include "usart.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+#include "iwdg.h"
+
+#include "stm32f0xx_hal_buttons.h"
+
 extern int FaultWaitCnt;
 extern int RstCnt;
 

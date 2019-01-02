@@ -1297,14 +1297,14 @@ LOAD c:/truestudio for stm32 9.2.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.
                 0x08001c30       0x18 Core\Src\digiTOS-Lib\digiTOS-ADC.o
                 0x08001c30                StartADC
  .text.ResetV_data
-                0x08001c48       0x3c Core\Src\digiTOS-Lib\digiTOS-ADC.o
+                0x08001c48       0x38 Core\Src\digiTOS-Lib\digiTOS-ADC.o
                 0x08001c48                ResetV_data
  .text.CheckAmp
-                0x08001c84       0x4c Core\Src\digiTOS-Lib\digiTOS-ADC.o
-                0x08001c84                CheckAmp
+                0x08001c80       0x4c Core\Src\digiTOS-Lib\digiTOS-ADC.o
+                0x08001c80                CheckAmp
  .text.UpdateAmplitudeByV
-                0x08001cd0      0x128 Core\Src\digiTOS-Lib\digiTOS-ADC.o
-                0x08001cd0                UpdateAmplitudeByV
+                0x08001ccc      0x12c Core\Src\digiTOS-Lib\digiTOS-ADC.o
+                0x08001ccc                UpdateAmplitudeByV
  .text.CheckV_Feedback
                 0x08001df8       0x88 Core\Src\digiTOS-Lib\digiTOS-ADC.o
                 0x08001df8                CheckV_Feedback
@@ -2237,75 +2237,75 @@ LOAD c:/truestudio for stm32 9.2.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.
                 0x00000d43       0x1e c:/truestudio for stm32 9.2.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/armv6-m/crtn.o
 OUTPUT(digiTOS-COMOD-SinBoard-CODE.elf elf32-littlearm)
 
-.debug_info     0x00000000    0x27c1f
+.debug_info     0x00000000    0x2827e
  .debug_info    0x00000000     0x11f0 Core\Src\adc.o
  .debug_info    0x000011f0      0xc97 Core\Src\crc.o
  .debug_info    0x00001e87     0x15eb Core\Src\digiTOS-Lib\digiTOS-ADC.o
  .debug_info    0x00003472     0x16a2 Core\Src\digiTOS-Lib\digiTOS-Core.o
- .debug_info    0x00004b14     0x12f3 Core\Src\digiTOS-Lib\digiTOS-Generator.o
- .debug_info    0x00005e07      0xaa9 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
- .debug_info    0x000068b0      0xcbb Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o
- .debug_info    0x0000756b      0xaeb Core\Src\dma.o
- .debug_info    0x00008056      0xc5f Core\Src\gpio.o
- .debug_info    0x00008cb5      0xa54 Core\Src\iwdg.o
- .debug_info    0x00009709     0x230f Core\Src\main.o
- .debug_info    0x0000ba18      0xa16 Core\Src\stm32f0xx_hal_msp.o
- .debug_info    0x0000c42e     0x1bb4 Core\Src\stm32f0xx_it.o
- .debug_info    0x0000dfe2      0xa67 Core\Src\system_stm32f0xx.o
- .debug_info    0x0000ea49     0x182d Core\Src\tim.o
- .debug_info    0x00010276     0x1347 Core\Src\usart.o
- .debug_info    0x000115bd      0xe2b Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal.o
- .debug_info    0x000123e8     0x1b1e Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_adc.o
- .debug_info    0x00013f06     0x10b2 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_cortex.o
- .debug_info    0x00014fb8      0xea9 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc.o
- .debug_info    0x00015e61      0xbc4 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc_ex.o
- .debug_info    0x00016a25     0x1169 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_dma.o
- .debug_info    0x00017b8e      0xeda Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash.o
- .debug_info    0x00018a68     0x1345 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash_ex.o
- .debug_info    0x00019dad     0x100d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_gpio.o
- .debug_info    0x0001adba     0x10df Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_i2c_ex.o
- .debug_info    0x0001be99      0xb19 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.o
- .debug_info    0x0001c9b2     0x145c Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc.o
- .debug_info    0x0001de0e      0xc8b Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc_ex.o
- .debug_info    0x0001ea99     0x4d0f Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim.o
- .debug_info    0x000237a8     0x20b0 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim_ex.o
- .debug_info    0x00025858     0x2326 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
- .debug_info    0x00027b7e       0xa1 startup\startup_stm32f030x6.o
+ .debug_info    0x00004b14     0x1952 Core\Src\digiTOS-Lib\digiTOS-Generator.o
+ .debug_info    0x00006466      0xaa9 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
+ .debug_info    0x00006f0f      0xcbb Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o
+ .debug_info    0x00007bca      0xaeb Core\Src\dma.o
+ .debug_info    0x000086b5      0xc5f Core\Src\gpio.o
+ .debug_info    0x00009314      0xa54 Core\Src\iwdg.o
+ .debug_info    0x00009d68     0x230f Core\Src\main.o
+ .debug_info    0x0000c077      0xa16 Core\Src\stm32f0xx_hal_msp.o
+ .debug_info    0x0000ca8d     0x1bb4 Core\Src\stm32f0xx_it.o
+ .debug_info    0x0000e641      0xa67 Core\Src\system_stm32f0xx.o
+ .debug_info    0x0000f0a8     0x182d Core\Src\tim.o
+ .debug_info    0x000108d5     0x1347 Core\Src\usart.o
+ .debug_info    0x00011c1c      0xe2b Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal.o
+ .debug_info    0x00012a47     0x1b1e Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_adc.o
+ .debug_info    0x00014565     0x10b2 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_cortex.o
+ .debug_info    0x00015617      0xea9 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc.o
+ .debug_info    0x000164c0      0xbc4 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc_ex.o
+ .debug_info    0x00017084     0x1169 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_dma.o
+ .debug_info    0x000181ed      0xeda Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash.o
+ .debug_info    0x000190c7     0x1345 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash_ex.o
+ .debug_info    0x0001a40c     0x100d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_gpio.o
+ .debug_info    0x0001b419     0x10df Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_i2c_ex.o
+ .debug_info    0x0001c4f8      0xb19 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.o
+ .debug_info    0x0001d011     0x145c Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc.o
+ .debug_info    0x0001e46d      0xc8b Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc_ex.o
+ .debug_info    0x0001f0f8     0x4d0f Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim.o
+ .debug_info    0x00023e07     0x20b0 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim_ex.o
+ .debug_info    0x00025eb7     0x2326 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
+ .debug_info    0x000281dd       0xa1 startup\startup_stm32f030x6.o
 
-.debug_abbrev   0x00000000     0x5081
+.debug_abbrev   0x00000000     0x5092
  .debug_abbrev  0x00000000      0x226 Core\Src\adc.o
  .debug_abbrev  0x00000226      0x228 Core\Src\crc.o
  .debug_abbrev  0x0000044e      0x258 Core\Src\digiTOS-Lib\digiTOS-ADC.o
  .debug_abbrev  0x000006a6      0x2a3 Core\Src\digiTOS-Lib\digiTOS-Core.o
- .debug_abbrev  0x00000949      0x1f3 Core\Src\digiTOS-Lib\digiTOS-Generator.o
- .debug_abbrev  0x00000b3c      0x201 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
- .debug_abbrev  0x00000d3d      0x283 Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o
- .debug_abbrev  0x00000fc0      0x1f5 Core\Src\dma.o
- .debug_abbrev  0x000011b5      0x20a Core\Src\gpio.o
- .debug_abbrev  0x000013bf      0x1e1 Core\Src\iwdg.o
- .debug_abbrev  0x000015a0      0x2c1 Core\Src\main.o
- .debug_abbrev  0x00001861      0x1a4 Core\Src\stm32f0xx_hal_msp.o
- .debug_abbrev  0x00001a05      0x283 Core\Src\stm32f0xx_it.o
- .debug_abbrev  0x00001c88      0x1ca Core\Src\system_stm32f0xx.o
- .debug_abbrev  0x00001e52      0x281 Core\Src\tim.o
- .debug_abbrev  0x000020d3      0x24b Core\Src\usart.o
- .debug_abbrev  0x0000231e      0x2d1 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal.o
- .debug_abbrev  0x000025ef      0x33d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_adc.o
- .debug_abbrev  0x0000292c      0x356 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_cortex.o
- .debug_abbrev  0x00002c82      0x2a7 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc.o
- .debug_abbrev  0x00002f29      0x1cb Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc_ex.o
- .debug_abbrev  0x000030f4      0x2c1 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_dma.o
- .debug_abbrev  0x000033b5      0x35d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash.o
- .debug_abbrev  0x00003712      0x33e Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash_ex.o
- .debug_abbrev  0x00003a50      0x29f Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_gpio.o
- .debug_abbrev  0x00003cef      0x235 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_i2c_ex.o
- .debug_abbrev  0x00003f24      0x1fd Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.o
- .debug_abbrev  0x00004121      0x2db Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc.o
- .debug_abbrev  0x000043fc      0x28e Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc_ex.o
- .debug_abbrev  0x0000468a      0x380 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim.o
- .debug_abbrev  0x00004a0a      0x2ed Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim_ex.o
- .debug_abbrev  0x00004cf7      0x378 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
- .debug_abbrev  0x0000506f       0x12 startup\startup_stm32f030x6.o
+ .debug_abbrev  0x00000949      0x204 Core\Src\digiTOS-Lib\digiTOS-Generator.o
+ .debug_abbrev  0x00000b4d      0x201 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
+ .debug_abbrev  0x00000d4e      0x283 Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o
+ .debug_abbrev  0x00000fd1      0x1f5 Core\Src\dma.o
+ .debug_abbrev  0x000011c6      0x20a Core\Src\gpio.o
+ .debug_abbrev  0x000013d0      0x1e1 Core\Src\iwdg.o
+ .debug_abbrev  0x000015b1      0x2c1 Core\Src\main.o
+ .debug_abbrev  0x00001872      0x1a4 Core\Src\stm32f0xx_hal_msp.o
+ .debug_abbrev  0x00001a16      0x283 Core\Src\stm32f0xx_it.o
+ .debug_abbrev  0x00001c99      0x1ca Core\Src\system_stm32f0xx.o
+ .debug_abbrev  0x00001e63      0x281 Core\Src\tim.o
+ .debug_abbrev  0x000020e4      0x24b Core\Src\usart.o
+ .debug_abbrev  0x0000232f      0x2d1 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal.o
+ .debug_abbrev  0x00002600      0x33d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_adc.o
+ .debug_abbrev  0x0000293d      0x356 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_cortex.o
+ .debug_abbrev  0x00002c93      0x2a7 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc.o
+ .debug_abbrev  0x00002f3a      0x1cb Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc_ex.o
+ .debug_abbrev  0x00003105      0x2c1 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_dma.o
+ .debug_abbrev  0x000033c6      0x35d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash.o
+ .debug_abbrev  0x00003723      0x33e Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash_ex.o
+ .debug_abbrev  0x00003a61      0x29f Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_gpio.o
+ .debug_abbrev  0x00003d00      0x235 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_i2c_ex.o
+ .debug_abbrev  0x00003f35      0x1fd Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.o
+ .debug_abbrev  0x00004132      0x2db Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc.o
+ .debug_abbrev  0x0000440d      0x28e Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc_ex.o
+ .debug_abbrev  0x0000469b      0x380 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim.o
+ .debug_abbrev  0x00004a1b      0x2ed Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim_ex.o
+ .debug_abbrev  0x00004d08      0x378 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
+ .debug_abbrev  0x00005080       0x12 startup\startup_stm32f030x6.o
 
 .debug_loc      0x00000000     0x97d4
  .debug_loc     0x00000000       0x58 Core\Src\adc.o
@@ -2437,40 +2437,40 @@ OUTPUT(digiTOS-COMOD-SinBoard-CODE.elf elf32-littlearm)
  .debug_ranges  0x00001240      0x1f0 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
  .debug_ranges  0x00001430       0x20 startup\startup_stm32f030x6.o
 
-.debug_line     0x00000000     0xadcb
+.debug_line     0x00000000     0xae53
  .debug_line    0x00000000      0x305 Core\Src\adc.o
  .debug_line    0x00000305      0x27d Core\Src\crc.o
- .debug_line    0x00000582      0x3e8 Core\Src\digiTOS-Lib\digiTOS-ADC.o
- .debug_line    0x0000096a      0x430 Core\Src\digiTOS-Lib\digiTOS-Core.o
- .debug_line    0x00000d9a      0x46b Core\Src\digiTOS-Lib\digiTOS-Generator.o
- .debug_line    0x00001205      0x232 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
- .debug_line    0x00001437      0x2d8 Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o
- .debug_line    0x0000170f      0x207 Core\Src\dma.o
- .debug_line    0x00001916      0x250 Core\Src\gpio.o
- .debug_line    0x00001b66      0x23a Core\Src\iwdg.o
- .debug_line    0x00001da0      0x501 Core\Src\main.o
- .debug_line    0x000022a1      0x1d7 Core\Src\stm32f0xx_hal_msp.o
- .debug_line    0x00002478      0x52f Core\Src\stm32f0xx_it.o
- .debug_line    0x000029a7      0x20e Core\Src\system_stm32f0xx.o
- .debug_line    0x00002bb5      0x41b Core\Src\tim.o
- .debug_line    0x00002fd0      0x305 Core\Src\usart.o
- .debug_line    0x000032d5      0x3ec Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal.o
- .debug_line    0x000036c1      0x99d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_adc.o
- .debug_line    0x0000405e      0x419 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_cortex.o
- .debug_line    0x00004477      0x418 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc.o
- .debug_line    0x0000488f      0x2b4 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc_ex.o
- .debug_line    0x00004b43      0x5d7 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_dma.o
- .debug_line    0x0000511a      0x477 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash.o
- .debug_line    0x00005591      0x4cc Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash_ex.o
- .debug_line    0x00005a5d      0x4c4 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_gpio.o
- .debug_line    0x00005f21      0x37d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_i2c_ex.o
- .debug_line    0x0000629e      0x2c9 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.o
- .debug_line    0x00006567      0x6e5 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc.o
- .debug_line    0x00006c4c      0x3b7 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc_ex.o
- .debug_line    0x00007003     0x21f9 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim.o
- .debug_line    0x000091fc      0xd03 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim_ex.o
- .debug_line    0x00009eff      0xe49 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
- .debug_line    0x0000ad48       0x83 startup\startup_stm32f030x6.o
+ .debug_line    0x00000582      0x3e6 Core\Src\digiTOS-Lib\digiTOS-ADC.o
+ .debug_line    0x00000968      0x430 Core\Src\digiTOS-Lib\digiTOS-Core.o
+ .debug_line    0x00000d98      0x4f5 Core\Src\digiTOS-Lib\digiTOS-Generator.o
+ .debug_line    0x0000128d      0x232 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
+ .debug_line    0x000014bf      0x2d8 Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o
+ .debug_line    0x00001797      0x207 Core\Src\dma.o
+ .debug_line    0x0000199e      0x250 Core\Src\gpio.o
+ .debug_line    0x00001bee      0x23a Core\Src\iwdg.o
+ .debug_line    0x00001e28      0x501 Core\Src\main.o
+ .debug_line    0x00002329      0x1d7 Core\Src\stm32f0xx_hal_msp.o
+ .debug_line    0x00002500      0x52f Core\Src\stm32f0xx_it.o
+ .debug_line    0x00002a2f      0x20e Core\Src\system_stm32f0xx.o
+ .debug_line    0x00002c3d      0x41b Core\Src\tim.o
+ .debug_line    0x00003058      0x305 Core\Src\usart.o
+ .debug_line    0x0000335d      0x3ec Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal.o
+ .debug_line    0x00003749      0x99d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_adc.o
+ .debug_line    0x000040e6      0x419 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_cortex.o
+ .debug_line    0x000044ff      0x418 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc.o
+ .debug_line    0x00004917      0x2b4 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_crc_ex.o
+ .debug_line    0x00004bcb      0x5d7 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_dma.o
+ .debug_line    0x000051a2      0x477 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash.o
+ .debug_line    0x00005619      0x4cc Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_flash_ex.o
+ .debug_line    0x00005ae5      0x4c4 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_gpio.o
+ .debug_line    0x00005fa9      0x37d Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_i2c_ex.o
+ .debug_line    0x00006326      0x2c9 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.o
+ .debug_line    0x000065ef      0x6e5 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc.o
+ .debug_line    0x00006cd4      0x3b7 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_rcc_ex.o
+ .debug_line    0x0000708b     0x21f9 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim.o
+ .debug_line    0x00009284      0xd03 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_tim_ex.o
+ .debug_line    0x00009f87      0xe49 Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_uart.o
+ .debug_line    0x0000add0       0x83 startup\startup_stm32f030x6.o
 
 .debug_str      0x00000000     0x4be8
  .debug_str     0x00000000      0xa89 Core\Src\adc.o
@@ -2482,7 +2482,7 @@ OUTPUT(digiTOS-COMOD-SinBoard-CODE.elf elf32-littlearm)
  .debug_str     0x000011e8      0x141 Core\Src\digiTOS-Lib\digiTOS-Core.o
                                 0xe9a (size before relaxing)
  .debug_str     0x00001329      0x332 Core\Src\digiTOS-Lib\digiTOS-Generator.o
-                                0xd57 (size before relaxing)
+                               0x1243 (size before relaxing)
  .debug_str     0x0000165b       0x63 Core\Src\digiTOS-Lib\digiTOS-Sinus.o
                                 0x70a (size before relaxing)
  .debug_str     0x000016be       0xb7 Core\Src\digiTOS-Lib\stm32f0xx_hal_buttons.o

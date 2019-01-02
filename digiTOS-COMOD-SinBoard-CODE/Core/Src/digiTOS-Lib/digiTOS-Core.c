@@ -135,7 +135,7 @@ void AddUART_CRC() {
 	memset(crc_buff, '\0', sizeof(crc_buff));
 	//uint32_t crc=Get_CRC((uint8_t *) &uart_buff, sizeof(uart_buff));
 	uint32_t crc=TM_CRC_Calculate8((uint8_t *) &uart_buff, sizeof(uart_buff), 1);
-	sprintf(crc_buff, "@crc@%08X@\r\n", crc);
+	sprintf(crc_buff, "@crc@%08X@\r\n",  crc);
 	strcat(uart_buff,crc_buff);
 
 }
@@ -145,7 +145,8 @@ void Get_ChipID(void) {
 
 
 	/* Format unique ID */
-	sprintf(uart_buff, "@id@%08X-%08X-%08X", TM_ID_GetUnique32(0), TM_ID_GetUnique32(1), TM_ID_GetUnique32(2));
+	sprintf(uart_buff, "@id@%08X-%08X-%08X",   TM_ID_GetUnique32(0),
+			 TM_ID_GetUnique32(1), TM_ID_GetUnique32(2));
 
 	AddUART_CRC();
 }

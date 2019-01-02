@@ -21,23 +21,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000028  00000000  00000000  0002028c  2**0
                   CONTENTS, READONLY
-  9 .debug_info   00027c1f  00000000  00000000  000202b4  2**0
+  9 .debug_info   0002827e  00000000  00000000  000202b4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 00005081  00000000  00000000  00047ed3  2**0
+ 10 .debug_abbrev 00005092  00000000  00000000  00048532  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000097d4  00000000  00000000  0004cf54  2**0
+ 11 .debug_loc    000097d4  00000000  00000000  0004d5c4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_aranges 00000ed0  00000000  00000000  00056728  2**3
+ 12 .debug_aranges 00000ed0  00000000  00000000  00056d98  2**3
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00001450  00000000  00000000  000575f8  2**3
+ 13 .debug_ranges 00001450  00000000  00000000  00057c68  2**3
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   0000adcb  00000000  00000000  00058a48  2**0
+ 14 .debug_line   0000ae53  00000000  00000000  000590b8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    00004be8  00000000  00000000  00063813  2**0
+ 15 .debug_str    00004be8  00000000  00000000  00063f0b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000007c  00000000  00000000  000683fb  2**0
+ 16 .comment      0000007c  00000000  00000000  00068af3  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  00003074  00000000  00000000  00068478  2**2
+ 17 .debug_frame  00003074  00000000  00000000  00068b70  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -3749,25 +3749,23 @@ volatile uint32_t V_Cnt[4]={1,1,1,1};
 
 void ResetV_data() {
 	 V_1=V1_etalon;
- 8001c48:	23be      	movs	r3, #190	; 0xbe
+ 8001c48:	2380      	movs	r3, #128	; 0x80
  8001c4a:	4a08      	ldr	r2, [pc, #32]	; (8001c6c <ResetV_data+0x24>)
-	 V_2=V2_etalon;
- 8001c4c:	4908      	ldr	r1, [pc, #32]	; (8001c70 <ResetV_data+0x28>)
-	 V_1=V1_etalon;
+ 8001c4c:	011b      	lsls	r3, r3, #4
  8001c4e:	6013      	str	r3, [r2, #0]
 	 V_2=V2_etalon;
- 8001c50:	4a08      	ldr	r2, [pc, #32]	; (8001c74 <ResetV_data+0x2c>)
- 8001c52:	600a      	str	r2, [r1, #0]
+ 8001c50:	4a07      	ldr	r2, [pc, #28]	; (8001c70 <ResetV_data+0x28>)
+ 8001c52:	6013      	str	r3, [r2, #0]
 	 V_3=V3_etalon;
- 8001c54:	4908      	ldr	r1, [pc, #32]	; (8001c78 <ResetV_data+0x30>)
- 8001c56:	600a      	str	r2, [r1, #0]
+ 8001c54:	4a07      	ldr	r2, [pc, #28]	; (8001c74 <ResetV_data+0x2c>)
+ 8001c56:	6013      	str	r3, [r2, #0]
 	 V_4=V4_etalon;
- 8001c58:	4a08      	ldr	r2, [pc, #32]	; (8001c7c <ResetV_data+0x34>)
+ 8001c58:	4a07      	ldr	r2, [pc, #28]	; (8001c78 <ResetV_data+0x30>)
  8001c5a:	6013      	str	r3, [r2, #0]
 
 	 V_Cnt[0]=1;
  8001c5c:	2201      	movs	r2, #1
- 8001c5e:	4b08      	ldr	r3, [pc, #32]	; (8001c80 <ResetV_data+0x38>)
+ 8001c5e:	4b07      	ldr	r3, [pc, #28]	; (8001c7c <ResetV_data+0x34>)
  8001c60:	601a      	str	r2, [r3, #0]
 	 V_Cnt[1]=1;
  8001c62:	605a      	str	r2, [r3, #4]
@@ -3780,173 +3778,174 @@ void ResetV_data() {
  8001c6a:	46c0      	nop			; (mov r8, r8)
  8001c6c:	20000000 	.word	0x20000000
  8001c70:	20000004 	.word	0x20000004
- 8001c74:	00000225 	.word	0x00000225
- 8001c78:	20000008 	.word	0x20000008
- 8001c7c:	2000000c 	.word	0x2000000c
- 8001c80:	20000010 	.word	0x20000010
+ 8001c74:	20000008 	.word	0x20000008
+ 8001c78:	2000000c 	.word	0x2000000c
+ 8001c7c:	20000010 	.word	0x20000010
 
-08001c84 <CheckAmp>:
+08001c80 <CheckAmp>:
 
 float CheckAmp(float Value) {
- 8001c84:	b5d0      	push	{r4, r6, r7, lr}
- 8001c86:	1c04      	adds	r4, r0, #0
+ 8001c80:	b5d0      	push	{r4, r6, r7, lr}
+ 8001c82:	1c04      	adds	r4, r0, #0
 	if (Value>Amp_max) {
- 8001c88:	f7ff fe06 	bl	8001898 <__aeabi_f2d>
- 8001c8c:	4a0a      	ldr	r2, [pc, #40]	; (8001cb8 <CheckAmp+0x34>)
- 8001c8e:	4b0b      	ldr	r3, [pc, #44]	; (8001cbc <CheckAmp+0x38>)
- 8001c90:	0006      	movs	r6, r0
- 8001c92:	000f      	movs	r7, r1
- 8001c94:	f7fe faf8 	bl	8000288 <__aeabi_dcmpgt>
- 8001c98:	2800      	cmp	r0, #0
- 8001c9a:	d109      	bne.n	8001cb0 <CheckAmp+0x2c>
+ 8001c84:	f7ff fe08 	bl	8001898 <__aeabi_f2d>
+ 8001c88:	4a0a      	ldr	r2, [pc, #40]	; (8001cb4 <CheckAmp+0x34>)
+ 8001c8a:	4b0b      	ldr	r3, [pc, #44]	; (8001cb8 <CheckAmp+0x38>)
+ 8001c8c:	0006      	movs	r6, r0
+ 8001c8e:	000f      	movs	r7, r1
+ 8001c90:	f7fe fafa 	bl	8000288 <__aeabi_dcmpgt>
+ 8001c94:	2800      	cmp	r0, #0
+ 8001c96:	d109      	bne.n	8001cac <CheckAmp+0x2c>
 		return Amp_max;
 	}
 	if (Value<Amp_min) {
- 8001c9c:	4a08      	ldr	r2, [pc, #32]	; (8001cc0 <CheckAmp+0x3c>)
- 8001c9e:	4b09      	ldr	r3, [pc, #36]	; (8001cc4 <CheckAmp+0x40>)
- 8001ca0:	0030      	movs	r0, r6
- 8001ca2:	0039      	movs	r1, r7
- 8001ca4:	f7fe fadc 	bl	8000260 <__aeabi_dcmplt>
- 8001ca8:	2800      	cmp	r0, #0
- 8001caa:	d002      	beq.n	8001cb2 <CheckAmp+0x2e>
+ 8001c98:	4a08      	ldr	r2, [pc, #32]	; (8001cbc <CheckAmp+0x3c>)
+ 8001c9a:	4b09      	ldr	r3, [pc, #36]	; (8001cc0 <CheckAmp+0x40>)
+ 8001c9c:	0030      	movs	r0, r6
+ 8001c9e:	0039      	movs	r1, r7
+ 8001ca0:	f7fe fade 	bl	8000260 <__aeabi_dcmplt>
+ 8001ca4:	2800      	cmp	r0, #0
+ 8001ca6:	d002      	beq.n	8001cae <CheckAmp+0x2e>
 		return Amp_min;
- 8001cac:	4c06      	ldr	r4, [pc, #24]	; (8001cc8 <CheckAmp+0x44>)
- 8001cae:	e000      	b.n	8001cb2 <CheckAmp+0x2e>
+ 8001ca8:	4c06      	ldr	r4, [pc, #24]	; (8001cc4 <CheckAmp+0x44>)
+ 8001caa:	e000      	b.n	8001cae <CheckAmp+0x2e>
 		return Amp_max;
- 8001cb0:	4c06      	ldr	r4, [pc, #24]	; (8001ccc <CheckAmp+0x48>)
+ 8001cac:	4c06      	ldr	r4, [pc, #24]	; (8001cc8 <CheckAmp+0x48>)
 	}
 	return Value;
 }
- 8001cb2:	1c20      	adds	r0, r4, #0
- 8001cb4:	bdd0      	pop	{r4, r6, r7, pc}
- 8001cb6:	46c0      	nop			; (mov r8, r8)
- 8001cb8:	33333333 	.word	0x33333333
- 8001cbc:	3ff33333 	.word	0x3ff33333
- 8001cc0:	9999999a 	.word	0x9999999a
- 8001cc4:	3fe99999 	.word	0x3fe99999
- 8001cc8:	3f4ccccd 	.word	0x3f4ccccd
- 8001ccc:	3f99999a 	.word	0x3f99999a
+ 8001cae:	1c20      	adds	r0, r4, #0
+ 8001cb0:	bdd0      	pop	{r4, r6, r7, pc}
+ 8001cb2:	46c0      	nop			; (mov r8, r8)
+ 8001cb4:	33333333 	.word	0x33333333
+ 8001cb8:	3ff33333 	.word	0x3ff33333
+ 8001cbc:	9999999a 	.word	0x9999999a
+ 8001cc0:	3fe99999 	.word	0x3fe99999
+ 8001cc4:	3f4ccccd 	.word	0x3f4ccccd
+ 8001cc8:	3f99999a 	.word	0x3f99999a
 
-08001cd0 <UpdateAmplitudeByV>:
+08001ccc <UpdateAmplitudeByV>:
 
 void UpdateAmplitudeByV() {
- 8001cd0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8001ccc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
 	V_1=(uint32_t) (V_1/V_Cnt[0]);
- 8001cd2:	4f3c      	ldr	r7, [pc, #240]	; (8001dc4 <UpdateAmplitudeByV+0xf4>)
- 8001cd4:	4c3c      	ldr	r4, [pc, #240]	; (8001dc8 <UpdateAmplitudeByV+0xf8>)
- 8001cd6:	6838      	ldr	r0, [r7, #0]
- 8001cd8:	6821      	ldr	r1, [r4, #0]
- 8001cda:	f7fe fa1f 	bl	800011c <__udivsi3>
+ 8001cce:	4f3d      	ldr	r7, [pc, #244]	; (8001dc4 <UpdateAmplitudeByV+0xf8>)
+ 8001cd0:	4c3d      	ldr	r4, [pc, #244]	; (8001dc8 <UpdateAmplitudeByV+0xfc>)
+ 8001cd2:	6838      	ldr	r0, [r7, #0]
+ 8001cd4:	6821      	ldr	r1, [r4, #0]
+ 8001cd6:	f7fe fa21 	bl	800011c <__udivsi3>
 	V_2=(uint32_t) (V_2/V_Cnt[1]);
- 8001cde:	4e3b      	ldr	r6, [pc, #236]	; (8001dcc <UpdateAmplitudeByV+0xfc>)
+ 8001cda:	4e3c      	ldr	r6, [pc, #240]	; (8001dcc <UpdateAmplitudeByV+0x100>)
 	V_1=(uint32_t) (V_1/V_Cnt[0]);
- 8001ce0:	6038      	str	r0, [r7, #0]
+ 8001cdc:	6038      	str	r0, [r7, #0]
 	V_2=(uint32_t) (V_2/V_Cnt[1]);
- 8001ce2:	6830      	ldr	r0, [r6, #0]
- 8001ce4:	6861      	ldr	r1, [r4, #4]
- 8001ce6:	f7fe fa19 	bl	800011c <__udivsi3>
+ 8001cde:	6830      	ldr	r0, [r6, #0]
+ 8001ce0:	6861      	ldr	r1, [r4, #4]
+ 8001ce2:	f7fe fa1b 	bl	800011c <__udivsi3>
 	V_3=(uint32_t) (V_3/V_Cnt[2]);
- 8001cea:	4d39      	ldr	r5, [pc, #228]	; (8001dd0 <UpdateAmplitudeByV+0x100>)
+ 8001ce6:	4d3a      	ldr	r5, [pc, #232]	; (8001dd0 <UpdateAmplitudeByV+0x104>)
 	V_2=(uint32_t) (V_2/V_Cnt[1]);
- 8001cec:	6030      	str	r0, [r6, #0]
+ 8001ce8:	6030      	str	r0, [r6, #0]
 	V_3=(uint32_t) (V_3/V_Cnt[2]);
- 8001cee:	6828      	ldr	r0, [r5, #0]
- 8001cf0:	68a1      	ldr	r1, [r4, #8]
- 8001cf2:	f7fe fa13 	bl	800011c <__udivsi3>
+ 8001cea:	6828      	ldr	r0, [r5, #0]
+ 8001cec:	68a1      	ldr	r1, [r4, #8]
+ 8001cee:	f7fe fa15 	bl	800011c <__udivsi3>
 	V_4=(uint32_t) (V_4/V_Cnt[3]);
- 8001cf6:	4b37      	ldr	r3, [pc, #220]	; (8001dd4 <UpdateAmplitudeByV+0x104>)
+ 8001cf2:	4b38      	ldr	r3, [pc, #224]	; (8001dd4 <UpdateAmplitudeByV+0x108>)
 	V_3=(uint32_t) (V_3/V_Cnt[2]);
- 8001cf8:	6028      	str	r0, [r5, #0]
+ 8001cf4:	6028      	str	r0, [r5, #0]
 	V_4=(uint32_t) (V_4/V_Cnt[3]);
- 8001cfa:	6818      	ldr	r0, [r3, #0]
- 8001cfc:	68e1      	ldr	r1, [r4, #12]
- 8001cfe:	f7fe fa0d 	bl	800011c <__udivsi3>
- 8001d02:	4b34      	ldr	r3, [pc, #208]	; (8001dd4 <UpdateAmplitudeByV+0x104>)
- 8001d04:	6018      	str	r0, [r3, #0]
+ 8001cf6:	6818      	ldr	r0, [r3, #0]
+ 8001cf8:	68e1      	ldr	r1, [r4, #12]
+ 8001cfa:	f7fe fa0f 	bl	800011c <__udivsi3>
+ 8001cfe:	4b35      	ldr	r3, [pc, #212]	; (8001dd4 <UpdateAmplitudeByV+0x108>)
+ 8001d00:	6018      	str	r0, [r3, #0]
 
 	Sine_Amplitude_1=1-(V_1-V1_etalon)*Amp_Coef;
- 8001d06:	6838      	ldr	r0, [r7, #0]
- 8001d08:	38be      	subs	r0, #190	; 0xbe
- 8001d0a:	f7ff fd8d 	bl	8001828 <__aeabi_ui2d>
- 8001d0e:	4a32      	ldr	r2, [pc, #200]	; (8001dd8 <UpdateAmplitudeByV+0x108>)
- 8001d10:	4b32      	ldr	r3, [pc, #200]	; (8001ddc <UpdateAmplitudeByV+0x10c>)
- 8001d12:	f7fe fff3 	bl	8000cfc <__aeabi_dmul>
- 8001d16:	0002      	movs	r2, r0
- 8001d18:	000b      	movs	r3, r1
- 8001d1a:	2000      	movs	r0, #0
- 8001d1c:	4930      	ldr	r1, [pc, #192]	; (8001de0 <UpdateAmplitudeByV+0x110>)
- 8001d1e:	f7ff fa6d 	bl	80011fc <__aeabi_dsub>
- 8001d22:	f7ff fe0b 	bl	800193c <__aeabi_d2f>
- 8001d26:	4c2f      	ldr	r4, [pc, #188]	; (8001de4 <UpdateAmplitudeByV+0x114>)
- 8001d28:	6020      	str	r0, [r4, #0]
+ 8001d02:	6838      	ldr	r0, [r7, #0]
+ 8001d04:	4b34      	ldr	r3, [pc, #208]	; (8001dd8 <UpdateAmplitudeByV+0x10c>)
+ 8001d06:	18c0      	adds	r0, r0, r3
+ 8001d08:	f7ff fd8e 	bl	8001828 <__aeabi_ui2d>
+ 8001d0c:	4a33      	ldr	r2, [pc, #204]	; (8001ddc <UpdateAmplitudeByV+0x110>)
+ 8001d0e:	4b34      	ldr	r3, [pc, #208]	; (8001de0 <UpdateAmplitudeByV+0x114>)
+ 8001d10:	f7fe fff4 	bl	8000cfc <__aeabi_dmul>
+ 8001d14:	0002      	movs	r2, r0
+ 8001d16:	000b      	movs	r3, r1
+ 8001d18:	2000      	movs	r0, #0
+ 8001d1a:	4932      	ldr	r1, [pc, #200]	; (8001de4 <UpdateAmplitudeByV+0x118>)
+ 8001d1c:	f7ff fa6e 	bl	80011fc <__aeabi_dsub>
+ 8001d20:	f7ff fe0c 	bl	800193c <__aeabi_d2f>
+ 8001d24:	4c30      	ldr	r4, [pc, #192]	; (8001de8 <UpdateAmplitudeByV+0x11c>)
+ 8001d26:	6020      	str	r0, [r4, #0]
 	Sine_Amplitude_1=CheckAmp(Sine_Amplitude_1);
- 8001d2a:	6820      	ldr	r0, [r4, #0]
- 8001d2c:	f7ff ffaa 	bl	8001c84 <CheckAmp>
- 8001d30:	6020      	str	r0, [r4, #0]
+ 8001d28:	6820      	ldr	r0, [r4, #0]
+ 8001d2a:	f7ff ffa9 	bl	8001c80 <CheckAmp>
+ 8001d2e:	6020      	str	r0, [r4, #0]
 
 	Sine_Amplitude_2=1-(V_2-V2_etalon)*Amp_Coef;
- 8001d32:	6830      	ldr	r0, [r6, #0]
- 8001d34:	4b2c      	ldr	r3, [pc, #176]	; (8001de8 <UpdateAmplitudeByV+0x118>)
- 8001d36:	18c0      	adds	r0, r0, r3
- 8001d38:	f7ff fd76 	bl	8001828 <__aeabi_ui2d>
- 8001d3c:	4a26      	ldr	r2, [pc, #152]	; (8001dd8 <UpdateAmplitudeByV+0x108>)
- 8001d3e:	4b27      	ldr	r3, [pc, #156]	; (8001ddc <UpdateAmplitudeByV+0x10c>)
- 8001d40:	f7fe ffdc 	bl	8000cfc <__aeabi_dmul>
- 8001d44:	0002      	movs	r2, r0
- 8001d46:	000b      	movs	r3, r1
- 8001d48:	2000      	movs	r0, #0
- 8001d4a:	4925      	ldr	r1, [pc, #148]	; (8001de0 <UpdateAmplitudeByV+0x110>)
- 8001d4c:	f7ff fa56 	bl	80011fc <__aeabi_dsub>
- 8001d50:	f7ff fdf4 	bl	800193c <__aeabi_d2f>
- 8001d54:	4c25      	ldr	r4, [pc, #148]	; (8001dec <UpdateAmplitudeByV+0x11c>)
- 8001d56:	6020      	str	r0, [r4, #0]
+ 8001d30:	6830      	ldr	r0, [r6, #0]
+ 8001d32:	4b29      	ldr	r3, [pc, #164]	; (8001dd8 <UpdateAmplitudeByV+0x10c>)
+ 8001d34:	18c0      	adds	r0, r0, r3
+ 8001d36:	f7ff fd77 	bl	8001828 <__aeabi_ui2d>
+ 8001d3a:	4a28      	ldr	r2, [pc, #160]	; (8001ddc <UpdateAmplitudeByV+0x110>)
+ 8001d3c:	4b28      	ldr	r3, [pc, #160]	; (8001de0 <UpdateAmplitudeByV+0x114>)
+ 8001d3e:	f7fe ffdd 	bl	8000cfc <__aeabi_dmul>
+ 8001d42:	0002      	movs	r2, r0
+ 8001d44:	000b      	movs	r3, r1
+ 8001d46:	2000      	movs	r0, #0
+ 8001d48:	4926      	ldr	r1, [pc, #152]	; (8001de4 <UpdateAmplitudeByV+0x118>)
+ 8001d4a:	f7ff fa57 	bl	80011fc <__aeabi_dsub>
+ 8001d4e:	f7ff fdf5 	bl	800193c <__aeabi_d2f>
+ 8001d52:	4c26      	ldr	r4, [pc, #152]	; (8001dec <UpdateAmplitudeByV+0x120>)
+ 8001d54:	6020      	str	r0, [r4, #0]
 	Sine_Amplitude_2=CheckAmp(Sine_Amplitude_2);
- 8001d58:	6820      	ldr	r0, [r4, #0]
- 8001d5a:	f7ff ff93 	bl	8001c84 <CheckAmp>
- 8001d5e:	6020      	str	r0, [r4, #0]
+ 8001d56:	6820      	ldr	r0, [r4, #0]
+ 8001d58:	f7ff ff92 	bl	8001c80 <CheckAmp>
+ 8001d5c:	6020      	str	r0, [r4, #0]
 
 	Sine_Amplitude_3=1-(V_3-V3_etalon)*Amp_Coef;
- 8001d60:	6828      	ldr	r0, [r5, #0]
- 8001d62:	4b21      	ldr	r3, [pc, #132]	; (8001de8 <UpdateAmplitudeByV+0x118>)
- 8001d64:	18c0      	adds	r0, r0, r3
- 8001d66:	f7ff fd5f 	bl	8001828 <__aeabi_ui2d>
- 8001d6a:	4a1b      	ldr	r2, [pc, #108]	; (8001dd8 <UpdateAmplitudeByV+0x108>)
- 8001d6c:	4b1b      	ldr	r3, [pc, #108]	; (8001ddc <UpdateAmplitudeByV+0x10c>)
- 8001d6e:	f7fe ffc5 	bl	8000cfc <__aeabi_dmul>
- 8001d72:	0002      	movs	r2, r0
- 8001d74:	000b      	movs	r3, r1
- 8001d76:	2000      	movs	r0, #0
- 8001d78:	4919      	ldr	r1, [pc, #100]	; (8001de0 <UpdateAmplitudeByV+0x110>)
- 8001d7a:	f7ff fa3f 	bl	80011fc <__aeabi_dsub>
- 8001d7e:	f7ff fddd 	bl	800193c <__aeabi_d2f>
- 8001d82:	4c1b      	ldr	r4, [pc, #108]	; (8001df0 <UpdateAmplitudeByV+0x120>)
- 8001d84:	6020      	str	r0, [r4, #0]
+ 8001d5e:	6828      	ldr	r0, [r5, #0]
+ 8001d60:	4b1d      	ldr	r3, [pc, #116]	; (8001dd8 <UpdateAmplitudeByV+0x10c>)
+ 8001d62:	18c0      	adds	r0, r0, r3
+ 8001d64:	f7ff fd60 	bl	8001828 <__aeabi_ui2d>
+ 8001d68:	4a1c      	ldr	r2, [pc, #112]	; (8001ddc <UpdateAmplitudeByV+0x110>)
+ 8001d6a:	4b1d      	ldr	r3, [pc, #116]	; (8001de0 <UpdateAmplitudeByV+0x114>)
+ 8001d6c:	f7fe ffc6 	bl	8000cfc <__aeabi_dmul>
+ 8001d70:	0002      	movs	r2, r0
+ 8001d72:	000b      	movs	r3, r1
+ 8001d74:	2000      	movs	r0, #0
+ 8001d76:	491b      	ldr	r1, [pc, #108]	; (8001de4 <UpdateAmplitudeByV+0x118>)
+ 8001d78:	f7ff fa40 	bl	80011fc <__aeabi_dsub>
+ 8001d7c:	f7ff fdde 	bl	800193c <__aeabi_d2f>
+ 8001d80:	4c1b      	ldr	r4, [pc, #108]	; (8001df0 <UpdateAmplitudeByV+0x124>)
+ 8001d82:	6020      	str	r0, [r4, #0]
 	Sine_Amplitude_3=CheckAmp(Sine_Amplitude_3);
- 8001d86:	6820      	ldr	r0, [r4, #0]
- 8001d88:	f7ff ff7c 	bl	8001c84 <CheckAmp>
+ 8001d84:	6820      	ldr	r0, [r4, #0]
+ 8001d86:	f7ff ff7b 	bl	8001c80 <CheckAmp>
 
 	Sine_Amplitude_4=1-(V_4-V4_etalon)*Amp_Coef;
- 8001d8c:	4b11      	ldr	r3, [pc, #68]	; (8001dd4 <UpdateAmplitudeByV+0x104>)
+ 8001d8a:	4b12      	ldr	r3, [pc, #72]	; (8001dd4 <UpdateAmplitudeByV+0x108>)
 	Sine_Amplitude_3=CheckAmp(Sine_Amplitude_3);
- 8001d8e:	6020      	str	r0, [r4, #0]
+ 8001d8c:	6020      	str	r0, [r4, #0]
 	Sine_Amplitude_4=1-(V_4-V4_etalon)*Amp_Coef;
- 8001d90:	6818      	ldr	r0, [r3, #0]
- 8001d92:	38be      	subs	r0, #190	; 0xbe
+ 8001d8e:	6818      	ldr	r0, [r3, #0]
+ 8001d90:	4b11      	ldr	r3, [pc, #68]	; (8001dd8 <UpdateAmplitudeByV+0x10c>)
+ 8001d92:	18c0      	adds	r0, r0, r3
  8001d94:	f7ff fd48 	bl	8001828 <__aeabi_ui2d>
- 8001d98:	4a0f      	ldr	r2, [pc, #60]	; (8001dd8 <UpdateAmplitudeByV+0x108>)
- 8001d9a:	4b10      	ldr	r3, [pc, #64]	; (8001ddc <UpdateAmplitudeByV+0x10c>)
+ 8001d98:	4a10      	ldr	r2, [pc, #64]	; (8001ddc <UpdateAmplitudeByV+0x110>)
+ 8001d9a:	4b11      	ldr	r3, [pc, #68]	; (8001de0 <UpdateAmplitudeByV+0x114>)
  8001d9c:	f7fe ffae 	bl	8000cfc <__aeabi_dmul>
  8001da0:	0002      	movs	r2, r0
  8001da2:	000b      	movs	r3, r1
  8001da4:	2000      	movs	r0, #0
- 8001da6:	490e      	ldr	r1, [pc, #56]	; (8001de0 <UpdateAmplitudeByV+0x110>)
+ 8001da6:	490f      	ldr	r1, [pc, #60]	; (8001de4 <UpdateAmplitudeByV+0x118>)
  8001da8:	f7ff fa28 	bl	80011fc <__aeabi_dsub>
  8001dac:	f7ff fdc6 	bl	800193c <__aeabi_d2f>
- 8001db0:	4c10      	ldr	r4, [pc, #64]	; (8001df4 <UpdateAmplitudeByV+0x124>)
+ 8001db0:	4c10      	ldr	r4, [pc, #64]	; (8001df4 <UpdateAmplitudeByV+0x128>)
  8001db2:	6020      	str	r0, [r4, #0]
 	Sine_Amplitude_4=CheckAmp(Sine_Amplitude_4);
  8001db4:	6820      	ldr	r0, [r4, #0]
- 8001db6:	f7ff ff65 	bl	8001c84 <CheckAmp>
+ 8001db6:	f7ff ff63 	bl	8001c80 <CheckAmp>
  8001dba:	6020      	str	r0, [r4, #0]
 
 	ResetV_data();
@@ -3959,11 +3958,11 @@ void UpdateAmplitudeByV() {
  8001dcc:	20000004 	.word	0x20000004
  8001dd0:	20000008 	.word	0x20000008
  8001dd4:	2000000c 	.word	0x2000000c
- 8001dd8:	9999999a 	.word	0x9999999a
- 8001ddc:	3f199999 	.word	0x3f199999
- 8001de0:	3ff00000 	.word	0x3ff00000
- 8001de4:	20000034 	.word	0x20000034
- 8001de8:	fffffddb 	.word	0xfffffddb
+ 8001dd8:	fffff800 	.word	0xfffff800
+ 8001ddc:	9999999a 	.word	0x9999999a
+ 8001de0:	3f199999 	.word	0x3f199999
+ 8001de4:	3ff00000 	.word	0x3ff00000
+ 8001de8:	20000034 	.word	0x20000034
  8001dec:	20000038 	.word	0x20000038
  8001df0:	2000003c 	.word	0x2000003c
  8001df4:	20000040 	.word	0x20000040
@@ -4145,11 +4144,11 @@ void AddUART_CRC() {
  8001ece:	0028      	movs	r0, r5
  8001ed0:	2164      	movs	r1, #100	; 0x64
  8001ed2:	f7ff ffd5 	bl	8001e80 <TM_CRC_Calculate8>
-	sprintf(crc_buff, "@crc@%08X@\r\n", crc);
+	sprintf(crc_buff, "@crc@%08X@\r\n",  crc);
  8001ed6:	4907      	ldr	r1, [pc, #28]	; (8001ef4 <AddUART_CRC+0x38>)
 	uint32_t crc=TM_CRC_Calculate8((uint8_t *) &uart_buff, sizeof(uart_buff), 1);
  8001ed8:	0002      	movs	r2, r0
-	sprintf(crc_buff, "@crc@%08X@\r\n", crc);
+	sprintf(crc_buff, "@crc@%08X@\r\n",  crc);
  8001eda:	0020      	movs	r0, r4
  8001edc:	f004 fa64 	bl	80063a8 <siprintf>
 	strcat(uart_buff,crc_buff);
@@ -4187,7 +4186,7 @@ void Get_ChipID(void) {
  8001f0c:	b507      	push	{r0, r1, r2, lr}
 	ClearUART_Buff();
  8001f0e:	f7ff fff3 	bl	8001ef8 <ClearUART_Buff>
-	sprintf(uart_buff, "@id@%08X-%08X-%08X", TM_ID_GetUnique32(0), TM_ID_GetUnique32(1), TM_ID_GetUnique32(2));
+	sprintf(uart_buff, "@id@%08X-%08X-%08X",   TM_ID_GetUnique32(0),
  8001f12:	4b07      	ldr	r3, [pc, #28]	; (8001f30 <Get_ChipID+0x24>)
  8001f14:	4907      	ldr	r1, [pc, #28]	; (8001f34 <Get_ChipID+0x28>)
  8001f16:	681a      	ldr	r2, [r3, #0]
@@ -4547,7 +4546,7 @@ void PWM_50Hz_START(void)
 	ResetV_data();
  800210a:	f7ff fd9d 	bl	8001c48 <ResetV_data>
 	UpdateAmplitudeByV();
- 800210e:	f7ff fddf 	bl	8001cd0 <UpdateAmplitudeByV>
+ 800210e:	f7ff fddd 	bl	8001ccc <UpdateAmplitudeByV>
 }
  8002112:	bd10      	pop	{r4, pc}
  8002114:	40012c00 	.word	0x40012c00
@@ -6228,7 +6227,7 @@ void TIM3_IRQHandler(void)
  800295c:	4a14      	ldr	r2, [pc, #80]	; (80029b0 <TIM3_IRQHandler+0xb0>)
  800295e:	8013      	strh	r3, [r2, #0]
 	      UpdateAmplitudeByV();
- 8002960:	f7ff f9b6 	bl	8001cd0 <UpdateAmplitudeByV>
+ 8002960:	f7ff f9b4 	bl	8001ccc <UpdateAmplitudeByV>
   }
 
 
