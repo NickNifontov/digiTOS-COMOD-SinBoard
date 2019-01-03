@@ -11,8 +11,8 @@
 #define SinRes 240
 //#define SinRes 480
 
-#define MinSinusData 15
-#define MaxSinusData 985
+#define MinSinusData 30
+#define MaxSinusData 970
 
 #include "stm32f0xx_hal.h"
 
