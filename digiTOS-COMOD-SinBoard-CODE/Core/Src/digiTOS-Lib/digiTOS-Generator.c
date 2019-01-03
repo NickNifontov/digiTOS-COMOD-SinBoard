@@ -108,7 +108,7 @@ void PWM_50Hz_Init (void) {
 	/* Enable channel outputs */
 	TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
 
-	SetInverseSignal(); // NORMAL or INVERSE
+	SetNormalSignal(); // NORMAL or INVERSE
 	Idle_SET(); // se idle state /* output idle state HIGHT */
 
 	Set50HzDeadTimeNS(); // 1976 ns
@@ -128,7 +128,7 @@ void PWM_50Hz_START(void)
 	/* Enable channel outputs */
 		TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
 
-		SetInverseSignal(); // NORMAL or INVERSE
+		SetNormalSignal(); // NORMAL or INVERSE
 		Idle_SET(); // se idle state /* output idle state HIGHT */
 
 		//Set50HzDeadTimeNS(); // 1976 ns
