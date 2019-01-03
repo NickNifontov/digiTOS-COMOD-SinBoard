@@ -194,8 +194,7 @@ int main(void)
 
   ClearUART_Buff();
 
-
-
+  buttonUpdate(&FaultFlag);
   if(buttonUpdate(&DevModeKey) == isPressed){
 	strcpy(uart_buff,"DEV MODE - wait\r\n");
 	SerialPrintln(1);
@@ -225,7 +224,8 @@ int main(void)
       // Start PWM Sinus
       //SinWave=swStart;
 
-      buttonUpdate(&DevModeKey2);
+       buttonUpdate(&FaultFlag);
+       buttonUpdate(&DevModeKey2);
        HAL_Delay(500);
        if(buttonUpdate(&DevModeKey2) == isPressedLong){
     	   strcpy(uart_buff,"Start GENERATOR\r\n");
@@ -235,6 +235,7 @@ int main(void)
        }
 
 
+       buttonUpdate(&FaultFlag);
        TIM14->PSC=SinResPSC;
 
        HAL_TIM_Base_Start(&htim14);

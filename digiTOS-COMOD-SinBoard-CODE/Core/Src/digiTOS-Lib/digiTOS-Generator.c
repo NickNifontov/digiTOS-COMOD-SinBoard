@@ -131,7 +131,7 @@ void PWM_50Hz_START(void)
 		SetNormalSignal(); // NORMAL or INVERSE
 		Idle_SET(); // se idle state /* output idle state HIGHT */
 
-		//Set50HzDeadTimeNS(); // 1976 ns
+		Set50HzDeadTimeNS(); // 1976 ns
 
 	TIM1->DIER |= TIM_DIER_UIE;
 	TIM1->CR1 |= TIM_CR1_CEN;

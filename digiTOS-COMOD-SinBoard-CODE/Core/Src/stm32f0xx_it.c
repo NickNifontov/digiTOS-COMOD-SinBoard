@@ -404,6 +404,9 @@ void TIM16_IRQHandler(void)
       	  	  HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
       	  	  HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
       	  	  HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
+
+      	  	  // when boot check faultflag
+      	  	  buttonUpdate(&FaultFlag);
       		  break;
       	  case sGEN:
       		  //TIM3->ARR=sDEF_INV_Delay;
