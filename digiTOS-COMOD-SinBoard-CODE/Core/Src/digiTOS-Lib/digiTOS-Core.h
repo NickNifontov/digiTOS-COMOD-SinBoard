@@ -30,9 +30,10 @@
 
 #define ADC_ChannelCnt 3
 
-#define Amp_min 0.8
-#define Amp_max 1.2
-#define Amp_Coef 0.00009765625 //(float) (0.2/V_base)
+#define Amp_min 0.4
+#define Amp_max 1.6
+//#define Amp_Coef 0.00029296875 //(float) (0.6/V_base)
+#define Amp_Coef (float) ((Amp_max-Amp_min)/4096) //(float) (0.6/V_base)
 
 #define ID_UNIQUE_ADDRESS 0x1FFFF7AC
 //#define ID_PACKAGE_ADDRESS 0x1FFF7BF0
