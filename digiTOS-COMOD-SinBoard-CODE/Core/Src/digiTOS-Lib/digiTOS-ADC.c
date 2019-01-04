@@ -84,6 +84,7 @@ float CheckAmp(float Value) {
 		return Amp_min;
 	}
 	return Value;
+	//
 }
 
 void UpdateAmplitudeByV() {
