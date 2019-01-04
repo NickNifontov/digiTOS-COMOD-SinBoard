@@ -77,10 +77,10 @@ void ResetV_data() {
 }
 
 float CheckAmp(float Value) {
-	if (Value>Amp_max) {
+	if (Value>=Amp_max) {
 		return Amp_max;
 	}
-	if (Value<Amp_min) {
+	if (Value<=Amp_min) {
 		return Amp_min;
 	}
 	return Value;
@@ -92,7 +92,20 @@ void UpdateAmplitudeByV() {
 	V_3=(uint32_t) (V_3/V_Cnt[2]);
 	V_4=(uint32_t) (V_4/V_Cnt[3]);
 
-	Sine_Amplitude_1=1-(V_1-V1_etalon)*Amp_Coef;
+		Sine_Amplitude_1=1-((V_1-V1_etalon)*Amp_Coef);
+		Sine_Amplitude_1=CheckAmp(Sine_Amplitude_1);
+
+		Sine_Amplitude_2=1-((V_2-V2_etalon)*Amp_Coef);
+		Sine_Amplitude_2=CheckAmp(Sine_Amplitude_2);
+
+		Sine_Amplitude_3=1-((V_3-V3_etalon)*Amp_Coef);
+		Sine_Amplitude_3=CheckAmp(Sine_Amplitude_3);
+
+		Sine_Amplitude_4=1-((V_4-V4_etalon)*Amp_Coef);
+		Sine_Amplitude_4=CheckAmp(Sine_Amplitude_4);
+
+
+	/*Sine_Amplitude_1=1-(V_1-V1_etalon)*Amp_Coef;
 	Sine_Amplitude_1=CheckAmp(Sine_Amplitude_1);
 
 	Sine_Amplitude_2=1-(V_2-V2_etalon)*Amp_Coef;
@@ -102,7 +115,7 @@ void UpdateAmplitudeByV() {
 	Sine_Amplitude_3=CheckAmp(Sine_Amplitude_3);
 
 	Sine_Amplitude_4=1-(V_4-V4_etalon)*Amp_Coef;
-	Sine_Amplitude_4=CheckAmp(Sine_Amplitude_4);
+	Sine_Amplitude_4=CheckAmp(Sine_Amplitude_4);*/
 
 	ResetV_data();
 }

@@ -415,7 +415,14 @@ void TIM16_IRQHandler(void)
       		  		  //ClearUART_Buff();
 
       		  		  ClearUART_Buff();
-      		  		  sprintf(uart_buff,"%4u \r\n",ADC_Data[0]);
+      		  		  //sprintf(uart_buff,"%4u \r\n",ADC_Data[0]);
+      		  		  sprintf(uart_buff,"DATA=%4u, V_1=%4u, Amp1=%03d,  Amp2=%03d,  Amp3=%03d,  Amp4=%03d \r\n",
+      		  				(uint16_t) ADC_Data[0],
+							(uint16_t) (V_1/V_Cnt[0]),
+      		  				(uint16_t) (100*Sine_Amplitude_1),
+      		  				(uint16_t) (100*Sine_Amplitude_2),
+							(uint16_t) (100*Sine_Amplitude_3),
+							(uint16_t) (100*Sine_Amplitude_4));
       		  		  SerialPrintln(0);
       		  	  }
     		  break;

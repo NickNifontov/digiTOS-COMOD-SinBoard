@@ -228,3 +228,14 @@ void ResetWDG() {
 	 HAL_IWDG_Refresh(&hiwdg);
 	 //IWDG->KR = 0x0000AAAAU;
 }
+
+// MATH
+
+
+/*float map(float value, float istart, float istop, float ostart, float ostop) {
+	return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+}*/
+
+/*float remap(uint32_t value, uint16_t istart, uint16_t istop, float ostart, float ostop) {
+	return (float) (ostart + (ostop - ostart) * ((value - istart) / (istop - istart)));
+}*/
