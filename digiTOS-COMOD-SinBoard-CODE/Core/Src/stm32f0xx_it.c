@@ -292,8 +292,9 @@ void TIM3_IRQHandler(void)
   if  ((TIM1->CNT==0) || (TIM1->CNT==500)) {
 	  	  TIM3->CCR2=0;
 	  	  TIM3->CCR1=0;
-	  	  sin_step=0;
+	  	  //sin_step=0;
 	      UpdateAmplitudeByV();
+	      sin_step=0;
   }
 
 
