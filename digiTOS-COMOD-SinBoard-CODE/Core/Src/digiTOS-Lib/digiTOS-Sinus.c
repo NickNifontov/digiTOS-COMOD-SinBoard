@@ -96,10 +96,10 @@ uint16_t GetSinus() {
 	if (curAmplitude!=1) {
 		fSinusData=(float) (curAmplitude*fSinusData);
 	}
-	if (fSinusData<MinSinusData) {
+	if (fSinusData<=MinSinusData) {
 		return MinSinusData;
 	}
-	if (fSinusData<MinSinusData) {
+	if (fSinusData>=MaxSinusData) {
 		return MaxSinusData;
 	}
 	return fSinusData;

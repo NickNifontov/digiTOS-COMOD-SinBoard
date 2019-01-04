@@ -2,5 +2,5 @@ digiTOS-ADC.c:18:6:StartADC	8	static
 digiTOS-ADC.c:24:6:CollectADC_Data	0	static
 digiTOS-ADC.c:67:6:ResetV_data	0	static
 digiTOS-ADC.c:79:7:CheckAmp	16	static
-digiTOS-ADC.c:89:6:UpdateAmplitudeByV	24	static
-digiTOS-ADC.c:123:6:CheckV_Feedback	12	static
+digiTOS-ADC.c:90:6:UpdateAmplitudeByV	24	static
+digiTOS-ADC.c:124:6:CheckV_Feedback	12	static

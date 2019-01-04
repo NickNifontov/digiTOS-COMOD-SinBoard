@@ -2279,6 +2279,7 @@ float CheckAmp(float Value) {
  8001088:	4c05      	ldr	r4, [pc, #20]	; (80010a0 <CheckAmp+0x44>)
 	}
 	return Value;
+	//
 }
  800108a:	1c20      	adds	r0, r4, #0
  800108c:	bdd0      	pop	{r4, r6, r7, pc}
