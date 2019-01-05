@@ -11,23 +11,15 @@
 #include "digiTOS-Core.h"
 #include "digiTOS-Sinus.h"
 #include "adc.h"
-#include "stm32f0xx_hal.h"
+#include "digiTOS-Configuration.h"
 #include "stm32f0xx_it.h"
 
 //******* ADC *********//
-extern volatile uint16_t ADC_Data[ADC_ChannelCnt];
-extern volatile uint32_t ADC_Cnt[ADC_ChannelCnt];
-extern uint32_t adc_cnt1;
+//extern uint32_t adc_cnt1;
 void StartADC();
 //******* ADC *********//
 
 //******* AMPLITUDE **********//
-extern volatile uint32_t V_1;
-extern volatile uint32_t V_2;
-extern volatile uint32_t V_3;
-extern volatile uint32_t V_4;
-extern volatile uint32_t V_Cnt[4];
-
 void ResetV_data();
 void UpdateAmplitudeByV();
 void CheckV_Feedback();

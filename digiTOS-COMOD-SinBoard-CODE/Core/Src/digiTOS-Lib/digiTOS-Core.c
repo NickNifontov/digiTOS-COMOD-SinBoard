@@ -21,6 +21,7 @@ button_struct_t DevModeKey; // button DEV_MODE1
 button_struct_t DevModeKey2; // button DEV_MODE2
 button_struct_t FaultFlag; // button FAULT_FEEDBACK_Pin
 
+
 uint32_t TM_CRC_Calculate8(uint8_t* arr, uint32_t count, uint8_t reset) {
 	uint32_t cnt;
 

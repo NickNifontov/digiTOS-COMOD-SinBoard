@@ -290,25 +290,22 @@ void TIM3_IRQHandler(void)
    	}
 
   if  ((TIM1->CNT==0) || (TIM1->CNT==500)) {
-	  	  TIM3->CCR2=0;
-	  	  TIM3->CCR1=0;
-	  	  //sin_step=0;
-	      UpdateAmplitudeByV();
-	      sin_step=0;
+	  	  //TIM3->CCR2=0;
+	  	  //TIM3->CCR1=0;
+	  	  sin_step=0;
+	      //UpdateAmplitudeByV();
+	      return;
   }
-
 
    if  (TIM1->CNT>=500) { sinStatus=1;}
    if  (TIM1->CNT<500) { sinStatus=0;}
 
    if (sinStatus==0) {
-	   //TIM3->CCR1=sin_data[sin_step];
-	   TIM3->CCR1=GetSinus();
 	   TIM3->CCR2=0;
+	   TIM3->CCR1=GetSinus();
+	   //TIM3->CCR2=0;
    }
    if (sinStatus==1) {
-	   //TIM3->CCR1=0;
-	   //TIM3->CCR2=sin_data[sin_step];
 	   TIM3->CCR1=0;
 	   TIM3->CCR2=GetSinus();
    }
@@ -368,8 +365,14 @@ void TIM14_IRQHandler(void)
 	  }
   }
 
+  	  	  	  if  (sin_step==0) {
+  	  	  		  	 UpdateAmplitudeByV();
+  	  	  	  }
+
   	  	  	  CheckV_Feedback();
   	  	  	  sin_step++;
+
+
 
 
   	    	/*if (sin_step >= SinRes) {

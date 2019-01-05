@@ -9,11 +9,10 @@
 #include "digiTOS-Core.h"
 #include "adc.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 //******* ADC **********//
-volatile uint16_t ADC_Data[ADC_ChannelCnt];
-volatile uint32_t ADC_Cnt[ADC_ChannelCnt];
-uint32_t adc_cnt1=0;
+//uint32_t adc_cnt1=0;
 
 void StartADC(){
 	//HAL_ADC_Start_IT(&hadc);
@@ -58,17 +57,11 @@ void CollectADC_Data() {
 //******* ADC **********//
 
 //******* AMPLITUDE **********//
-volatile uint32_t V_1=V1_etalon;
-volatile uint32_t V_2=V2_etalon;
-volatile uint32_t V_3=V3_etalon;
-volatile uint32_t V_4=V4_etalon;
-volatile uint32_t V_Cnt[4]={1,1,1,1};
-
 void ResetV_data() {
-	 V_1=V1_etalon;
-	 V_2=V2_etalon;
-	 V_3=V3_etalon;
-	 V_4=V4_etalon;
+	 V_1=0;
+	 V_2=0;
+	 V_3=0;
+	 V_4=0;
 
 	 V_Cnt[0]=1;
 	 V_Cnt[1]=1;
@@ -77,15 +70,55 @@ void ResetV_data() {
 }
 
 float CheckAmp(float Value) {
-	if (Value>=Amp_max) {
+	if (Value>Amp_max) {
 		return Amp_max;
 	}
-	if (Value<=Amp_min) {
+	if (Value<Amp_min) {
 		return Amp_min;
 	}
 	return Value;
 	//
 }
+
+float CalcNewAmp(uint32_t V_curr, uint32_t V_etalon) {
+	float fRes=1;
+	if (V_curr>V_etalon) {
+		fRes=fRes+(float)((V_curr-V_etalon)*Amp_CoefPlus);
+	}
+	if (V_curr<V_etalon) {
+		fRes=fRes-(float)((V_etalon-V_curr)*Amp_CoefMinus);
+	}
+
+	if (fRes>Amp_max) {
+		fRes=Amp_max;
+	}
+	if (fRes<Amp_min) {
+		fRes=Amp_min;
+	}
+
+	return fRes;
+}
+
+#ifdef AMP_CORRECTION_TYPE_STEP
+float CalcNewAmpByStep(float CurrAmp, float TargetAmp) {
+	float fRes=CurrAmp;
+	if (TargetAmp>CurrAmp) {
+		fRes=fRes+amp_correction_step;
+		if (fRes>=TargetAmp) {
+			fRes=TargetAmp;
+		}
+		return fRes;
+	}
+	if (TargetAmp<CurrAmp) {
+		fRes=fRes-amp_correction_step;
+		if (fRes<=TargetAmp) {
+			fRes=TargetAmp;
+		}
+		return fRes;
+	}
+	return fRes;
+}
+#endif
 
 void UpdateAmplitudeByV() {
 	V_1=(uint32_t) (V_1/V_Cnt[0]);
@@ -93,30 +126,26 @@ void UpdateAmplitudeByV() {
 	V_3=(uint32_t) (V_3/V_Cnt[2]);
 	V_4=(uint32_t) (V_4/V_Cnt[3]);
 
-		Sine_Amplitude_1=1-((V_1-V1_etalon)*Amp_Coef);
-		Sine_Amplitude_1=CheckAmp(Sine_Amplitude_1);
+	#ifdef AMP_CORRECTION_TYPE_IMMIDIATLY
+		Sine_Amplitude_1=CalcNewAmp(V_1,V1_etalon);
+		Sine_Amplitude_2=CalcNewAmp(V_2,V2_etalon);
+		Sine_Amplitude_3=CalcNewAmp(V_3,V3_etalon);
+		Sine_Amplitude_4=CalcNewAmp(V_4,V4_etalon);
+	#endif
 
-		Sine_Amplitude_2=1-((V_2-V2_etalon)*Amp_Coef);
-		Sine_Amplitude_2=CheckAmp(Sine_Amplitude_2);
+	#ifdef AMP_CORRECTION_TYPE_STEP
+		amp1_target=CalcNewAmp(V_1,V1_etalon);
+		Sine_Amplitude_1=CalcNewAmpByStep(Sine_Amplitude_1,amp1_target);
 
-		Sine_Amplitude_3=1-((V_3-V3_etalon)*Amp_Coef);
-		Sine_Amplitude_3=CheckAmp(Sine_Amplitude_3);
+		amp2_target=CalcNewAmp(V_2,V2_etalon);
+		Sine_Amplitude_2=CalcNewAmpByStep(Sine_Amplitude_2,amp2_target);
 
-		Sine_Amplitude_4=1-((V_4-V4_etalon)*Amp_Coef);
-		Sine_Amplitude_4=CheckAmp(Sine_Amplitude_4);
+		amp3_target=CalcNewAmp(V_3,V3_etalon);
+		Sine_Amplitude_3=CalcNewAmpByStep(Sine_Amplitude_3,amp3_target);
 
-
-	/*Sine_Amplitude_1=1-(V_1-V1_etalon)*Amp_Coef;
-	Sine_Amplitude_1=CheckAmp(Sine_Amplitude_1);
-
-	Sine_Amplitude_2=1-(V_2-V2_etalon)*Amp_Coef;
-	Sine_Amplitude_2=CheckAmp(Sine_Amplitude_2);
-
-	Sine_Amplitude_3=1-(V_3-V3_etalon)*Amp_Coef;
-	Sine_Amplitude_3=CheckAmp(Sine_Amplitude_3);
-
-	Sine_Amplitude_4=1-(V_4-V4_etalon)*Amp_Coef;
-	Sine_Amplitude_4=CheckAmp(Sine_Amplitude_4);*/
+		amp4_target=CalcNewAmp(V_4,V4_etalon);
+		Sine_Amplitude_4=CalcNewAmpByStep(Sine_Amplitude_4,amp4_target);
+	#endif
 
 	ResetV_data();
 }

@@ -8,7 +8,7 @@
 #include "digiTOS-Generator.h"
 #include "digiTOS-Sinus.h"
 #include "digiTOS-ADC.h"
-#include "stm32f0xx_hal.h"
+#include "digiTOS-Configuration.h"
 #include "tim.h"
 
 

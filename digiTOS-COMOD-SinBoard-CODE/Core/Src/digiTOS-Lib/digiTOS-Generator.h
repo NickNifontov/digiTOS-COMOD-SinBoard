@@ -8,11 +8,7 @@
 #ifndef SRC_DIGITOS_LIB_DIGITOS_GENERATOR_H_
 #define SRC_DIGITOS_LIB_DIGITOS_GENERATOR_H_
 
-#include "stm32f0xx_hal.h"
-
-#define SinResPSC 1
-//#define SinResPSC 0
-
+#include "digiTOS-Generator.h"
 
 //-------------------- 50Hz ----------------------------------//
 ////////////////////// DEAD TIME - BEGIN //////////////////////

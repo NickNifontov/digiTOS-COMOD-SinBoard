@@ -1,4 +1,4 @@
-digiTOS-Sinus.c:52:6:ResetAmplitude	0	static
-digiTOS-Sinus.c:59:6:SetApmlitude	8	static
-digiTOS-Sinus.c:77:7:GetApmlitude	0	static
-digiTOS-Sinus.c:90:10:GetSinus	16	static
+digiTOS-Sinus.c:11:6:ResetAmplitude	0	static
+digiTOS-Sinus.c:36:6:SetApmlitude	8	static
+digiTOS-Sinus.c:54:7:GetApmlitude	0	static
+digiTOS-Sinus.c:67:10:GetSinus	16	static

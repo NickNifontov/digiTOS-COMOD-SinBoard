@@ -8,56 +8,7 @@
 #ifndef DIGITOS_CORE_H_
 #define DIGITOS_CORE_H_
 
-#include "stm32f0xx_hal.h"
-
-//***** DEFINES - BEGIN *****//
-#define Linear_V_Out  // V_Out liner from 0V...3.3V
-//#define Sinus_V_Out // V_out sinus form
-
-#ifdef Sinus_V_Out
-	#define V1_etalon 190
-	#define V2_etalon 549
-	#define V3_etalon 549
-	#define V4_etalon 190
-#endif
-
-#ifdef Linear_V_Out
-	#define V1_etalon 2048
-	#define V2_etalon 2048
-	#define V3_etalon 2048
-	#define V4_etalon 2048
-#endif
-
-#define ADC_ChannelCnt 3
-
-#define Amp_min 0.4
-#define Amp_max 1.6
-//#define Amp_Coef 0.00029296875 //(float) (0.6/V_base)
-#define Amp_Coef (float) ((Amp_max-Amp_min)/4096) //(float) (0.6/V_base)
-
-#define ID_UNIQUE_ADDRESS 0x1FFFF7AC
-//#define ID_PACKAGE_ADDRESS 0x1FFF7BF0
-#define ID_FLASH_ADDRESS 0x1FFFF7CC
-
-//#define TM_ID_GetSignature() (DBGMCU->IDCODE & 0x00000FFF)
-//#define TM_ID_GetRevision() ((DBGMCU->IDCODE >> 16) & 0x0000FFFF)
-//#define TM_ID_GetPackage() (((*(__IO uint16_t *) (ID_PACKAGE_ADDRESS)) & 0x0700) >> 8)
-#define TM_ID_GetFlashSize() (*(__IO uint16_t *) (ID_FLASH_ADDRESS))
-
-#define TM_ID_GetUnique8(x) ((x >= 0 && x < 12) ? (*(__IO uint8_t *) (ID_UNIQUE_ADDRESS + (x))) : 0)
-#define TM_ID_GetUnique16(x) ((x >= 0 && x < 6) ? (*(__IO uint16_t *) (ID_UNIQUE_ADDRESS + 2 * (x))) : 0)
-#define TM_ID_GetUnique32(x) ((x >= 0 && x < 3) ? (*(__IO uint32_t *) (ID_UNIQUE_ADDRESS + 4 * (x))) : 0)
-
-#define sBoot_Delay 100
-#define sAC_AC_Delay 1000
-#define sAC_INV_Delay 1000
-#define sDEF_Delay 1000
-#define sRST_Delay 500
-
-#define DelaySecBeforeAttemRst 10 //DelaySecBeforeStartAfterFault
-#define DelaySecBeforeStartAfterFault 10 //DelaySecBeforeStartAfterFault
-//***** DEFINES - END *****//
-
+#include "digiTOS-Configuration.h"
 #include "usart.h"
 #include <stdio.h>
 #include <string.h>
