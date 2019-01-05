@@ -260,6 +260,7 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 	  TIM1->CCR3=500;
   }
 
+
   /* USER CODE END TIM1_BRK_UP_TRG_COM_IRQn 1 */
 }
 
@@ -326,6 +327,7 @@ void TIM14_IRQHandler(void)
 
   __HAL_TIM_CLEAR_FLAG(&htim14, TIM_FLAG_UPDATE);
 
+
   if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
 	  BoardStatus=sFaultFlag;
 	  FaultWaitCnt=0;
@@ -338,9 +340,14 @@ void TIM14_IRQHandler(void)
 	  //BoardStatus=sGEN;
   }
 
-  if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
+	#ifdef AMP_PROTECTION
+  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)) {
+	#endif
+	#ifndef AMP_PROTECTION
+  	  if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
+	#endif
   	  sin_step=0;
-    	  if (buttonUpdate(&DevModeKey2) == isPressedLong) {
+  	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
     		SinWave=swStart;
     		TIM3->CCR2=0;
     		 		TIM3->CCR1=0;
@@ -353,7 +360,12 @@ void TIM14_IRQHandler(void)
       }
 
   if (SinWave==swGEN) {
-	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)) {
+				#ifdef AMP_PROTECTION
+			  	  	  if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) || (AMP_BLOCKED==1) ) {
+				#endif
+				#ifndef AMP_PROTECTION
+			  	  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
+				#endif
 		  SinWave=swNOP;
 		  TIM3->CCR2=0;
 		   		TIM3->CCR1=0;
@@ -423,6 +435,16 @@ void TIM16_IRQHandler(void)
       		  		  PrintCurrentState();
       		  		  SerialPrintln(0);
       		  	  }
+				#ifdef AMP_PROTECTION
+      		  	  if (AMP_BLOCKED==1) {
+      		  		AMP_PROTECTION_CNT_BEFORESTART++;
+      		  		if (AMP_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterAmpProtection) {
+      		  			AMP_PROTECTION_CNT_BEFORESTART=0;
+      		  			AMP_BLOCKED=0;
+      		  			AMP_PROTECTION_CNT=0;
+      		  		}
+      		  	  }
+				#endif
     		  break;
       	  case sFaultFlag:
 					if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)

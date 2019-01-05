@@ -7,6 +7,12 @@
 
 #include "digiTOS-Configuration.h"
 
+// ************** √ÀŒ¡¿À‹Õ€≈ Õ¿—“–Œ… » œ–Œ≈ “¿ - digiTOS ************** //
+#ifdef AMP_PROTECTION
+	int AMP_PROTECTION_CNT=0;
+	int AMP_BLOCKED=0;
+	int AMP_PROTECTION_CNT_BEFORESTART=0;
+#endif
 
 // ************** V_OUT SECTION ************** //
 volatile uint16_t ADC_Data[ADC_ChannelCnt];

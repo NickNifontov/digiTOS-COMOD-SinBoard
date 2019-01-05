@@ -29,6 +29,21 @@
 
 
 // ************** √ÀŒ¡¿À‹Õ€≈ Õ¿—“–Œ… » œ–Œ≈ “¿ - digiTOS ************** //
+#define AMP_PROTECTION // protection if MAX/MIN AMP detected
+// Stop and then restart after DelaySecBeforeStartAfterAmpProtection
+
+#ifdef AMP_PROTECTION
+	#define AMP_PROTECTION_MINMAX_CNT 2000 //10sec
+
+	#define AMP_PROTECTION_MIN (uint16_t) (4*50) //Amp1+...+Amp4
+	#define AMP_PROTECTION_MAX (uint16_t) (4*150) //Amp1+...+Amp4
+
+	extern int AMP_PROTECTION_CNT;
+	extern int AMP_PROTECTION_CNT_BEFORESTART;
+	#define DelaySecBeforeStartAfterAmpProtection 30
+	extern int AMP_BLOCKED;
+#endif
+
 #define DEBUG_MODE // if TRUE then in UART print text state
 
 #define sBoot_Delay 100   						// LEDs Blink at boot mode (startup)

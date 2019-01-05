@@ -4,4 +4,4 @@ digiTOS-ADC.c:73:7:CheckAmp	8	static
 digiTOS-ADC.c:84:7:CalcNewAmp	8	static
 digiTOS-ADC.c:104:7:CalcNewAmpByStep	16	static
 digiTOS-ADC.c:124:6:UpdateAmplitudeByV	24	static
-digiTOS-ADC.c:168:6:CheckV_Feedback	12	static
+digiTOS-ADC.c:179:6:CheckV_Feedback	12	static

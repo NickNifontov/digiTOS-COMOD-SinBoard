@@ -30,6 +30,13 @@ void ResetAmplitude() {
 			Sine_Amplitude_1=1;
 		#endif
 	#endif
+
+	#ifdef AMP_PROTECTION
+			AMP_BLOCKED=0;
+			AMP_PROTECTION_CNT_BEFORESTART=0;
+			AMP_PROTECTION_CNT=0;
+	#endif
+
 }
 
 void SetApmlitude(float Value) {

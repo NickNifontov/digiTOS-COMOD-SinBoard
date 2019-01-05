@@ -13,7 +13,7 @@
 void StartADC(){
 	//HAL_ADC_Start_IT(&hadc);
 	//ADC->CCR |= ADC_CCR_TSEN | ADC_CCR_VREFEN;
-	HAL_ADC_Start_DMA(&hadc,(uint32_t*) &ADC_Data,4);
+	HAL_ADC_Start_DMA(&hadc,(uint32_t*) &ADC_Data,ADC_ChannelCnt);
 }
 
 //void CollectADC_Data() {
@@ -160,6 +160,17 @@ void UpdateAmplitudeByV() {
 
 		amp4_target=CalcNewAmp(V_4,V4_etalon);
 		Sine_Amplitude_4=CalcNewAmpByStep(Sine_Amplitude_4,amp4_target);
+	#endif
+
+	#ifdef AMP_PROTECTION
+		uint16_t AverageAmplitude=(uint16_t) (100*(float)(Sine_Amplitude_4+Sine_Amplitude_3+Sine_Amplitude_2+Sine_Amplitude_1));
+		if ((AMP_BLOCKED==0) && ((AverageAmplitude>=AMP_PROTECTION_MAX) || (AverageAmplitude<=AMP_PROTECTION_MIN))) {
+			AMP_PROTECTION_CNT++;
+			if (AMP_PROTECTION_CNT>AMP_PROTECTION_MINMAX_CNT) {
+				AMP_BLOCKED=1;
+			}
+
+		}
 	#endif
 
 	ResetV_data();
