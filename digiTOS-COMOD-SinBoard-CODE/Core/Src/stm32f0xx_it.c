@@ -426,15 +426,7 @@ void TIM16_IRQHandler(void)
       		  break;
       	  case sGEN:
       		  //TIM3->ARR=sDEF_INV_Delay;
-      		  	  if (DevMode1==1) {
-      		  		  //SerialPrintln(0);
-      		  		  //ClearUART_Buff();
-
-      		  		  ClearUART_Buff();
-      		  		  //sprintf(uart_buff,"%4u \r\n",ADC_Data[0]);
-      		  		  PrintCurrentState();
-      		  		  SerialPrintln(0);
-      		  	  }
+      		  	PrintCurrentState();
 				#ifdef AMP_PROTECTION
       		  	  if (AMP_BLOCKED==1) {
       		  		AMP_PROTECTION_CNT_BEFORESTART++;
@@ -447,6 +439,7 @@ void TIM16_IRQHandler(void)
 				#endif
     		  break;
       	  case sFaultFlag:
+      		  	  	PrintCurrentState();
 					if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)
 						//	|| (RstCnt<=DelaySecBeforeAttemRst)
 							) {
