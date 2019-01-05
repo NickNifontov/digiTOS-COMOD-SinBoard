@@ -1,7 +1,7 @@
 digiTOS-ADC.c:13:6:StartADC	8	static
 digiTOS-ADC.c:56:6:ResetV_data	0	static
-digiTOS-ADC.c:73:7:CheckAmp	8	static
-digiTOS-ADC.c:84:7:CalcNewAmp	8	static
-digiTOS-ADC.c:104:7:CalcNewAmpByStep	16	static
-digiTOS-ADC.c:124:6:UpdateAmplitudeByV	24	static
-digiTOS-ADC.c:179:6:CheckV_Feedback	12	static
+digiTOS-ADC.c:78:7:CheckAmp	8	static
+digiTOS-ADC.c:89:7:CalcNewAmp	8	static
+digiTOS-ADC.c:109:7:CalcNewAmpByStep	16	static
+digiTOS-ADC.c:129:6:UpdateAmplitudeByV	24	static
+digiTOS-ADC.c:194:6:CheckV_Feedback	12	static

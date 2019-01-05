@@ -340,12 +340,10 @@ void TIM14_IRQHandler(void)
 	  //BoardStatus=sGEN;
   }
 
-	#ifdef AMP_PROTECTION
-  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)) {
-	#endif
-	#ifndef AMP_PROTECTION
-  	  if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
-	#endif
+  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0) && (DC_BLOCKED==0) ) {
+	//#ifndef AMP_PROTECTION
+  	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
+	//#endif
   	  sin_step=0;
   	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
     		SinWave=swStart;
@@ -360,12 +358,11 @@ void TIM14_IRQHandler(void)
       }
 
   if (SinWave==swGEN) {
-				#ifdef AMP_PROTECTION
-			  	  	  if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) || (AMP_BLOCKED==1) ) {
-				#endif
-				#ifndef AMP_PROTECTION
-			  	  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
-				#endif
+				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
+						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) ) {
+				//#ifndef AMP_PROTECTION
+			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
+				//#endif
 		  SinWave=swNOP;
 		  TIM3->CCR2=0;
 		   		TIM3->CCR1=0;
@@ -434,6 +431,17 @@ void TIM16_IRQHandler(void)
       		  			AMP_PROTECTION_CNT_BEFORESTART=0;
       		  			AMP_BLOCKED=0;
       		  			AMP_PROTECTION_CNT=0;
+      		  		}
+      		  	  }
+				#endif
+
+				#ifdef DC_PROTECTION
+      		  	  if ((DC_BLOCKED==1) && (DC_DataAverage<DC_PROTECTION_MAX)) {
+      		  		DC_PROTECTION_CNT_BEFORESTART++;
+      		  		if (DC_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterDCProtection) {
+      		  			DC_PROTECTION_CNT_BEFORESTART=0;
+      		  			DC_BLOCKED=0;
+      		  			DC_PROTECTION_CNT=0;
       		  		}
       		  	  }
 				#endif

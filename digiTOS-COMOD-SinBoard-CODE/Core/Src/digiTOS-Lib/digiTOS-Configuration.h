@@ -29,7 +29,29 @@
 
 
 // ************** √ÀŒ¡¿À‹Õ€≈ Õ¿—“–Œ… » œ–Œ≈ “¿ - digiTOS ************** //
-#define AMP_PROTECTION // protection if MAX/MIN AMP detected
+//#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+// Stop and then restart after DelaySecBeforeStartAfterDCProtection
+
+#ifdef DC_PROTECTION
+	#define DC_PROTECTION_MAX (uint32_t) (3000)
+
+	#define DC_PROTECTION_WAVE_CNT 2000 //10sec
+
+	extern int DC_PROTECTION_CNT;
+	extern int DC_PROTECTION_CNT_BEFORESTART;
+	#define DelaySecBeforeStartAfterDCProtection 30
+	extern volatile uint32_t DC_Data;
+	extern volatile uint32_t DC_DataCnt;
+	extern volatile uint32_t DC_DataAverage;
+	extern int DC_BLOCKED;
+#endif
+
+#ifndef DC_PROTECTION
+	#define DC_BLOCKED 0
+#endif
+
+
+//#define AMP_PROTECTION // protection if MAX/MIN AMP detected
 // Stop and then restart after DelaySecBeforeStartAfterAmpProtection
 
 #ifdef AMP_PROTECTION
@@ -42,6 +64,10 @@
 	extern int AMP_PROTECTION_CNT_BEFORESTART;
 	#define DelaySecBeforeStartAfterAmpProtection 30
 	extern int AMP_BLOCKED;
+#endif
+
+#ifndef AMP_PROTECTION
+	#define AMP_BLOCKED 0
 #endif
 
 #define DEBUG_MODE // if TRUE then in UART print text state

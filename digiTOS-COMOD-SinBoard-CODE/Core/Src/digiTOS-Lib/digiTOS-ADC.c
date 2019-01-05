@@ -68,6 +68,11 @@ void ResetV_data() {
 	 V_Cnt[4]=1;
 	 V_5=1500;
 	#endif
+
+	#ifdef DC_PROTECTION
+	 	 DC_Data=0;
+	 	 DC_DataCnt=0;
+	#endif
 }
 
 float CheckAmp(float Value) {
@@ -173,6 +178,16 @@ void UpdateAmplitudeByV() {
 		}
 	#endif
 
+	#ifdef DC_PROTECTION
+			 DC_DataAverage=(DC_Data/DC_DataCnt);
+			 if ((DC_BLOCKED==0) && (DC_DataAverage>=DC_PROTECTION_MAX) ) {
+				 DC_PROTECTION_CNT++;
+				 if (DC_PROTECTION_CNT>DC_PROTECTION_WAVE_CNT) {
+				 	DC_BLOCKED=1;
+				 }
+			 }
+	#endif
+
 	ResetV_data();
 }
 
@@ -180,6 +195,11 @@ void CheckV_Feedback() {
 		#ifdef USE_VREF
 			V_5=V_5+ADC_Data[3];
 			V_Cnt[4]= V_Cnt[4]+1;
+		#endif
+
+		#ifdef DC_PROTECTION
+			 DC_Data=DC_Data+ADC_Data[2];
+			 DC_DataCnt=DC_DataCnt+1;
 		#endif
 
 		if (sin_step>Sin_Amp_ind[2]) {

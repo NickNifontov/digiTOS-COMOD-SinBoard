@@ -14,6 +14,15 @@
 	int AMP_PROTECTION_CNT_BEFORESTART=0;
 #endif
 
+#ifdef DC_PROTECTION
+	int DC_PROTECTION_CNT=0;
+	int DC_PROTECTION_CNT_BEFORESTART=0;
+	volatile uint32_t DC_Data=0;
+	volatile uint32_t DC_DataCnt=0;
+	volatile uint32_t DC_DataAverage=0;
+	int DC_BLOCKED=0;
+#endif
+
 // ************** V_OUT SECTION ************** //
 volatile uint16_t ADC_Data[ADC_ChannelCnt];
 volatile uint32_t ADC_Cnt[ADC_ChannelCnt];
