@@ -8,7 +8,7 @@
 #ifndef SRC_DIGITOS_LIB_DIGITOS_SINUS_H_
 #define SRC_DIGITOS_LIB_DIGITOS_SINUS_H_
 
-#include "digiTOS-Configuration.h"
+#include "digiTOS-Core.h"
 
 #include <stdio.h>
 #include <string.h>

@@ -8,17 +8,24 @@
 #include "digiTOS-Configuration.h"
 
 
-// ************** ADC SECTION ************** //
+// ************** V_OUT SECTION ************** //
 volatile uint16_t ADC_Data[ADC_ChannelCnt];
 volatile uint32_t ADC_Cnt[ADC_ChannelCnt];
 
-
-// ************** V_OUT SECTION ************** //
 volatile uint32_t V_1=V1_etalon;
 volatile uint32_t V_2=V2_etalon;
 volatile uint32_t V_3=V3_etalon;
 volatile uint32_t V_4=V4_etalon;
-volatile uint32_t V_Cnt[4]={1,1,1,1};
+
+#ifdef USE_VREF
+	volatile uint32_t V_5=1500; // VREF
+	uint32_t VDDA_Actual;
+	volatile uint32_t V_Cnt[5]={1,1,1,1,1};
+#endif
+
+#ifndef USE_VREF
+	volatile uint32_t V_Cnt[4]={1,1,1,1};
+#endif
 
 #ifdef AMP_CORRECTION_TYPE_STEP
  float amp1_correction_step=0;

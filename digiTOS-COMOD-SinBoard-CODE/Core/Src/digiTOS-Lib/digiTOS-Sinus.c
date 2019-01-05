@@ -6,7 +6,6 @@
  */
 
 #include "digiTOS-Sinus.h"
-#include "digiTOS-Core.h"
 
 void ResetAmplitude() {
 	#ifdef AMP_CORRECTION_TYPE_IMMIDIATLY

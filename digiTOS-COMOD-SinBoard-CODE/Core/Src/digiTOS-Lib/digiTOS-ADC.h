@@ -11,7 +11,6 @@
 #include "digiTOS-Core.h"
 #include "digiTOS-Sinus.h"
 #include "adc.h"
-#include "digiTOS-Configuration.h"
 #include "stm32f0xx_it.h"
 
 //******* ADC *********//

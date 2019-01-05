@@ -47,6 +47,8 @@ void SerialPrintln(int WaitForTX);
 void ClearUART_Buff();
 void WaitForUART_TX();
 
+void PrintCurrentState();
+
 // Math
 //float map(float value, float istart, float istop, float ostart, float ostop);
 //float remap(uint32_t value, uint16_t istart, uint16_t istop, float ostart, float ostop);

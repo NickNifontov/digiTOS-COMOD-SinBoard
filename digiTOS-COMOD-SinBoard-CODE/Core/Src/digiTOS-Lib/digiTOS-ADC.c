@@ -6,21 +6,17 @@
  */
 
 #include "digiTOS-ADC.h"
-#include "digiTOS-Core.h"
-#include "adc.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-//******* ADC **********//
+// ************** ADC SECTION ************** //
 //uint32_t adc_cnt1=0;
 
 void StartADC(){
 	//HAL_ADC_Start_IT(&hadc);
 	//ADC->CCR |= ADC_CCR_TSEN | ADC_CCR_VREFEN;
-	HAL_ADC_Start_DMA(&hadc,(uint32_t*) &ADC_Data,ADC_ChannelCnt);
+	HAL_ADC_Start_DMA(&hadc,(uint32_t*) &ADC_Data,4);
 }
 
-void CollectADC_Data() {
+//void CollectADC_Data() {
 	/*if (ADC_Cnt[3]>=Temp_MeasureDensity) {
 		ADC_Data[3]=(uint32_t)(ADC_Data[3]/ADC_Cnt[3]);
 		//sprintf(temp_buffer, "CPU Temp=%02d C \r\n",
@@ -35,7 +31,7 @@ void CollectADC_Data() {
 	ADC_Cnt[1]=0;
 	ADC_Data[2]=0;
 	ADC_Cnt[2]=0;*/
-}
+//}
 
 //void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc1)
 //{
@@ -67,6 +63,11 @@ void ResetV_data() {
 	 V_Cnt[1]=1;
 	 V_Cnt[2]=1;
 	 V_Cnt[3]=1;
+
+	#ifdef USE_VREF
+	 V_Cnt[4]=1;
+	 V_5=1500;
+	#endif
 }
 
 float CheckAmp(float Value) {
@@ -121,10 +122,24 @@ float CalcNewAmpByStep(float CurrAmp, float TargetAmp) {
 #endif
 
 void UpdateAmplitudeByV() {
-	V_1=(uint32_t) (V_1/V_Cnt[0]);
-	V_2=(uint32_t) (V_2/V_Cnt[1]);
-	V_3=(uint32_t) (V_3/V_Cnt[2]);
-	V_4=(uint32_t) (V_4/V_Cnt[3]);
+	#ifdef USE_VREF
+		V_5=(uint32_t) (V_5/V_Cnt[4]);
+		VDDA_Actual=(3300*(*VREFINT_CAL_ADDR))/V_5;
+    #endif
+
+	#ifndef USE_VREF_FOR_ADC_CORRECTION
+		V_1=(uint32_t) (V_1/V_Cnt[0]);
+		V_2=(uint32_t) (V_2/V_Cnt[1]);
+		V_3=(uint32_t) (V_3/V_Cnt[2]);
+		V_4=(uint32_t) (V_4/V_Cnt[3]);
+	#endif
+
+	#ifdef USE_VREF_FOR_ADC_CORRECTION
+			V_1=(uint32_t) (V_1*(*VREFINT_CAL_ADDR)/V_Cnt[0]);
+			V_2=(uint32_t) (V_2*(*VREFINT_CAL_ADDR)/V_Cnt[1]);
+			V_3=(uint32_t) (V_3*(*VREFINT_CAL_ADDR)/V_Cnt[2]);
+			V_4=(uint32_t) (V_4*(*VREFINT_CAL_ADDR)/V_Cnt[3]);
+	#endif
 
 	#ifdef AMP_CORRECTION_TYPE_IMMIDIATLY
 		Sine_Amplitude_1=CalcNewAmp(V_1,V1_etalon);
@@ -151,6 +166,11 @@ void UpdateAmplitudeByV() {
 }
 
 void CheckV_Feedback() {
+		#ifdef USE_VREF
+			V_5=V_5+ADC_Data[3];
+			V_Cnt[4]= V_Cnt[4]+1;
+		#endif
+
 		if (sin_step>Sin_Amp_ind[2]) {
 			V_4=V_4+ADC_Data[0];
 			V_Cnt[3]= V_Cnt[3]+1;

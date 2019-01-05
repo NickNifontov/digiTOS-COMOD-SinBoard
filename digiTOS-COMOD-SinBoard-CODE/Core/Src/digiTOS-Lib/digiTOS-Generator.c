@@ -5,10 +5,10 @@
  *      Author: Nick Nifontov
  */
 
+#include "digiTOS-Configuration.h"
 #include "digiTOS-Generator.h"
 #include "digiTOS-Sinus.h"
 #include "digiTOS-ADC.h"
-#include "digiTOS-Configuration.h"
 #include "tim.h"
 
 

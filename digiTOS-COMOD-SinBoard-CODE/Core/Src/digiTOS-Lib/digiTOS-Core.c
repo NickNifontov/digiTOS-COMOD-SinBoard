@@ -230,6 +230,30 @@ void ResetWDG() {
 	 //IWDG->KR = 0x0000AAAAU;
 }
 
+void PrintCurrentState() {
+	#ifdef DEBUG_MODE
+		sprintf(uart_buff,
+
+		#ifdef USE_VREF
+				"V_OUT=%4u, I_OUT=%4u, DC_OUT=%4u, VREF=%4u, Amp1=%03d,  Amp2=%03d,  Amp3=%03d,  Amp4=%03d \r\n",
+		#endif
+
+		#ifndef USE_VREF
+				"V_OUT=%4u, I_OUT=%4u, DC_OUT=%4u, Amp1=%03d,  Amp2=%03d,  Amp3=%03d,  Amp4=%03d \r\n",
+		#endif
+	      		  				(uint16_t) ADC_Data[0],
+								(uint16_t) ADC_Data[1],
+								(uint16_t) ADC_Data[2],
+								#ifdef USE_VREF
+								(uint16_t) (VDDA_Actual),
+								#endif
+	      		  				(uint16_t) (100*Sine_Amplitude_1),
+	      		  				(uint16_t) (100*Sine_Amplitude_2),
+								(uint16_t) (100*Sine_Amplitude_3),
+								(uint16_t) (100*Sine_Amplitude_4));
+	#endif
+}
+
 // MATH
 
 

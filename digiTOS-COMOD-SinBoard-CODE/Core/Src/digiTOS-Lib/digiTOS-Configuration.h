@@ -25,9 +25,12 @@
 #define TM_ID_GetUnique16(x) ((x >= 0 && x < 6) ? (*(__IO uint16_t *) (ID_UNIQUE_ADDRESS + 2 * (x))) : 0)
 #define TM_ID_GetUnique32(x) ((x >= 0 && x < 3) ? (*(__IO uint32_t *) (ID_UNIQUE_ADDRESS + 4 * (x))) : 0)
 
+#define VREFINT_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7BA))
 
 
 // ************** ÃËÎÁÀËÜÍÛÅ ÍÀÑÒÐÎÉÊÈ ÏÐÎÅÊÒÀ - digiTOS ************** //
+#define DEBUG_MODE // if TRUE then in UART print text state
+
 #define sBoot_Delay 100   						// LEDs Blink at boot mode (startup)
 #define sAC_AC_Delay 1000						// NOP
 #define sAC_INV_Delay 1000						// NOP
@@ -40,14 +43,42 @@
 
 
 // ************** ADC SECTION ************** //
-#define ADC_ChannelCnt 3
+//#define USE_VREF // NEED to ADC Vref
+
+#ifdef USE_VREF
+//#define USE_VREF_FOR_ADC_CORRECTION // ONLY if USE_VREF=TRUE !!!
+
+#define ADC_ChannelCnt 4
 // Channel0=		V_OUT				PA1
 // Channel1=		C_OUT				PA2
 // Channel2=		DC_FEEDBACK			PA5
 // Channel3=		VREF_INT
+#endif
+
+#ifndef USE_VREF
+#define ADC_ChannelCnt 3
+// Channel0=		V_OUT				PA1
+// Channel1=		C_OUT				PA2
+// Channel2=		DC_FEEDBACK			PA5
+#endif
 
 extern volatile uint16_t ADC_Data[ADC_ChannelCnt]; // ADC DMA's collected data
 extern volatile uint32_t ADC_Cnt[ADC_ChannelCnt];  // count of collected data to calculate average
+
+extern volatile uint32_t V_1;  // Data for Slice 1 of Sinus form
+extern volatile uint32_t V_2;  // Data for Slice 2 of Sinus form
+extern volatile uint32_t V_3;  // Data for Slice 3 of Sinus form
+extern volatile uint32_t V_4;  // Data for Slice 4 of Sinus form
+
+#ifndef USE_VREF
+	extern volatile uint32_t V_Cnt[]; // Counts of Slices
+#endif
+
+#ifdef USE_VREF
+	extern uint32_t VDDA_Actual;
+	extern volatile uint32_t V_5;  // VREF Data
+	extern volatile uint32_t V_Cnt[5]; // Counts of Slices
+#endif
 
 
 
@@ -57,12 +88,6 @@ extern volatile uint32_t ADC_Cnt[ADC_ChannelCnt];  // count of collected data to
 
 
 // ************** V_OUT SECTION ************** //
-extern volatile uint32_t V_1;  // Data for Slice 1 of Sinus form
-extern volatile uint32_t V_2;  // Data for Slice 2 of Sinus form
-extern volatile uint32_t V_3;  // Data for Slice 3 of Sinus form
-extern volatile uint32_t V_4;  // Data for Slice 4 of Sinus form
-extern volatile uint32_t V_Cnt[4]; // Counts of Slices
-
 #define Linear_V_Out  // V_Out liner from 0V...3.3V
 //#define Sinus_V_Out // V_out sinus form, 4 step
 
