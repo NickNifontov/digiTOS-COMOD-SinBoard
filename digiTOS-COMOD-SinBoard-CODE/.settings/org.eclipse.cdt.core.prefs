@@ -1,4 +1,11 @@
 eclipse.preferences.version=1
+environment/project/com.atollic.truestudio.exe.debug.1518366166/append=true
+environment/project/com.atollic.truestudio.exe.debug.1518366166/appendContributed=true
+environment/project/com.atollic.truestudio.exe.release.1518366166/CMSIS/delimiter=;
+environment/project/com.atollic.truestudio.exe.release.1518366166/CMSIS/operation=append
+environment/project/com.atollic.truestudio.exe.release.1518366166/CMSIS/value=
+environment/project/com.atollic.truestudio.exe.release.1518366166/append=true
+environment/project/com.atollic.truestudio.exe.release.1518366166/appendContributed=true
 indexer/indexAllFiles=false
 indexer/indexAllHeaderVersions=false
 indexer/indexAllVersionsSpecificHeaders=
