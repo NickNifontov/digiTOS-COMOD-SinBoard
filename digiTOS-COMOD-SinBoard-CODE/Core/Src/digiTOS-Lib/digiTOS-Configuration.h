@@ -113,6 +113,20 @@ extern volatile uint32_t V_2;  // Data for Slice 2 of Sinus form
 extern volatile uint32_t V_3;  // Data for Slice 3 of Sinus form
 extern volatile uint32_t V_4;  // Data for Slice 4 of Sinus form
 
+extern volatile uint32_t V_Out;
+extern volatile uint32_t V_Out_Cnt;
+extern volatile uint64_t V_Out_RawData;
+
+//#define Detect_ZeroV_Point //Sinus form !!!!!
+#define OFF_Detect_ZeroV_Point //Sinus form or log or linear
+
+#ifdef Detect_ZeroV_Point
+	#define StartVZeroPoint 2048 //V Sinus position from center or from 0
+	#define StartVZeroPointFlag 9999// Flag to update ZeroPoint Data
+	extern volatile uint32_t ZeroV_point;
+#endif
+extern volatile float V_RATIO;
+
 #ifndef USE_VREF
 	extern volatile uint32_t V_Cnt[]; // Counts of Slices
 #endif

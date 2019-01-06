@@ -32,6 +32,20 @@ volatile uint32_t V_2=V2_etalon;
 volatile uint32_t V_3=V3_etalon;
 volatile uint32_t V_4=V4_etalon;
 
+volatile uint32_t V_Out=0;
+volatile uint32_t V_Out_Cnt=1;
+volatile uint64_t V_Out_RawData=0;
+
+#ifdef Detect_ZeroV_Point
+	volatile uint32_t ZeroV_point=StartVZeroPoint;
+	volatile float V_RATIO=1;
+#endif
+
+#ifndef Detect_ZeroV_Point
+	volatile float V_RATIO=(132*(3.3/4096));
+#endif
+
+
 #ifdef USE_VREF
 	volatile uint32_t V_5=1500; // VREF
 	uint32_t VDDA_Actual;

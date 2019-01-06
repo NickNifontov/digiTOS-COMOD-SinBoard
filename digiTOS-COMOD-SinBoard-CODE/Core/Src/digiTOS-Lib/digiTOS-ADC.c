@@ -7,6 +7,10 @@
 
 #include "digiTOS-ADC.h"
 
+#ifdef Detect_ZeroV_Point
+uint32_t TempVal=0;
+#endif
+
 // ************** ADC SECTION ************** //
 //uint32_t adc_cnt1=0;
 
@@ -63,6 +67,9 @@ void ResetV_data() {
 	 V_Cnt[1]=1;
 	 V_Cnt[2]=1;
 	 V_Cnt[3]=1;
+
+	 V_Out_Cnt=1;
+	 V_Out_RawData=0;
 
 	#ifdef USE_VREF
 	 V_Cnt[4]=1;
@@ -126,7 +133,46 @@ float CalcNewAmpByStep(float CurrAmp, float TargetAmp) {
 }
 #endif
 
+uint16_t asqrt(uint32_t x) {
+  /*      From http://medialab.freaknet.org/martin/src/sqrt/sqrt.c
+   *	Logically, these are unsigned. We need the sign bit to test
+   *	whether (op - res - one) underflowed.
+   */
+  int32_t op, res, one;
+
+  op = x;
+  res = 0;
+
+  /* "one" starts at the highest power of four <= than the argument. */
+
+  one = 1 << 30;	/* second-to-top bit set */
+  while (one > op) one >>= 2;
+
+  while (one != 0) {
+    if (op >= res + one) {
+      op = op - (res + one);
+      res = res +  2 * one;
+    }
+    res /= 2;
+    one /= 4;
+  }
+  return (uint16_t) (res);
+}
+
+
+void CalcAc_V_ByWave() {
+	// calc AC data for one wave form'
+	#ifdef Detect_ZeroV_Point
+		ZeroV_point=ADC_Data[0]; // Store last value of V_out via zero point
+	#endif
+	V_Out = (uint32_t) (V_Out_RawData / V_Out_Cnt);
+	V_Out = asqrt(V_Out);
+	V_Out = (uint32_t) (V_RATIO * V_Out);
+}
+
 void UpdateAmplitudeByV() {
+	CalcAc_V_ByWave();
+
 	#ifdef USE_VREF
 		V_5=(uint32_t) (V_5/V_Cnt[4]);
 		VDDA_Actual=(3300*(*VREFINT_CAL_ADDR))/V_5;
@@ -200,6 +246,22 @@ void CheckV_Feedback() {
 		#ifdef DC_PROTECTION
 			 DC_Data=DC_Data+ADC_Data[2];
 			 DC_DataCnt=DC_DataCnt+1;
+		#endif
+
+
+	    //Calc V_out data AC coltage
+		V_Out_Cnt++;
+		#ifdef Detect_ZeroV_Point
+			if (ZeroV_point==StartVZeroPointFlag) {
+				ZeroV_point=ADC_Data[0];
+			} else {
+				TempVal=ADC_Data[0]-ZeroV_point;
+				V_Out_RawData=V_Out_RawData+TempVal*TempVal;
+			}
+		#endif
+
+		#ifndef Detect_ZeroV_Point
+			V_Out_RawData=V_Out_RawData+ADC_Data[0]*ADC_Data[0];
 		#endif
 
 		if (sin_step>Sin_Amp_ind[2]) {

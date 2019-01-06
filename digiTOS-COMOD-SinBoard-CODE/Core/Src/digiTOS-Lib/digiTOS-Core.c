@@ -240,13 +240,14 @@ void PrintCurrentState() {
 		sprintf(uart_buff,
 
 		#ifdef USE_VREF
-				"V=%4u, I=%4u, DC=%4u, Vcc=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, AMP_F=%01d, F=%01d, DC_F=%01d \r\n",
+				"V=%4u v, I=%4u, DC=%4u, Vcc=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, AMP_F=%01d, F=%01d, DC_F=%01d \r\n",
 		#endif
 
 		#ifndef USE_VREF
-				"V=%4u, I=%4u, DC=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, AMP_F=%01d, F=%01d, DC_F=%01d \r\n",
+				"V=%4u v, I=%4u, DC=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, AMP_F=%01d, F=%01d, DC_F=%01d \r\n",
 		#endif
-	      		  				(uint16_t) ADC_Data[0],
+								(uint16_t) V_Out,
+								//(uint16_t) ADC_Data[0],
 								(uint16_t) ADC_Data[1],
 								(uint16_t) ADC_Data[2],
 								#ifdef USE_VREF
