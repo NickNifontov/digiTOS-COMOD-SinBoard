@@ -234,20 +234,25 @@ void UpdateAmplitudeByV() {
 			 }
 	#endif
 
+	#ifdef VOUT_PROTECTION
+		if ((VOUT_BLOCKED==0) && ((V_Out>=VOUT_PROTECTION_MAX) || (V_Out<=VOUT_PROTECTION_MIN))) {
+				VOUT_PROTECTION_CNT++;
+				if (VOUT_PROTECTION_CNT>VOUT_PROTECTION_MINMAX_CNT) {
+					VOUT_BLOCKED=1;
+				}
+		}
+		if ((VOUT_BLOCKED==0) && (V_Out>=VOUT_PROTECTION_ULTRA) ) {
+						VOUT_PROTECTION_CNT++;
+						if (VOUT_PROTECTION_CNT>VOUT_PROTECTION_MOMENTARY_CNT) {
+							VOUT_BLOCKED=1;
+						}
+				}
+	#endif
+
 	ResetV_data();
 }
 
 void CheckV_Feedback() {
-		#ifdef USE_VREF
-			V_5=V_5+ADC_Data[3];
-			V_Cnt[4]= V_Cnt[4]+1;
-		#endif
-
-		#ifdef DC_PROTECTION
-			 DC_Data=DC_Data+ADC_Data[2];
-			 DC_DataCnt=DC_DataCnt+1;
-		#endif
-
 
 	    //Calc V_out data AC coltage
 		V_Out_Cnt++;
@@ -263,6 +268,18 @@ void CheckV_Feedback() {
 		#ifndef Detect_ZeroV_Point
 			V_Out_RawData=V_Out_RawData+ADC_Data[0]*ADC_Data[0];
 		#endif
+
+		//
+		#ifdef USE_VREF
+			V_5=V_5+ADC_Data[3];
+			V_Cnt[4]= V_Cnt[4]+1;
+		#endif
+
+		#ifdef DC_PROTECTION
+			 DC_Data=DC_Data+ADC_Data[2];
+			 DC_DataCnt=DC_DataCnt+1;
+		#endif
+
 
 		if (sin_step>Sin_Amp_ind[2]) {
 			V_4=V_4+ADC_Data[0];

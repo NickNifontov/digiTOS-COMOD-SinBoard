@@ -17,4 +17,8 @@
 uint16_t GetSinus();
 void ResetAmplitude(); // call only at Generator start
 
+#ifdef AMP_CORRECTION_TYPE_STEP
+void SetSoftstart();
+#endif
+
 #endif /* SRC_DIGITOS_LIB_DIGITOS_SINUS_H_ */

@@ -237,14 +237,21 @@ void PrintCurrentState() {
 
 	#ifdef DEBUG_MODE
 		ClearUART_Buff();
+		if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1)) {
+			//V_Out_RawData=ADC_Data[0]*ADC_Data[0];
+			//V_Out_Cnt=1;
+			CalcAc_V_ByWave();
+			ResetV_data();
+		}
+
 		sprintf(uart_buff,
 
 		#ifdef USE_VREF
-				"V=%4u v, I=%4u, DC=%4u, Vcc=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, AMP_F=%01d, F=%01d, DC_F=%01d \r\n",
+				"V=%4u v, I=%4u, DC=%4u, Vcc=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, A_F=%01d, F=%01d, DC_F=%01d, V_F=%01d \r\n",
 		#endif
 
 		#ifndef USE_VREF
-				"V=%4u v, I=%4u, DC=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, AMP_F=%01d, F=%01d, DC_F=%01d \r\n",
+				"V=%4u v, I=%4u, DC=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, A_F=%01d, F=%01d, DC_F=%01d, V_F=%01d \r\n",
 		#endif
 								(uint16_t) V_Out,
 								//(uint16_t) ADC_Data[0],
@@ -259,7 +266,8 @@ void PrintCurrentState() {
 								(uint16_t) (100*Sine_Amplitude_4),
 								AMP_BLOCKED,
 								(uint16_t) (BoardStatus==sFaultFlag),
-								DC_BLOCKED);
+								DC_BLOCKED,
+								VOUT_BLOCKED);
 		SerialPrintln(0);
 	#endif
 }

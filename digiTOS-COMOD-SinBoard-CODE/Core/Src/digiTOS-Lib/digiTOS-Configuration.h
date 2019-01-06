@@ -10,6 +10,54 @@
 
 #include "stm32f0xx_hal.h"
 
+
+
+
+
+// ************** GLOBAL SETTINGS - digiTOS ************** //
+#define DEBUG_MODE // if TRUE then in UART print text state
+
+
+#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+//#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+
+
+#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+//#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+// Stop and then restart after DelaySecBeforeStartAfterDCProtection
+
+
+#define AMP_PROTECTION // protection if MAX/MIN AMP detected
+//#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
+// Stop and then restart after DelaySecBeforeStartAfterAmpProtection
+
+
+//#define AMP_CORRECTION_TYPE_IMMIDIATLY // Correct sinus amplitude immediately at next step of generation
+#define AMP_CORRECTION_TYPE_STEP // Correct sinus at step algorithms to prevent flicks and realize softstar algorithms
+
+#define USE_SOFT_START // Enable softstart of sinus generator. Activated ONLY if AMP_CORRECTION_TYPE_STEP=TRUE
+
+
+#define Linear_V_Out  // V_Out liner from 0V...3.3V
+//#define Sinus_V_Out // V_out sinus form, 4 step
+
+
+//#define USE_VREF // NEED to ADC Vref
+#define OFF_USE_VREF
+
+//*********************************************************************//
+
+
+
+
+
+
+
+
+
+
+
+
 // ************** CPU Info ************** //
 #define ID_UNIQUE_ADDRESS 0x1FFFF7AC
 //#define ID_PACKAGE_ADDRESS 0x1FFF7BF0
@@ -27,11 +75,7 @@
 #define VREFINT_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7BA))
 
 
-// ************** ÃËÎÁÀËÜÍÛÅ ÍÀÑÒÐÎÉÊÈ ÏÐÎÅÊÒÀ - digiTOS ************** //
-#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
-//#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
-// Stop and then restart after DelaySecBeforeStartAfterDCProtection
-
+// ************** MAIN DEF - digiTOS ************** //
 #ifdef DC_PROTECTION
 	#define DC_PROTECTION_MAX (uint32_t) (3500)
 	#define DC_PROTECTION_ROLLBACK (uint32_t) (2500) // gisteresis to roll-back at normal state
@@ -52,9 +96,24 @@
 #endif
 
 
-#define AMP_PROTECTION // protection if MAX/MIN AMP detected
-//#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
-// Stop and then restart after DelaySecBeforeStartAfterAmpProtection
+
+#ifdef VOUT_PROTECTION
+	#define VOUT_PROTECTION_MINMAX_CNT 			500 //5sec
+	#define VOUT_PROTECTION_MOMENTARY_CNT 		2 //2 wave and then block
+	#define VOUT_PROTECTION_ULTRA 				380 // Monentary
+	#define VOUT_PROTECTION_MAX 				300 //350V
+	#define VOUT_PROTECTION_MIN 				100 //100V
+	extern int VOUT_PROTECTION_CNT;
+	extern int VOUT_PROTECTION_CNT_BEFORESTART;
+	#define DelaySecBeforeStartAfterVOUTProtection 30
+	extern int VOUT_BLOCKED;
+#endif
+
+#ifndef VOUT_PROTECTION
+	VOUT_BLOCKED 0
+#endif
+
+
 
 #ifdef AMP_PROTECTION
 	#define AMP_PROTECTION_MINMAX_CNT 2000 //10sec
@@ -72,8 +131,6 @@
 	#define AMP_BLOCKED 0
 #endif
 
-#define DEBUG_MODE // if TRUE then in UART print text state
-
 #define sBoot_Delay 100   						// LEDs Blink at boot mode (startup)
 #define sAC_AC_Delay 1000						// NOP
 #define sAC_INV_Delay 1000						// NOP
@@ -86,8 +143,6 @@
 
 
 // ************** ADC SECTION ************** //
-//#define USE_VREF // NEED to ADC Vref
-
 #ifdef USE_VREF
 //#define USE_VREF_FOR_ADC_CORRECTION // ONLY if USE_VREF=TRUE !!!
 
@@ -145,9 +200,6 @@ extern volatile float V_RATIO;
 
 
 // ************** V_OUT SECTION ************** //
-#define Linear_V_Out  // V_Out liner from 0V...3.3V
-//#define Sinus_V_Out // V_out sinus form, 4 step
-
 #ifdef Sinus_V_Out
 	#define V1_etalon 190
 	#define V2_etalon 549
@@ -168,17 +220,12 @@ extern volatile float V_RATIO;
 #define Amp_CoefPlus (float) ((Amp_max-1)/2048) // coef for correction sinus if V_out>Etalon
 #define Amp_CoefMinus (float) ((1-Amp_min)/2048) // coef for correction sinus if V_out<Etalon
 
-//#define AMP_CORRECTION_TYPE_IMMIDIATLY // Correct sinus amplitude immediately at next step of generation
-#define AMP_CORRECTION_TYPE_STEP // Correct sinus at step algorithms to prevent flicks and realize softstar algorithms
+#ifdef USE_SOFT_START
+	#define SOFT_START_FROM 0.5  // Softstart generate sinus amplitude from SOFT_START_FROM...1.
+#endif
 
 #ifdef AMP_CORRECTION_TYPE_IMMIDIATLY
 //NOP
-#endif
-
-#define USE_SOFT_START // Enable softstart of sinus generator. Activated ONLY if AMP_CORRECTION_TYPE_STEP=TRUE
-
-#ifdef USE_SOFT_START
-	#define SOFT_START_FROM 0.5  // Softstart generate sinus amplitude from SOFT_START_FROM...1.
 #endif
 
 #ifdef AMP_CORRECTION_TYPE_STEP //

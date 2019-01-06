@@ -345,7 +345,7 @@ void TIM14_IRQHandler(void)
 	  //BoardStatus=sGEN;
   }
 
-  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0) && (DC_BLOCKED==0) ) {
+  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0) && (DC_BLOCKED==0) && (VOUT_BLOCKED==0) ) {
 	//#ifndef AMP_PROTECTION
   	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
 	//#endif
@@ -364,7 +364,7 @@ void TIM14_IRQHandler(void)
 
   if (SinWave==swGEN) {
 				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
-						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) ) {
+						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) || (VOUT_BLOCKED==1) ) {
 				//#ifndef AMP_PROTECTION
 			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
 				//#endif
@@ -436,6 +436,19 @@ void TIM16_IRQHandler(void)
       		  			AMP_PROTECTION_CNT_BEFORESTART=0;
       		  			AMP_BLOCKED=0;
       		  			AMP_PROTECTION_CNT=0;
+      		  			SetSoftstart();
+      		  		}
+      		  	  }
+				#endif
+
+				#ifdef VOUT_PROTECTION
+      		  	  if (VOUT_BLOCKED==1) {
+      		  		VOUT_PROTECTION_CNT_BEFORESTART++;
+      		  		if (VOUT_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterVOUTProtection) {
+      		  			VOUT_PROTECTION_CNT_BEFORESTART=0;
+      		  			VOUT_BLOCKED=0;
+      		  			VOUT_PROTECTION_CNT=0;
+      		  			SetSoftstart();
       		  		}
       		  	  }
 				#endif
@@ -448,12 +461,18 @@ void TIM16_IRQHandler(void)
 							DC_PROTECTION_CNT_BEFORESTART=0;
 							DC_BLOCKED=0;
 							DC_PROTECTION_CNT=0;
+							SetSoftstart();
+
 						}
 					  } else {
 						  DC_PROTECTION_CNT_BEFORESTART=0;
 					  }
       		  	  }
 				#endif
+
+      		  	//if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1)) {
+      		  	//	CalcAc_V_ByWave();
+      		  	//}
     		  break;
       	  case sFaultFlag:
       		  	  	PrintCurrentState();

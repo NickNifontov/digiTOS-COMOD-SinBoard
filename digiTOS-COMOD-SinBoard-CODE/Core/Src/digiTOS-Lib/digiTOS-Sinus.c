@@ -7,15 +7,8 @@
 
 #include "digiTOS-Sinus.h"
 
-void ResetAmplitude() {
-	#ifdef AMP_CORRECTION_TYPE_IMMIDIATLY
-		Sine_Amplitude_4=1;
-		Sine_Amplitude_3=1;
-		Sine_Amplitude_2=1;
-		Sine_Amplitude_1=1;
-	#endif
-
-	#ifdef AMP_CORRECTION_TYPE_STEP
+#ifdef AMP_CORRECTION_TYPE_STEP
+void SetSoftstart() {
 		#ifdef USE_SOFT_START
 			Sine_Amplitude_4=SOFT_START_FROM;
 			Sine_Amplitude_3=SOFT_START_FROM;
@@ -29,12 +22,31 @@ void ResetAmplitude() {
 			Sine_Amplitude_2=1;
 			Sine_Amplitude_1=1;
 		#endif
+}
+#endif
+
+void ResetAmplitude() {
+	#ifdef AMP_CORRECTION_TYPE_IMMIDIATLY
+		Sine_Amplitude_4=1;
+		Sine_Amplitude_3=1;
+		Sine_Amplitude_2=1;
+		Sine_Amplitude_1=1;
+	#endif
+
+	#ifdef AMP_CORRECTION_TYPE_STEP
+		SetSoftstart();
 	#endif
 
 	#ifdef AMP_PROTECTION
 			AMP_BLOCKED=0;
 			AMP_PROTECTION_CNT_BEFORESTART=0;
 			AMP_PROTECTION_CNT=0;
+	#endif
+
+	#ifdef VOUT_PROTECTION
+		VOUT_PROTECTION_CNT=0;
+		VOUT_PROTECTION_CNT_BEFORESTART=0;
+		VOUT_BLOCKED=0;
 	#endif
 
 }

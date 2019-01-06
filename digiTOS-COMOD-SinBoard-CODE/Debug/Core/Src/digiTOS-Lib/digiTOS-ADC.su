@@ -6,4 +6,4 @@ digiTOS-ADC.c:116:7:CalcNewAmpByStep	16	static
 digiTOS-ADC.c:136:10:asqrt	8	static
 digiTOS-ADC.c:163:6:CalcAc_V_ByWave	16	static
 digiTOS-ADC.c:173:6:UpdateAmplitudeByV	24	static
-digiTOS-ADC.c:240:6:CheckV_Feedback	16	static
+digiTOS-ADC.c:255:6:CheckV_Feedback	16	static

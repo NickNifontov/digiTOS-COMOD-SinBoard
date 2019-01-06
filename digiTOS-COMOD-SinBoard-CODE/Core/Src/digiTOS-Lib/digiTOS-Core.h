@@ -9,6 +9,7 @@
 #define DIGITOS_CORE_H_
 
 #include "digiTOS-Configuration.h"
+#include "digiTOS-ADC.h"
 #include "usart.h"
 #include <stdio.h>
 #include <string.h>

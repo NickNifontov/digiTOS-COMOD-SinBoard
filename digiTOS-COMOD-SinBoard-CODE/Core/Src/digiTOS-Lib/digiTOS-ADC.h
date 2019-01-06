@@ -22,6 +22,7 @@ void StartADC();
 void ResetV_data();
 void UpdateAmplitudeByV();
 void CheckV_Feedback();
+void CalcAc_V_ByWave();
 //******* AMPLITUDE **********//
 
 
