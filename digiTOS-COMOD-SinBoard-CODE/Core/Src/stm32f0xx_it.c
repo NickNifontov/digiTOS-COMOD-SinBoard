@@ -39,6 +39,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "stm32f030x6.h"
 #include "digiTOS-Lib/digiTOS-Core.h"
 #include "digiTOS-Lib/digiTOS-Generator.h"
 #include "digiTOS-Lib/digiTOS-Sinus.h"
@@ -436,13 +437,17 @@ void TIM16_IRQHandler(void)
 				#endif
 
 				#ifdef DC_PROTECTION
-      		  	  if ((DC_BLOCKED==1) && (DC_DataAverage<DC_PROTECTION_MAX)) {
-      		  		DC_PROTECTION_CNT_BEFORESTART++;
-      		  		if (DC_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterDCProtection) {
-      		  			DC_PROTECTION_CNT_BEFORESTART=0;
-      		  			DC_BLOCKED=0;
-      		  			DC_PROTECTION_CNT=0;
-      		  		}
+      		  	  if (DC_BLOCKED==1) {
+					  if (DC_DataAverage<DC_PROTECTION_ROLLBACK) {
+						DC_PROTECTION_CNT_BEFORESTART++;
+						if (DC_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterDCProtection) {
+							DC_PROTECTION_CNT_BEFORESTART=0;
+							DC_BLOCKED=0;
+							DC_PROTECTION_CNT=0;
+						}
+					  } else {
+						  DC_PROTECTION_CNT_BEFORESTART=0;
+					  }
       		  	  }
 				#endif
     		  break;

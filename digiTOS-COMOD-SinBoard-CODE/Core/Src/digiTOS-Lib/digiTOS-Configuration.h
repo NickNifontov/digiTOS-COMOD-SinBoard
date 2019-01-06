@@ -10,7 +10,6 @@
 
 #include "stm32f0xx_hal.h"
 
-
 // ************** CPU Info ************** //
 #define ID_UNIQUE_ADDRESS 0x1FFFF7AC
 //#define ID_PACKAGE_ADDRESS 0x1FFF7BF0
@@ -30,10 +29,12 @@
 
 // ************** √ÀŒ¡¿À‹Õ€≈ Õ¿—“–Œ… » œ–Œ≈ “¿ - digiTOS ************** //
 //#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
 // Stop and then restart after DelaySecBeforeStartAfterDCProtection
 
 #ifdef DC_PROTECTION
-	#define DC_PROTECTION_MAX (uint32_t) (3000)
+	#define DC_PROTECTION_MAX (uint32_t) (3500)
+	#define DC_PROTECTION_ROLLBACK (uint32_t) (2500) // gisteresis to roll-back at normal state
 
 	#define DC_PROTECTION_WAVE_CNT 2000 //10sec
 
@@ -52,6 +53,7 @@
 
 
 //#define AMP_PROTECTION // protection if MAX/MIN AMP detected
+#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
 // Stop and then restart after DelaySecBeforeStartAfterAmpProtection
 
 #ifdef AMP_PROTECTION

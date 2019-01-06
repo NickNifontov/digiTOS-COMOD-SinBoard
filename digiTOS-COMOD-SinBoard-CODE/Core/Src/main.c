@@ -101,6 +101,13 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+		__HAL_RCC_DBGMCU_CLK_ENABLE();
+	    DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_WWDG_STOP;
+	    DBGMCU->APB2FZ = 0xFFFFFFFF;
+	    DBGMCU->APB1FZ = 0xFFFFFFFF;
+	    DBGMCU->CR |=DBGMCU_CR_DBG_STOP;
+	    __HAL_DBGMCU_FREEZE_IWDG();
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
