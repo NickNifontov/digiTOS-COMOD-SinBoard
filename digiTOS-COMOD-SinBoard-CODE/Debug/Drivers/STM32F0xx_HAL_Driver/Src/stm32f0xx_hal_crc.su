@@ -1,5 +1,5 @@
 stm32f0xx_hal_crc.c:455:17:CRC_Handle_8	16	static
-stm32f0xx_hal_crc.c:498:17:CRC_Handle_16	32	static
+stm32f0xx_hal_crc.c:500:17:CRC_Handle_16	32	static
 stm32f0xx_hal_crc.c:232:13:HAL_CRC_MspInit	0	static
 stm32f0xx_hal_crc.c:119:19:HAL_CRC_Init	16	static
 stm32f0xx_hal_crc.c:247:13:HAL_CRC_MspDeInit	0	static
