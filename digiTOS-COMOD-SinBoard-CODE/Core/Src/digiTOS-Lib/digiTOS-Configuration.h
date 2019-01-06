@@ -28,8 +28,8 @@
 
 
 // ************** √ÀŒ¡¿À‹Õ€≈ Õ¿—“–Œ… » œ–Œ≈ “¿ - digiTOS ************** //
-//#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
-#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+//#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
 // Stop and then restart after DelaySecBeforeStartAfterDCProtection
 
 #ifdef DC_PROTECTION
@@ -52,8 +52,8 @@
 #endif
 
 
-//#define AMP_PROTECTION // protection if MAX/MIN AMP detected
-#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
+#define AMP_PROTECTION // protection if MAX/MIN AMP detected
+//#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
 // Stop and then restart after DelaySecBeforeStartAfterAmpProtection
 
 #ifdef AMP_PROTECTION

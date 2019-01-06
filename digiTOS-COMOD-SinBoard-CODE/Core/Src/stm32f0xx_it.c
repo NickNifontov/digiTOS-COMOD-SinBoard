@@ -283,7 +283,7 @@ void TIM3_IRQHandler(void)
  		TIM3->CCR1=0;
  		//TIM1->CCR3=0;
  		sin_step=0;
- 	      }
+ 	}
 
 	if (SinWave==swNOP) {return;}
 
@@ -291,26 +291,30 @@ void TIM3_IRQHandler(void)
    		SinWave=swGEN;
    	}
 
-  if  ((TIM1->CNT==0) || (TIM1->CNT==500)) {
-	  	  //TIM3->CCR2=0;
-	  	  //TIM3->CCR1=0;
-	  	  sin_step=0;
-	      //UpdateAmplitudeByV();
-	      return;
-  }
+    if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
+      	    sin_step=0;
+      	    TIM3->CCR1=0;
+      	    TIM3->CCR2=0;
+      	   	UpdateAmplitudeByV();
+      	    sin_step=0;
+      	    TIM3->CCR1=0;
+      	    TIM3->CCR2=0;
+      	    //return;
+         }
 
-   if  (TIM1->CNT>=500) { sinStatus=1;}
-   if  (TIM1->CNT<500) { sinStatus=0;}
+   if  (TIM1->CNT>499) { sinStatus=1;} else { sinStatus=0;}
 
    if (sinStatus==0) {
 	   TIM3->CCR2=0;
 	   TIM3->CCR1=GetSinus();
-	   //TIM3->CCR2=0;
    }
    if (sinStatus==1) {
 	   TIM3->CCR1=0;
 	   TIM3->CCR2=GetSinus();
    }
+
+
+
 
   /* USER CODE END TIM3_IRQn 1 */
 }
@@ -365,7 +369,7 @@ void TIM14_IRQHandler(void)
 			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
 				//#endif
 		  SinWave=swNOP;
-		  TIM3->CCR2=0;
+		  	  	TIM3->CCR2=0;
 		   		TIM3->CCR1=0;
 		   		TIM1->CCR3=0;
 		   		sin_step=0;
@@ -375,9 +379,9 @@ void TIM14_IRQHandler(void)
 	  }
   }
 
-  	  	  	  if  (sin_step==0) {
-  	  	  		  	 UpdateAmplitudeByV();
-  	  	  	  }
+  	  	  	  //if  (sin_step==0) {
+  	  	  	  //	 UpdateAmplitudeByV();
+  	  	  	  //}
 
   	  	  	  CheckV_Feedback();
   	  	  	  sin_step++;
