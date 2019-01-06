@@ -73,6 +73,7 @@
 								<option id="com.atollic.truestudio.ld.misc.linkerflags.1948405714" name="Other options" superClass="com.atollic.truestudio.ld.misc.linkerflags" value="" valueType="string"/>
 								<option id="com.atollic.truestudio.common_options.target.fpu.829683864" name="Floating point" superClass="com.atollic.truestudio.common_options.target.fpu" value="com.atollic.truestudio.common_options.target.fpu.soft" valueType="enumerated"/>
 								<option id="com.atollic.truestudio.common_options.target.fpucore.1297069055" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" value="com.atollic.truestudio.common_options.target.fpucore.None" valueType="enumerated"/>
+								<option id="com.atollic.truestudio.ld.general.nostartfiles.394725239" name="Do not use standard start files" superClass="com.atollic.truestudio.ld.general.nostartfiles" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="com.atollic.truestudio.ld.input.1372975870" name="Input" superClass="com.atollic.truestudio.ld.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
