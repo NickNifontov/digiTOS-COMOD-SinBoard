@@ -46,6 +46,7 @@ extern button_struct_t FaultFlag; // button FAULT_FEEDBACK_Pin
 
 extern volatile enum fBoardStatus BoardStatus;
 extern char uart_buff[100];
+//extern char cmd_buff[20];
 extern volatile int huart1_finished_tx;
 extern volatile int DevMode1;
 extern volatile enum fSinWave SinWave;

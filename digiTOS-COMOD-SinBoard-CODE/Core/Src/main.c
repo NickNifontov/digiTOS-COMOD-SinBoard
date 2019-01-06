@@ -142,6 +142,8 @@ int main(void)
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
 
+  //HAL_UART_Receive_DMA(&huart1, (uint8_t*) cmd_buff, sizeof(cmd_buff));
+
   //Init ADC, start DMA
   //and prepare all data
   StartADC();

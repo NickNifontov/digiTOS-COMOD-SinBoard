@@ -13,6 +13,7 @@ volatile int DevMode1=0;
 int EEPROM_FLAG=0;
 
 char uart_buff[100];
+//char cmd_buff[20];
 char crc_buff[20];
 volatile int huart1_finished_tx = 1;
 volatile enum fSinWave SinWave=swStop;
@@ -241,7 +242,23 @@ void PrintCurrentState() {
 		return;
 	}
 	#ifdef DEBUG_MODE
-		ClearUART_Buff();
+	ClearUART_Buff();
+			/*if(hdma_usart1_rx.State==HAL_DMA_STATE_READY)
+	  		{
+	  			//cmd_buff[19]=0;
+	  			if (strncmp(cmd_buff,"calib",4)>=0) {
+	  				strcpy(uart_buff,"SET V_CAL \r\n");
+					float V_CAL=(273066/ADC_Data[0]);
+					float I_CAL=(273066/ADC_Data[1]);
+					StoreEEPROM(V_CAL,I_CAL);
+
+	  			}
+	  			memset(cmd_buff, '\0', sizeof(cmd_buff));
+	  			HAL_UART_Receive_DMA(&huart1, (uint8_t*) cmd_buff, sizeof(cmd_buff));
+	  			hdma_usart1_rx.State=HAL_DMA_STATE_BUSY;
+	  			SerialPrintln(0);
+	  			return;
+	  		}*/
 		if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1) || (IOUT_BLOCKED==1)) {
 			//V_Out_RawData=ADC_Data[0]*ADC_Data[0];
 			//V_Out_Cnt=1;
