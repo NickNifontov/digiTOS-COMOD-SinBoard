@@ -235,11 +235,11 @@ void ResetWDG() {
 	 //IWDG->KR = 0x0000AAAAU;
 }
 
+
 void PrintCurrentState() {
 	if (DevMode1!=1) {
 		return;
 	}
-
 	#ifdef DEBUG_MODE
 		ClearUART_Buff();
 		if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1) || (IOUT_BLOCKED==1)) {
@@ -276,6 +276,7 @@ void PrintCurrentState() {
 								VOUT_BLOCKED,
 								IOUT_BLOCKED);
 		SerialPrintln(0);
+
 	#endif
 }
 
@@ -344,6 +345,7 @@ int InitEEPROM() {
 		return 0;
 	}
 }
+
 
 // MATH
 

@@ -57,7 +57,6 @@ void Get_Version(void);
 void ResetWDG();
 
 void InitUART_RX();
-void CheckCMD();
 
 //void Get_Package(void);
 //void Get_Revision(void);
@@ -66,6 +65,8 @@ void CheckCMD();
 void SerialPrintln(int WaitForTX);
 void ClearUART_Buff();
 void WaitForUART_TX();
+
+void CheckUART_Command();
 
 void PrintCurrentState();
 
