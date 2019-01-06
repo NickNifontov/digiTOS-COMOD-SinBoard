@@ -17,6 +17,8 @@
 // ************** GLOBAL SETTINGS - digiTOS ************** //
 #define DEBUG_MODE // if TRUE then in UART print text state
 
+#define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
+//#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 
 #define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
 //#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
@@ -78,13 +80,13 @@
 // ************** MAIN DEF - digiTOS ************** //
 #ifdef DC_PROTECTION
 	#define DC_PROTECTION_MAX (uint32_t) (3500)
-	#define DC_PROTECTION_ROLLBACK (uint32_t) (2500) // gisteresis to roll-back at normal state
+	#define DC_PROTECTION_ROLLBACK (uint32_t) (3000) // gisteresis to roll-back at normal state
 
-	#define DC_PROTECTION_WAVE_CNT 2000 //10sec
+	#define DC_PROTECTION_WAVE_CNT 1000 //5sec
 
 	extern int DC_PROTECTION_CNT;
 	extern int DC_PROTECTION_CNT_BEFORESTART;
-	#define DelaySecBeforeStartAfterDCProtection 30
+	#define DelaySecBeforeStartAfterDCProtection 10
 	extern volatile uint32_t DC_Data;
 	extern volatile uint32_t DC_DataCnt;
 	extern volatile uint32_t DC_DataAverage;
@@ -94,6 +96,23 @@
 #ifndef DC_PROTECTION
 	#define DC_BLOCKED 0
 #endif
+
+
+#ifdef IOUT_PROTECTION
+	#define IOUT_PROTECTION_MINMAX_CNT 			500 //5sec
+	#define IOUT_PROTECTION_MOMENTARY_CNT 		2 //2 wave and then block
+	#define IOUT_PROTECTION_ULTRA 				9000 // Monentary Watt
+	#define IOUT_PROTECTION_MAX 				5000 //5000 Watt
+	extern int IOUT_PROTECTION_CNT;
+	extern int IOUT_PROTECTION_CNT_BEFORESTART;
+	#define DelaySecBeforeStartAfterIOUTProtection 30
+	extern int IOUT_BLOCKED;
+#endif
+
+#ifndef IOUT_PROTECTION
+	IOUT_BLOCKED 0
+#endif
+
 
 
 
@@ -168,6 +187,25 @@ extern volatile uint32_t V_2;  // Data for Slice 2 of Sinus form
 extern volatile uint32_t V_3;  // Data for Slice 3 of Sinus form
 extern volatile uint32_t V_4;  // Data for Slice 4 of Sinus form
 
+///// I_OUT ///////
+extern volatile uint32_t I_Out;
+extern volatile uint32_t I_Out_Cnt;
+extern volatile uint64_t I_Out_RawData;
+
+//#define Detect_ZeroI_Point //Sinus form !!!!!
+#define OFF_Detect_ZeroI_Point //Sinus form or log or linear
+
+#ifdef Detect_ZeroI_Point
+	#define StartIZeroPoint 2048 //V Sinus position from center or from 0
+	#define StartIZeroPointFlag 9999// Flag to update ZeroPoint Data
+	extern volatile uint32_t ZeroI_point;
+#endif
+extern volatile float I_RATIO;
+//////
+
+
+
+/////// V_OUT ///////
 extern volatile uint32_t V_Out;
 extern volatile uint32_t V_Out_Cnt;
 extern volatile uint64_t V_Out_RawData;
@@ -181,6 +219,7 @@ extern volatile uint64_t V_Out_RawData;
 	extern volatile uint32_t ZeroV_point;
 #endif
 extern volatile float V_RATIO;
+///////
 
 #ifndef USE_VREF
 	extern volatile uint32_t V_Cnt[]; // Counts of Slices

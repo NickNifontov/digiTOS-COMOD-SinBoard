@@ -345,7 +345,8 @@ void TIM14_IRQHandler(void)
 	  //BoardStatus=sGEN;
   }
 
-  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0) && (DC_BLOCKED==0) && (VOUT_BLOCKED==0) ) {
+  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)
+  			  && (DC_BLOCKED==0) && (VOUT_BLOCKED==0)  && (IOUT_BLOCKED==0) && (EEPROM_FLAG==0)) {
 	//#ifndef AMP_PROTECTION
   	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
 	//#endif
@@ -364,7 +365,7 @@ void TIM14_IRQHandler(void)
 
   if (SinWave==swGEN) {
 				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
-						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) || (VOUT_BLOCKED==1) ) {
+						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) || (VOUT_BLOCKED==1)  || (IOUT_BLOCKED==1)) {
 				//#ifndef AMP_PROTECTION
 			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
 				//#endif
@@ -448,6 +449,18 @@ void TIM16_IRQHandler(void)
       		  			VOUT_PROTECTION_CNT_BEFORESTART=0;
       		  			VOUT_BLOCKED=0;
       		  			VOUT_PROTECTION_CNT=0;
+      		  			SetSoftstart();
+      		  		}
+      		  	  }
+				#endif
+
+				#ifdef IOUT_PROTECTION
+      		  	  if (IOUT_BLOCKED==1) {
+      		  		IOUT_PROTECTION_CNT_BEFORESTART++;
+      		  		if (IOUT_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterIOUTProtection) {
+      		  			IOUT_PROTECTION_CNT_BEFORESTART=0;
+      		  			IOUT_BLOCKED=0;
+      		  			IOUT_PROTECTION_CNT=0;
       		  			SetSoftstart();
       		  		}
       		  	  }

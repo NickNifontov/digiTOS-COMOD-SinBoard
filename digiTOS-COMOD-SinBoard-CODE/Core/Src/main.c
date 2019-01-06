@@ -185,7 +185,21 @@ int main(void)
   buttonUpdate(&DevModeKey2);
   buttonUpdate(&FaultFlag);
 
+  // Init EEPROM
+           if (InitEEPROM()==0) {
+         	  strcpy(uart_buff,"NO EEPROM\r\n");
+         	  USE_DEF_CALIB();
+         	  //EEPROM_DATA[0]=250;
+         	  //StoreEEPROM(140,2000);
+         	  SerialPrintln(1);
+           } else {
+        	  USE_NEW_CALIB();
+         	  strcpy(uart_buff,"OK EEPROM\r\n");
+         	  SerialPrintln(1);
+           }
+
   HAL_Delay(500);
+
 
 
   Get_Version();
@@ -247,8 +261,6 @@ int main(void)
 
        HAL_TIM_Base_Start(&htim14);
        HAL_TIM_Base_Start_IT(&htim14);
-
-       // Temp
 
 
     while (1)

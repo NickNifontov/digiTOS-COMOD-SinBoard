@@ -7,7 +7,7 @@
 
 #include "digiTOS-ADC.h"
 
-#ifdef Detect_ZeroV_Point
+#if( defined(Detect_ZeroV_Point) ||  defined(Detect_ZeroI_Point) )
 uint32_t TempVal=0;
 #endif
 
@@ -70,6 +70,9 @@ void ResetV_data() {
 
 	 V_Out_Cnt=1;
 	 V_Out_RawData=0;
+
+	 I_Out_Cnt=1;
+	 I_Out_RawData=0;
 
 	#ifdef USE_VREF
 	 V_Cnt[4]=1;
@@ -160,6 +163,17 @@ uint16_t asqrt(uint32_t x) {
 }
 
 
+void CalcAc_I_ByWave() {
+	// calc AC data for one wave form'
+	#ifdef Detect_ZeroI_Point
+		ZeroI_point=ADC_Data[1]; // Store last value of V_out via zero point
+	#endif
+	I_Out = (uint32_t) (I_Out_RawData / I_Out_Cnt);
+	I_Out = asqrt(I_Out);
+	I_Out = (uint32_t) (I_RATIO * I_Out);
+}
+
+
 void CalcAc_V_ByWave() {
 	// calc AC data for one wave form'
 	#ifdef Detect_ZeroV_Point
@@ -170,8 +184,16 @@ void CalcAc_V_ByWave() {
 	V_Out = (uint32_t) (V_RATIO * V_Out);
 }
 
+void CalcDC_Average() {
+	#ifdef DC_PROTECTION
+		 DC_DataAverage=(DC_Data/DC_DataCnt);
+	#endif
+}
+
 void UpdateAmplitudeByV() {
 	CalcAc_V_ByWave();
+	CalcAc_I_ByWave();
+	CalcDC_Average();
 
 	#ifdef USE_VREF
 		V_5=(uint32_t) (V_5/V_Cnt[4]);
@@ -225,7 +247,6 @@ void UpdateAmplitudeByV() {
 	#endif
 
 	#ifdef DC_PROTECTION
-			 DC_DataAverage=(DC_Data/DC_DataCnt);
 			 if ((DC_BLOCKED==0) && (DC_DataAverage>=DC_PROTECTION_MAX) ) {
 				 DC_PROTECTION_CNT++;
 				 if (DC_PROTECTION_CNT>DC_PROTECTION_WAVE_CNT) {
@@ -249,10 +270,43 @@ void UpdateAmplitudeByV() {
 				}
 	#endif
 
+	#ifdef IOUT_PROTECTION
+		if ((IOUT_BLOCKED==0) && (I_Out>=IOUT_PROTECTION_MAX)) {
+				IOUT_PROTECTION_CNT++;
+				if (IOUT_PROTECTION_CNT>IOUT_PROTECTION_MINMAX_CNT) {
+					IOUT_BLOCKED=1;
+				}
+		}
+		if ((IOUT_BLOCKED==0) && (I_Out>=IOUT_PROTECTION_ULTRA) ) {
+			IOUT_PROTECTION_CNT++;
+						if (IOUT_PROTECTION_CNT>IOUT_PROTECTION_MOMENTARY_CNT) {
+							IOUT_BLOCKED=1;
+						}
+				}
+	#endif
+
 	ResetV_data();
 }
 
 void CheckV_Feedback() {
+
+		///Calc I_out data AC coltage
+			I_Out_Cnt++;
+			#ifdef Detect_ZeroI_Point
+				if (ZeroI_point==StartIZeroPointFlag) {
+					ZeroI_point=ADC_Data[1];
+				} else {
+					TempVal=ADC_Data[1]-ZeroI_point;
+					I_Out_RawData=I_Out_RawData+TempVal*TempVal;
+				}
+			#endif
+
+			#ifndef Detect_ZeroV_Point
+				I_Out_RawData=I_Out_RawData+ADC_Data[1]*ADC_Data[1];
+			#endif
+
+			//
+
 
 	    //Calc V_out data AC coltage
 		V_Out_Cnt++;

@@ -1,0 +1,5 @@
+eeprom.c:45:6:EE_Format	24	static
+eeprom.c:66:6:EE_Read	0	static
+eeprom.c:119:6:EE_Reads	8	static
+eeprom.c:74:6:EE_Write	24	static
+eeprom.c:131:7:EE_Writes	24	static

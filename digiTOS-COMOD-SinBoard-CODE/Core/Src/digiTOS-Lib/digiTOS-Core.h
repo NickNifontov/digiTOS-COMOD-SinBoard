@@ -18,6 +18,22 @@
 
 #include "stm32f0xx_hal_buttons.h"
 
+#include "eeprom.h"
+// EEPROM
+extern int EEPROM_FLAG;
+int InitEEPROM();
+void StoreEEPROM(float V_CAL, float I_CAL);
+#define EEPROM_DATA_SIZE 2
+extern uint32_t EEPROM_DATA[EEPROM_DATA_SIZE];
+extern uint32_t EEPROM_CRC;
+// VCC Calib
+// I Calib
+// CRC
+//
+
+void USE_DEF_CALIB();
+void USE_NEW_CALIB();
+
 extern int FaultWaitCnt;
 extern int RstCnt;
 
@@ -39,6 +55,9 @@ void Get_FlashSize(void);
 void Get_Version(void);
 
 void ResetWDG();
+
+void InitUART_RX();
+void CheckCMD();
 
 //void Get_Package(void);
 //void Get_Revision(void);

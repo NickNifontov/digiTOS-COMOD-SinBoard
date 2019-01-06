@@ -23,6 +23,8 @@ void ResetV_data();
 void UpdateAmplitudeByV();
 void CheckV_Feedback();
 void CalcAc_V_ByWave();
+void CalcAc_I_ByWave();
+void CalcDC_Average();
 //******* AMPLITUDE **********//
 
 

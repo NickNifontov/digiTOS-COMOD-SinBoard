@@ -20,6 +20,12 @@
 	int VOUT_BLOCKED=0;
 #endif
 
+#ifdef IOUT_PROTECTION
+ int IOUT_PROTECTION_CNT=0;
+ int IOUT_PROTECTION_CNT_BEFORESTART=0;
+ int IOUT_BLOCKED=0;
+#endif
+
 #ifdef DC_PROTECTION
 	int DC_PROTECTION_CNT=0;
 	int DC_PROTECTION_CNT_BEFORESTART=0;
@@ -38,6 +44,23 @@ volatile uint32_t V_2=V2_etalon;
 volatile uint32_t V_3=V3_etalon;
 volatile uint32_t V_4=V4_etalon;
 
+// I_OUT
+volatile uint32_t I_Out=0;
+volatile uint32_t I_Out_Cnt=1;
+volatile uint64_t I_Out_RawData=0;
+
+#ifdef Detect_ZeroI_Point
+	volatile uint32_t ZeroI_point=StartIZeroPoint;
+	volatile float I_RATIO=1;
+#endif
+
+#ifndef Detect_ZeroI_Point
+	volatile float I_RATIO=(3636*(3.3/4096));
+#endif
+//
+
+
+// V_OUT
 volatile uint32_t V_Out=0;
 volatile uint32_t V_Out_Cnt=1;
 volatile uint64_t V_Out_RawData=0;
@@ -50,6 +73,7 @@ volatile uint64_t V_Out_RawData=0;
 #ifndef Detect_ZeroV_Point
 	volatile float V_RATIO=(132*(3.3/4096));
 #endif
+//
 
 
 #ifdef USE_VREF

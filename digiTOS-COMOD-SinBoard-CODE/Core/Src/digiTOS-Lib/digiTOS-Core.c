@@ -10,12 +10,17 @@
 volatile enum fBoardStatus BoardStatus=sBoot;
 volatile int DevMode1=0;
 
+int EEPROM_FLAG=0;
+
 char uart_buff[100];
 char crc_buff[20];
 volatile int huart1_finished_tx = 1;
 volatile enum fSinWave SinWave=swStop;
 int FaultWaitCnt=0;
 int RstCnt=0;
+
+uint32_t EEPROM_DATA[EEPROM_DATA_SIZE]={0,0};
+uint32_t EEPROM_CRC=0;
 
 button_struct_t DevModeKey; // button DEV_MODE1
 button_struct_t DevModeKey2; // button DEV_MODE2
@@ -237,25 +242,26 @@ void PrintCurrentState() {
 
 	#ifdef DEBUG_MODE
 		ClearUART_Buff();
-		if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1)) {
+		if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1) || (IOUT_BLOCKED==1)) {
 			//V_Out_RawData=ADC_Data[0]*ADC_Data[0];
 			//V_Out_Cnt=1;
 			CalcAc_V_ByWave();
+			CalcAc_I_ByWave();
+			CalcDC_Average();
 			ResetV_data();
 		}
 
 		sprintf(uart_buff,
 
 		#ifdef USE_VREF
-				"V=%4u v, I=%4u, DC=%4u, Vcc=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, A_F=%01d, F=%01d, DC_F=%01d, V_F=%01d \r\n",
+				"V=%4u v, I=%4u W, DC=%4u, Vcc=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, A_F=%01d, F=%01d, DC_F=%01d, V_F=%01d, I_F=%01d \r\n",
 		#endif
 
 		#ifndef USE_VREF
-				"V=%4u v, I=%4u, DC=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, A_F=%01d, F=%01d, DC_F=%01d, V_F=%01d \r\n",
+				"V=%4u v, I=%4u W, DC=%4u, A1=%03d,  A2=%03d,  A3=%03d,  A4=%03d, A_F=%01d, F=%01d, DC_F=%01d, V_F=%01d, I_F=%01d \r\n",
 		#endif
 								(uint16_t) V_Out,
-								//(uint16_t) ADC_Data[0],
-								(uint16_t) ADC_Data[1],
+								(uint16_t) I_Out,
 								(uint16_t) ADC_Data[2],
 								#ifdef USE_VREF
 								(uint16_t) (VDDA_Actual),
@@ -267,9 +273,76 @@ void PrintCurrentState() {
 								AMP_BLOCKED,
 								(uint16_t) (BoardStatus==sFaultFlag),
 								DC_BLOCKED,
-								VOUT_BLOCKED);
+								VOUT_BLOCKED,
+								IOUT_BLOCKED);
 		SerialPrintln(0);
 	#endif
+}
+
+// EEPROM
+void ResetEEPROM() {
+	EEPROM_DATA[0]=0;
+	EEPROM_DATA[1]=0;
+	EEPROM_CRC=0;
+}
+
+void CALC_RATIO() {
+	float fVal=0;
+	memcpy(&fVal, &EEPROM_DATA[1],sizeof(fVal));
+	I_RATIO=(fVal*(3.3/4096));
+	memcpy(&fVal, &EEPROM_DATA[0],sizeof(fVal));
+	V_RATIO=(fVal*(3.3/4096));
+}
+
+
+void USE_DEF_CALIB() {
+	float fVal=132;
+	memcpy(&EEPROM_DATA[0], &fVal,sizeof(uint32_t));
+
+	fVal=3636;
+	memcpy(&EEPROM_DATA[1], &fVal,sizeof(uint32_t));
+	CALC_RATIO();
+}
+
+void USE_NEW_CALIB() {
+	if (EEPROM_CRC==0) {
+		USE_DEF_CALIB();
+		return;
+	}
+	CALC_RATIO();
+}
+
+void StoreEEPROM(float V_CAL, float I_CAL) {
+	EEPROM_FLAG=1;
+	//
+	memcpy(&EEPROM_DATA[0], &V_CAL,sizeof(uint32_t));
+	memcpy(&EEPROM_DATA[1], &I_CAL,sizeof(uint32_t));
+	EEPROM_CRC=TM_CRC_Calculate32((uint32_t *) &EEPROM_DATA, sizeof(EEPROM_DATA), 1);
+	EE_Write(0,EEPROM_CRC);
+	EE_Write(1,EEPROM_DATA[0]);
+	EE_Write(2,EEPROM_DATA[1]);
+	//
+	EEPROM_FLAG=0;
+}
+
+int InitEEPROM() {
+	EEPROM_FLAG=1;
+	//
+
+	ResetEEPROM();
+	EE_Read(0,&EEPROM_CRC);
+	EE_Read(1,&EEPROM_DATA[0]);
+	EE_Read(2,&EEPROM_DATA[1]);
+
+	uint32_t EEPROM_CRC_tmp=TM_CRC_Calculate32((uint32_t *) &EEPROM_DATA, sizeof(EEPROM_DATA), 1);
+	EEPROM_FLAG=0;
+
+	if (EEPROM_CRC_tmp==EEPROM_CRC) {
+		return 1;
+	} else {
+		ResetEEPROM();
+		return 0;
+	}
 }
 
 // MATH
