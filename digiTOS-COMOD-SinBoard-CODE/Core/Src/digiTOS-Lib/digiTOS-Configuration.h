@@ -15,7 +15,7 @@
 
 
 // ************** GLOBAL SETTINGS - digiTOS ************** //
-#define VOLTAGE_ETALONE 	220 // etalone for calibartion in Volts
+#define VOLTAGE_ETALONE 	230 // etalone for calibartion in Volts
 #define POWER_ETALONE 	1000 // etalone for calibartion in Watts
 
 #define DEBUG_MODE // if TRUE then in UART print text state
