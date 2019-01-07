@@ -180,28 +180,34 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   ResetWDG();
 
+  buttonInit(&CALIB_V, CALIBV_GPIO_Port, CALIBV_Pin, GPIO_PIN_RESET, 4000, 10000);
+  buttonInit(&CALIB_I, CALIBI_GPIO_Port, CALIBI_Pin, GPIO_PIN_RESET, 4000, 10000);
+  buttonInit(&CALIB_MODE, CALIBMODE_GPIO_Port, CALIBMODE_Pin, GPIO_PIN_RESET, 30, 2000);
+
   buttonInit(&DevModeKey, DEV_MODE1_GPIO_Port, DEV_MODE1_Pin, GPIO_PIN_RESET, 30, 2000);
   buttonInit(&DevModeKey2, DEV_MODE2_GPIO_Port, DEV_MODE2_Pin, GPIO_PIN_RESET, 30, 1000);
   buttonInit(&FaultFlag, FAULT_FEEDBACK_GPIO_Port, FAULT_FEEDBACK_Pin, GPIO_PIN_RESET, 30, 1000);
   buttonUpdate(&DevModeKey);
   buttonUpdate(&DevModeKey2);
   buttonUpdate(&FaultFlag);
-
-  // Init EEPROM
-           if (InitEEPROM()==0) {
-         	  strcpy(uart_buff,"NO EEPROM\r\n");
-         	  USE_DEF_CALIB();
-         	  //EEPROM_DATA[0]=250;
-         	  //StoreEEPROM(140,2000);
-         	  SerialPrintln(1);
-           } else {
-        	  USE_NEW_CALIB();
-         	  strcpy(uart_buff,"OK EEPROM\r\n");
-         	  SerialPrintln(1);
-           }
+  buttonUpdate(&CALIB_V);
+  buttonUpdate(&CALIB_I);
+  buttonUpdate(&CALIB_MODE);
 
   HAL_Delay(500);
 
+  // Init EEPROM
+             if (InitEEPROM()==0) {
+           	  strcpy(uart_buff,"NO EEPROM\r\n");
+           	  USE_DEF_CALIB();
+           	  //EEPROM_DATA[0]=250;
+           	  //StoreEEPROM(132,3636);
+           	  SerialPrintln(1);
+             } else {
+          	  USE_NEW_CALIB();
+           	  strcpy(uart_buff,"OK EEPROM\r\n");
+           	  SerialPrintln(1);
+             }
 
 
   Get_Version();
@@ -216,6 +222,15 @@ int main(void)
 
 
   ClearUART_Buff();
+
+  // Check for Calib Mode
+  if(buttonUpdate(&CALIB_MODE) == isPressed){
+	  strcpy(uart_buff,"CALIB MODE ENABLED\r\n");
+	  SerialPrintln(1);
+	  CalibMode=1;
+  } else {
+	  CalibMode=0;
+  }
 
   buttonUpdate(&FaultFlag);
   if(buttonUpdate(&DevModeKey) == isPressed){

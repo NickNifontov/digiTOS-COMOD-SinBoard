@@ -9,8 +9,10 @@
 
 volatile enum fBoardStatus BoardStatus=sBoot;
 volatile int DevMode1=0;
+volatile int CalibMode=0;
 
 int EEPROM_FLAG=0;
+uint16_t EEPROMStoredCnt=EEPROMDelayBeforeNewStore;
 
 char uart_buff[100];
 //char cmd_buff[20];
@@ -26,6 +28,10 @@ uint32_t EEPROM_CRC=0;
 button_struct_t DevModeKey; // button DEV_MODE1
 button_struct_t DevModeKey2; // button DEV_MODE2
 button_struct_t FaultFlag; // button FAULT_FEEDBACK_Pin
+button_struct_t CALIB_V; // button CALIB V_OUT
+button_struct_t CALIB_I; // button CALIB I_OUT
+
+button_struct_t CALIB_MODE; // button CALIB CALIB_MODE
 
 
 uint32_t TM_CRC_Calculate8(uint8_t* arr, uint32_t count, uint8_t reset) {
@@ -305,20 +311,25 @@ void ResetEEPROM() {
 }
 
 void CALC_RATIO() {
-	float fVal=0;
+	/*float fVal=0;
 	memcpy(&fVal, &EEPROM_DATA[1],sizeof(fVal));
 	I_RATIO=(fVal*(3.3/4096));
 	memcpy(&fVal, &EEPROM_DATA[0],sizeof(fVal));
-	V_RATIO=(fVal*(3.3/4096));
+	V_RATIO=(fVal*(3.3/4096));*/
+
+	I_RATIO=(EEPROM_DATA[1]*IV_RATIO);
+	V_RATIO=(EEPROM_DATA[0]*IV_RATIO);
 }
 
 
 void USE_DEF_CALIB() {
-	float fVal=132;
-	memcpy(&EEPROM_DATA[0], &fVal,sizeof(uint32_t));
+	//float fVal=132;
+	//memcpy(&EEPROM_DATA[0], &fVal,sizeof(uint32_t));
 
-	fVal=3636;
-	memcpy(&EEPROM_DATA[1], &fVal,sizeof(uint32_t));
+	//fVal=3636;
+	//memcpy(&EEPROM_DATA[1], &fVal,sizeof(uint32_t));
+	EEPROM_DATA[0]=132;
+	EEPROM_DATA[1]=3636;
 	CALC_RATIO();
 }
 
@@ -330,11 +341,14 @@ void USE_NEW_CALIB() {
 	CALC_RATIO();
 }
 
-void StoreEEPROM(float V_CAL, float I_CAL) {
+//void StoreEEPROM(float V_CAL, float I_CAL) {
+void StoreEEPROM(uint32_t V_CAL, uint32_t I_CAL) {
 	EEPROM_FLAG=1;
 	//
-	memcpy(&EEPROM_DATA[0], &V_CAL,sizeof(uint32_t));
-	memcpy(&EEPROM_DATA[1], &I_CAL,sizeof(uint32_t));
+	//memcpy(&EEPROM_DATA[0], &V_CAL,sizeof(uint32_t));
+	//memcpy(&EEPROM_DATA[1], &I_CAL,sizeof(uint32_t));
+	EEPROM_DATA[0]=V_CAL;
+	EEPROM_DATA[1]=I_CAL;
 	EEPROM_CRC=TM_CRC_Calculate32((uint32_t *) &EEPROM_DATA, sizeof(EEPROM_DATA), 1);
 	EE_Write(0,EEPROM_CRC);
 	EE_Write(1,EEPROM_DATA[0]);
@@ -361,6 +375,53 @@ int InitEEPROM() {
 		ResetEEPROM();
 		return 0;
 	}
+}
+
+//Calibration code
+void CalibSave() {
+						EEPROMStoredCnt=0;
+		      			USE_NEW_CALIB();
+		      			StoreEEPROM(EEPROM_DATA[0],EEPROM_DATA[1]);
+		      			strcpy(uart_buff,"CALIB DONE!\r\n");
+		      			SerialPrintln(0);
+		      		//}
+}
+
+int CalibCmdCheck() {
+				button_state_t ICAL_FLAG=buttonUpdate(&CALIB_I);
+				button_state_t VCAL_FLAG=buttonUpdate(&CALIB_V);
+
+				if (EEPROMStoredCnt<EEPROMDelayBeforeNewStore) {
+					EEPROMStoredCnt++;
+					return 0;
+				}
+
+				if ( (VCAL_FLAG == isPressed)
+	      				  && (ICAL_FLAG != isPressed)){
+	      		  		//CALIB_V
+						EEPROM_DATA[0]=(VOLTAGE_ETALONE/(IV_RATIO*ADC_Data[0]));
+	      		  		//EEPROMStoredCnt=0;
+	      		  		CalibSave();
+	      		  	    return 1;
+	      		  }
+	      		  if ( (ICAL_FLAG == isPressed)
+	      				  && (VCAL_FLAG != isPressed)){
+	      		       //CALIB_I
+	      			  	EEPROM_DATA[1]=(POWER_ETALONE/(IV_RATIO*ADC_Data[1]));
+						//EEPROMStoredCnt=0;
+						CalibSave();
+						return 1;
+	      		  }
+
+	      		if ( (VCAL_FLAG == isPressed)
+	      				&& (ICAL_FLAG == isPressed) ){
+	      					USE_DEF_CALIB();
+	      					StoreEEPROM(EEPROM_DATA[0],EEPROM_DATA[1]);
+	      					//EEPROMStoredCnt=0;
+	      					CalibSave();
+	      					return 1;
+	      		}
+	      		return 0;
 }
 
 

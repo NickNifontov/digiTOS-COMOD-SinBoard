@@ -429,6 +429,13 @@ void TIM16_IRQHandler(void)
       		  break;
       	  case sGEN:
       		  //TIM3->ARR=sDEF_INV_Delay;
+      		  // Check Calibration code here
+      		  if (CalibMode == 1) {
+      			  if (CalibCmdCheck()==1) {
+      				  return;
+      			  }
+      		  }
+
       		  	PrintCurrentState();
 				#ifdef AMP_PROTECTION
       		  	  if (AMP_BLOCKED==1) {

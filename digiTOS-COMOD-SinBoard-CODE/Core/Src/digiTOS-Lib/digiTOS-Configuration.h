@@ -15,6 +15,9 @@
 
 
 // ************** GLOBAL SETTINGS - digiTOS ************** //
+#define VOLTAGE_ETALONE 	220 // etalone for calibartion in Volts
+#define POWER_ETALONE 	1000 // etalone for calibartion in Watts
+
 #define DEBUG_MODE // if TRUE then in UART print text state
 
 #define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
@@ -186,6 +189,8 @@ extern volatile uint32_t V_1;  // Data for Slice 1 of Sinus form
 extern volatile uint32_t V_2;  // Data for Slice 2 of Sinus form
 extern volatile uint32_t V_3;  // Data for Slice 3 of Sinus form
 extern volatile uint32_t V_4;  // Data for Slice 4 of Sinus form
+
+#define IV_RATIO (float) (3.3/4096)
 
 ///// I_OUT ///////
 extern volatile uint32_t I_Out;

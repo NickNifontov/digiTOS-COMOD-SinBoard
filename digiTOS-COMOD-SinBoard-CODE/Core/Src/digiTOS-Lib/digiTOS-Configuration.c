@@ -54,8 +54,9 @@ volatile uint64_t I_Out_RawData=0;
 	volatile float I_RATIO=1;
 #endif
 
+
 #ifndef Detect_ZeroI_Point
-	volatile float I_RATIO=(3636*(3.3/4096));
+	volatile float I_RATIO=(3636*IV_RATIO);
 #endif
 //
 
@@ -71,7 +72,7 @@ volatile uint64_t V_Out_RawData=0;
 #endif
 
 #ifndef Detect_ZeroV_Point
-	volatile float V_RATIO=(132*(3.3/4096));
+	volatile float V_RATIO=(132*IV_RATIO);
 #endif
 //
 

@@ -116,6 +116,12 @@ void Error_Handler(void);
 #define LED3_GPIO_Port GPIOB
 #define LED4_Pin GPIO_PIN_7
 #define LED4_GPIO_Port GPIOB
+#define CALIBV_Pin GPIO_PIN_11
+#define CALIBV_GPIO_Port GPIOA
+#define CALIBI_Pin GPIO_PIN_12
+#define CALIBI_GPIO_Port GPIOA
+#define CALIBMODE_Pin GPIO_PIN_0
+#define CALIBMODE_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

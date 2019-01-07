@@ -80,7 +80,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PAPin PAPin PAPin */
-  GPIO_InitStruct.Pin = FAULT_FEEDBACK_Pin|DEV_MODE2_Pin|DEV_MODE1_Pin;
+  GPIO_InitStruct.Pin = FAULT_FEEDBACK_Pin|DEV_MODE2_Pin|DEV_MODE1_Pin|CALIBV_Pin|CALIBI_Pin|CALIBMODE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
