@@ -198,7 +198,7 @@ int main(void)
 
   HAL_Delay(500);
 
-  // Init EEPROM
+  // Init EEPROM and read data
              if (InitEEPROM()==0) {
            	  strcpy(uart_buff,"NO EEPROM\r\n");
            	  USE_DEF_CALIB();
