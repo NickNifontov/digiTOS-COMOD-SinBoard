@@ -96,8 +96,8 @@ void PWM_50Hz_Init (void) {
 
 	/************************** Config PWM channel ************************************/
 
-	TIM1->PSC = 960-1; // div for clock: F = SYSCLK / [PSC + 1]
-	TIM1->ARR = 1000; // count to 1000
+	TIM1->PSC = 960-1; // 960div for clock: F = SYSCLK / [PSC + 1]
+	TIM1->ARR = 999; // count to 1000
 	TIM1->CCR3 = 500; // duty cycle 50%
 	TIM1->CR1 &= ~TIM_CR1_DIR; // count up: 0 - up, 1 - down
     TIM1->CR1 &= ~TIM_CR1_CMS; // aligned on the front signal
@@ -133,11 +133,15 @@ void PWM_50Hz_START(void)
 
 		Set50HzDeadTimeNS(); // 1976 ns
 
-	TIM1->DIER |= TIM_DIER_UIE;
-	TIM1->CR1 |= TIM_CR1_CEN;
+	//TIM1->DIER |= TIM_DIER_UIE;
+	//TIM1->CR1 |= TIM_CR1_CEN;
 
+	ResetAmplitude();
 	ResetV_data();
 	UpdateAmplitudeByV();
+
+//	TIM1->DIER |= TIM_DIER_UIE;
+//	TIM1->CR1 |= TIM_CR1_CEN;
 }
 
 void PWM_50Hz_STOP(void)
@@ -176,7 +180,7 @@ void PWM_50Hz_OUTDIS(void)
 
 void PWM_50Hz_ON(void){
 	PWM_50Hz_OUTEN(); // OUTPUT ENABLE
-	PWM_50Hz_START(); // start CNT
+//	PWM_50Hz_START(); // start CNT
 }
 
 void PWM_50Hz_OFF(void){
@@ -200,10 +204,17 @@ void PWM_Sinus_START(void)
 	//TIM3->CCER |= TIM_CCER_CC2E; // enable PWM complementary out to PA9
 	//TIM3->CCER |= TIM_CCER_CC2P;
 
+	//TIM3->DIER |= TIM_DIER_UIE;
+	//TIM3->CR1 |= TIM_CR1_CEN;
+
+	//ResetAmplitude();
+
+	PWM_50Hz_START(); // start CNT
+	TIM1->DIER |= TIM_DIER_UIE;
+	TIM1->CR1 |= TIM_CR1_CEN;
+
 	TIM3->DIER |= TIM_DIER_UIE;
 	TIM3->CR1 |= TIM_CR1_CEN;
-
-	ResetAmplitude();
 }
 
 void PWM_Sinus_STOP(void)
@@ -267,7 +278,7 @@ void PWM_Sinus_Init (void) {
 
 	/*************************** Config PWM channel ***********************************/
 		TIM3->PSC = SinResPSC; // div for clock: F = SYSCLK / [PSC + 1]
-		TIM3->ARR = 1000; // count to 1000
+		TIM3->ARR = 1000-1; // count to 1000
 		TIM3->CCR1 = 0; // duty cycle 0%
 		TIM3->CCR2 = 0; // duty cycle 0%
 
@@ -286,6 +297,7 @@ void PWM_Sinus_Init (void) {
 		TIM3->CCMR1 &= ~(TIM_CCMR1_OC1M | TIM_CCMR1_OC2M);
 		TIM3->CCMR1 |= TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1 |
 		 TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1; // positiv PWM1_CH1 and PWM1_CH2
+
 
 		/*******************************************************************************/
 

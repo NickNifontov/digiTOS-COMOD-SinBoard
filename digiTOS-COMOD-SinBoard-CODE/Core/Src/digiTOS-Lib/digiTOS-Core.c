@@ -33,6 +33,8 @@ button_struct_t CALIB_I; // button CALIB I_OUT
 
 button_struct_t CALIB_MODE; // button CALIB CALIB_MODE
 
+volatile int  Re_Update=0;
+
 
 uint32_t TM_CRC_Calculate8(uint8_t* arr, uint32_t count, uint8_t reset) {
 	uint32_t cnt;
@@ -238,8 +240,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 }
 
 void ResetWDG() {
-	 HAL_IWDG_Refresh(&hiwdg);
-	 //IWDG->KR = 0x0000AAAAU;
+	 //HAL_IWDG_Refresh(&hiwdg);
+	 IWDG->KR = 0x0000AAAAU;
 }
 
 

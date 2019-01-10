@@ -18,6 +18,8 @@
 
 #include "stm32f0xx_hal_buttons.h"
 
+extern volatile int  Re_Update;
+
 #include "eeprom.h"
 // EEPROM
 extern int EEPROM_FLAG;

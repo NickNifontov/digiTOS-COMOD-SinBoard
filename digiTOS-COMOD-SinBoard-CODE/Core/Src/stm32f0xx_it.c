@@ -247,14 +247,14 @@ void ADC1_IRQHandler(void)
 void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_BRK_UP_TRG_COM_IRQn 0 */
-
+	TIM3->CNT=0;
   /* USER CODE END TIM1_BRK_UP_TRG_COM_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
+ // HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_BRK_UP_TRG_COM_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
 
-  sin_step=0;sinStatus=0;TIM3->CCR2=0;TIM3->CCR1=0;
+ // sin_step=0;sinStatus=0;TIM3->CCR2=0;TIM3->CCR1=0;
 
   if (SinWave==swStart) {
 	  SinWave=swGEN;
@@ -273,7 +273,7 @@ void TIM3_IRQHandler(void)
   /* USER CODE BEGIN TIM3_IRQn 0 */
 
   /* USER CODE END TIM3_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim3);
+ // HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
@@ -283,15 +283,16 @@ void TIM3_IRQHandler(void)
  		TIM3->CCR1=0;
  		//TIM1->CCR3=0;
  		sin_step=0;
+ 		if (SinWave==swNOP) {return;}
+
+ 	   	if (SinWave==swStart)  {
+ 	   		SinWave=swGEN;
+ 	   	}
+
  	}
 
-	if (SinWave==swNOP) {return;}
 
-   	if (SinWave==swStart)  {
-   		SinWave=swGEN;
-   	}
-
-    if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
+    /*if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
       	    sin_step=0;
       	    TIM3->CCR1=0;
       	    TIM3->CCR2=0;
@@ -301,8 +302,40 @@ void TIM3_IRQHandler(void)
       	    TIM3->CCR2=0;
       	    //return;
          }
+*/
+ //  	if  (TIM1->CNT==500) {
+ //  		return;
+ //  	}
 
-   if  (TIM1->CNT>499) { sinStatus=1;} else { sinStatus=0;}
+   /*if  (TIM1->CNT>499) {
+	   sinStatus=1;}
+   else {
+	   sinStatus=0;}*/
+	 if  ((TIM1->CNT>=497) && (sinStatus==0) ){
+	  	sinStatus=1;
+	  	TIM3->CCR1=0;
+	  	Re_Update=1;
+	  	//UpdateAmplitudeByV();
+	  	sin_step=0;
+	  	return;
+	  }
+
+	 if  ((TIM1->CNT>=998) && (sinStatus==1) ){
+		sinStatus=0;
+	   	TIM3->CCR2=0;
+	   	//UpdateAmplitudeByV();
+	   	Re_Update=1;
+	   	sin_step=0;
+	   	return;
+	 }
+
+/*	 if  (TIM1->CNT==498){
+		 TIM3->CCR2=0;
+ 	  	 TIM3->CCR1=0;
+ 	  	 sin_step=0;
+ 	  	return;
+ 	 }
+*/
 
    if (sinStatus==0) {
 	   TIM3->CCR2=0;
@@ -312,6 +345,8 @@ void TIM3_IRQHandler(void)
 	   TIM3->CCR1=0;
 	   TIM3->CCR2=GetSinus();
    }
+	  	  CheckV_Feedback();
+	  	  sin_step++;
 
 
 
@@ -327,7 +362,7 @@ void TIM14_IRQHandler(void)
   /* USER CODE BEGIN TIM14_IRQn 0 */
 
   /* USER CODE END TIM14_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim14);
+ // HAL_TIM_IRQHandler(&htim14);
   /* USER CODE BEGIN TIM14_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim14, TIM_FLAG_UPDATE);
@@ -350,7 +385,7 @@ void TIM14_IRQHandler(void)
 	//#ifndef AMP_PROTECTION
   	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
 	//#endif
-  	  sin_step=0;
+ // 	  sin_step=0;
   	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
     		SinWave=swStart;
     		TIM3->CCR2=0;
@@ -384,12 +419,32 @@ void TIM14_IRQHandler(void)
   	  	  	  //	 UpdateAmplitudeByV();
   	  	  	  //}
 
-  	  	  	  CheckV_Feedback();
-  	  	  	  sin_step++;
+//  	  	  	  CheckV_Feedback();
+//  	  	  	  sin_step++;
+/*
+  	  	  	 if  ((TIM1->CNT>500) && (sinStatus==0) ){
+  	  	  	sinStatus=1;
+  	  	  		 TIM3->CCR1=0;
+  	  	  	UpdateAmplitudeByV();
+  	  	sin_step=0;
+  	  	return;
+  	  	  	 }
 
+  	  	 if  ((TIM1->CNT<500) && (sinStatus==1) ){
+  	  		sinStatus=0;
+  	  	   	  	  		 TIM3->CCR2=0;
+  	  	   	  	UpdateAmplitudeByV();
+  	  	   	sin_step=0;
+  	  	return;
+  	  	   	   }
 
-
-
+  	   if  (TIM1->CNT==500){
+  	    	  	   	  	  		 TIM3->CCR2=0;
+  	    	  	   	  	TIM3->CCR1=0;
+  	    	  	   	sin_step=0;
+  	    	  	return;
+  	    	  	   	   }
+*/
   	    	/*if (sin_step >= SinRes) {
   	    		sin_step = 0;
   	    	}*/
@@ -406,7 +461,7 @@ void TIM16_IRQHandler(void)
   /* USER CODE BEGIN TIM16_IRQn 0 */
 
   /* USER CODE END TIM16_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim16);
+ // HAL_TIM_IRQHandler(&htim16);
   /* USER CODE BEGIN TIM16_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim16, TIM_FLAG_UPDATE);

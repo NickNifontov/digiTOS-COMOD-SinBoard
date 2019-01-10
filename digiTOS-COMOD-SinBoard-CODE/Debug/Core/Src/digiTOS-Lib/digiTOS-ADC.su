@@ -1,11 +1,11 @@
 digiTOS-ADC.c:17:6:StartADC	8	static
-digiTOS-ADC.c:60:6:ResetV_data	8	static
+digiTOS-ADC.c:60:6:ResetV_data	0	static
 digiTOS-ADC.c:88:7:CheckAmp	8	static
 digiTOS-ADC.c:99:7:CalcNewAmp	8	static
 digiTOS-ADC.c:119:7:CalcNewAmpByStep	16	static
 digiTOS-ADC.c:139:10:asqrt	8	static
 digiTOS-ADC.c:166:6:CalcAc_I_ByWave	16	static
 digiTOS-ADC.c:177:6:CalcAc_V_ByWave	16	static
-digiTOS-ADC.c:187:6:CalcDC_Average	8	static
+digiTOS-ADC.c:187:6:CalcDC_Average	0	static
 digiTOS-ADC.c:193:6:UpdateAmplitudeByV	24	static
 digiTOS-ADC.c:291:6:CheckV_Feedback	16	static

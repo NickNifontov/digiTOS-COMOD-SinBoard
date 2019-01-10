@@ -92,6 +92,7 @@ static void MX_NVIC_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
 /* USER CODE END 0 */
 
 /**
@@ -196,7 +197,7 @@ int main(void)
   buttonUpdate(&CALIB_MODE);
 
   HAL_Delay(500);
-
+/*
   // Init EEPROM
              if (InitEEPROM()==0) {
            	  strcpy(uart_buff,"NO EEPROM\r\n");
@@ -220,7 +221,7 @@ int main(void)
 
   Get_FlashSize();
   SerialPrintln(1);
-
+*/
 
   ClearUART_Buff();
 
@@ -287,6 +288,24 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   	__NOP();
+  	if (Re_Update==1) {
+  		Re_Update=0;
+ // 		UpdateAmplitudeByV();
+  		HAL_Delay(2);
+ 		if (Sine_Amplitude_1>1.4){
+ 	 		Sine_Amplitude_1=0.4;
+ 	 		Sine_Amplitude_2=0.4;
+ 	 		Sine_Amplitude_3=0.4;
+ 	 		Sine_Amplitude_4=0.4;
+ 		}
+ 		else{
+ 	 		Sine_Amplitude_1+=0.1;
+ 	 		Sine_Amplitude_2+=0.1;
+ 	 		Sine_Amplitude_3+=0.1;
+ 	 		Sine_Amplitude_4+=0.1;
+ 		}
+  	 __NOP();
+  	}
     }
   /* USER CODE END 3 */
 }
@@ -344,7 +363,7 @@ void SystemClock_Config(void)
 static void MX_NVIC_Init(void)
 {
   /* DMA1_Channel2_3_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_3_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel2_3_IRQn, 3, 3);
   HAL_NVIC_EnableIRQ(DMA1_Channel2_3_IRQn);
   /* RCC_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(RCC_IRQn, 0, 0);

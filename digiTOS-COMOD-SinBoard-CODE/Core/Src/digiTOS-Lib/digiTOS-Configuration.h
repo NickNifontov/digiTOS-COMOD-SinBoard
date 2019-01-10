@@ -18,22 +18,22 @@
 #define VOLTAGE_ETALONE 	230 // etalone for calibartion in Volts
 #define POWER_ETALONE 	1000 // etalone for calibartion in Watts
 
-#define DEBUG_MODE // if TRUE then in UART print text state
+//#define DEBUG_MODE // if TRUE then in UART print text state
 
-#define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
-//#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
+//#define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
+#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 
-#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
-//#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+//#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
 
 
-#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
-//#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+//#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
 // Stop and then restart after DelaySecBeforeStartAfterDCProtection
 
 
-#define AMP_PROTECTION // protection if MAX/MIN AMP detected
-//#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
+//#define AMP_PROTECTION // protection if MAX/MIN AMP detected
+#define OFF_AMP_PROTECTION // protection if MAX/MIN AMP detected
 // Stop and then restart after DelaySecBeforeStartAfterAmpProtection
 
 
@@ -113,7 +113,7 @@
 #endif
 
 #ifndef IOUT_PROTECTION
-	IOUT_BLOCKED 0
+	#define IOUT_BLOCKED 0
 #endif
 
 
@@ -132,7 +132,7 @@
 #endif
 
 #ifndef VOUT_PROTECTION
-	VOUT_BLOCKED 0
+	#define VOUT_BLOCKED 0
 #endif
 
 

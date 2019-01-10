@@ -19,7 +19,7 @@
 							<option id="com.atollic.truestudio.toolchain_options.mcu.2115248342" name="Microcontroller" superClass="com.atollic.truestudio.toolchain_options.mcu" value="STM32F030K6" valueType="string"/>
 							<option id="com.atollic.truestudio.toolchain_options.vendor.856164788" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor" value="STMicroelectronics" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.atollic.truestudio.exe.debug.toolchain.platform.2054752829" isAbstract="false" name="Debug platform" superClass="com.atollic.truestudio.exe.debug.toolchain.platform"/>
-							<builder buildPath="${workspace_loc:/digiTOS-COMOD-SinBoard-CODE}/Debug" customBuilderProperties="toolChainpathType=1|toolChainpathString=C:\\TrueSTUDIO for STM32 9.2.0\\ARMTools\\bin|" enableAutoBuild="true" id="com.atollic.truestudio.mbs.builder1.1222194476" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="unlimited" superClass="com.atollic.truestudio.mbs.builder1">
+							<builder buildPath="${workspace_loc:/digiTOS-COMOD-SinBoard-CODE}/Debug" customBuilderProperties="toolChainpathString=C:\\TrueSTUDIO for STM32 9.2.0\\ARMTools\\bin|toolChainpathType=1|" enableAutoBuild="true" id="com.atollic.truestudio.mbs.builder1.1222194476" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="unlimited" superClass="com.atollic.truestudio.mbs.builder1">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 								</outputEntries>
@@ -308,4 +308,5 @@
 			</profile>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
