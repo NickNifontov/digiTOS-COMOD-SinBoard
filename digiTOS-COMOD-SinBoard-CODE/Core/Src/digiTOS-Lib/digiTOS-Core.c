@@ -7,6 +7,8 @@
 
 #include "digiTOS-Core.h"
 
+volatile int UpdateAmp_FLAG=0;
+
 volatile enum fBoardStatus BoardStatus=sBoot;
 volatile int DevMode1=0;
 volatile int CalibMode=0;

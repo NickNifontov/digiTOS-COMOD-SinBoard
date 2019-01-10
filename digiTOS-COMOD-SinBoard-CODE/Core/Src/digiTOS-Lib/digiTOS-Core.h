@@ -16,9 +16,15 @@
 #include <stdint.h>
 #include "iwdg.h"
 
+#include "digiTOS-IWDG.h"
 #include "stm32f0xx_hal_buttons.h"
 
 #include "eeprom.h"
+
+
+// GLOBAL
+extern volatile int UpdateAmp_FLAG;
+
 // EEPROM
 extern int EEPROM_FLAG;
 int InitEEPROM();

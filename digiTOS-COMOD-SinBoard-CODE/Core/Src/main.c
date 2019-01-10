@@ -142,7 +142,9 @@ int main(void)
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
 
-  //HAL_UART_Receive_DMA(&huart1, (uint8_t*) cmd_buff, sizeof(cmd_buff));
+  // NEW IWDG
+  DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_16s);
+  ResetWDG();
 
   //Init ADC, start DMA
   //and prepare all data
@@ -285,7 +287,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  	__NOP();
+		if (UpdateAmp_FLAG==1) {
+			UpdateAmp_FLAG=0;
+			UpdateAmplitudeByV();
+		}
     }
   /* USER CODE END 3 */
 }
