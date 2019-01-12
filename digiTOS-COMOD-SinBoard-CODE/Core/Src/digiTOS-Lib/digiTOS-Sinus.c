@@ -84,7 +84,7 @@ float GetApmlitude() {
 
 uint16_t GetSinus() {
 	if (sin_step >= SinRes) {
-		sin_step = 0;
+		//sin_step = 0;
 		return 0;
 	}
 	uint16_t fSinusData=sin_data[sin_step];

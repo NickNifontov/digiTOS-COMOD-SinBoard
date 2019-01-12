@@ -97,7 +97,7 @@ void PWM_50Hz_Init (void) {
 	/************************** Config PWM channel ************************************/
 
 	TIM1->PSC = 960-1; // div for clock: F = SYSCLK / [PSC + 1]
-	TIM1->ARR = 1000; // count to 1000
+	TIM1->ARR = 999; // count to 1000
 	TIM1->CCR3 = 500; // duty cycle 50%
 	TIM1->CR1 &= ~TIM_CR1_DIR; // count up: 0 - up, 1 - down
     TIM1->CR1 &= ~TIM_CR1_CMS; // aligned on the front signal
@@ -267,7 +267,7 @@ void PWM_Sinus_Init (void) {
 
 	/*************************** Config PWM channel ***********************************/
 		TIM3->PSC = SinResPSC; // div for clock: F = SYSCLK / [PSC + 1]
-		TIM3->ARR = 1000; // count to 1000
+		TIM3->ARR = 1000-1; // count to 1000
 		TIM3->CCR1 = 0; // duty cycle 0%
 		TIM3->CCR2 = 0; // duty cycle 0%
 

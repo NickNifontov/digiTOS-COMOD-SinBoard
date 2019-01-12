@@ -325,11 +325,13 @@ void TIM1_BRK_IRQHandler(void)
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
 
-  sin_step=0;
+  TIM3->CNT=0;
 
-  sinStatus=0;TempBuffer_Flag=0;ReadTempValue();
+  //sin_step=0;
 
-  TIM3->CCR2=0;TIM3->CCR1=0;
+  //sinStatus=0;TempBuffer_Flag=0;ReadTempValue();
+
+  //TIM3->CCR2=0;TIM3->CCR1=0;
 
   if (SinWave==swStart) {
 	  SinWave=swGEN;
@@ -352,36 +354,30 @@ void TIM1_UP_IRQHandler(void)
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
 
+  if  (((TIM1->CNT==0) || (TIM1->CNT==999) ) && (sinStatus==1) ){
+     	  	ReadTempValue();
+       	  	sinStatus=0;
+       	  	TIM3->CCR2=0;
+       	  	if (UpdateAmp_FLAG==0) {
+       	  		UpdateAmp_FLAG=1;
+       	    }
+       	  	sin_step=0;
+       	  	return;
+   }
+
+  if  ((TIM1->CNT==500) && (sinStatus==0) ){
+      	  		ReadTempValue();
+        	  	sinStatus=0;
+        	  	TIM3->CCR1=0;
+        	  	if (UpdateAmp_FLAG==0) {
+        	  		UpdateAmp_FLAG=1;
+        	    }
+        	  	sin_step=0;
+        	  	return;
+    }
+
   /* USER CODE END TIM1_UP_IRQn 1 */
 }
-
-/**
-  * @brief This function handles TIM1 trigger and commutation interrupts.
-  */
-//void TIM1_TRG_COM_IRQHandler(void)
-//{
-  /* USER CODE BEGIN TIM1_TRG_COM_IRQn 0 */
-
-  /* USER CODE END TIM1_TRG_COM_IRQn 0 */
-  //HAL_TIM_IRQHandler(&htim1);
-  /* USER CODE BEGIN TIM1_TRG_COM_IRQn 1 */
-
-  /* USER CODE END TIM1_TRG_COM_IRQn 1 */
-//}
-
-/**
-  * @brief This function handles TIM1 capture compare interrupt.
-  */
-//void TIM1_CC_IRQHandler(void)
-//{
-  /* USER CODE BEGIN TIM1_CC_IRQn 0 */
-
-  /* USER CODE END TIM1_CC_IRQn 0 */
-  //HAL_TIM_IRQHandler(&htim1);
-  /* USER CODE BEGIN TIM1_CC_IRQn 1 */
-
-  /* USER CODE END TIM1_CC_IRQn 1 */
-//}
 
 /**
   * @brief This function handles TIM2 global interrupt.
@@ -542,7 +538,7 @@ void TIM3_IRQHandler(void)
      		SinWave=swGEN;
      	}
 
-      if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
+     	/*if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
         	    sin_step=0;
         	    TIM3->CCR1=0;
         	    TIM3->CCR2=0;
@@ -564,7 +560,38 @@ void TIM3_IRQHandler(void)
      if (sinStatus==1) {
   	   TIM3->CCR1=0;
   	   TIM3->CCR2=GetSinus();
-     }
+     }*/
+
+      if  ((TIM1->CNT>=497) && (sinStatus==0) ){
+    	  	ReadTempValue();
+      	  	sinStatus=1;
+      	  	TIM3->CCR1=0;
+      	  	if (UpdateAmp_FLAG==0) {
+      	  		UpdateAmp_FLAG=1;
+      	    }
+      	  	sin_step=0;
+      	  	return;
+      	  }
+
+      	 if  ((TIM1->CNT>=998) && (sinStatus==1) ){
+      		ReadTempValue();
+      		sinStatus=0;
+      	   	TIM3->CCR2=0;
+      	   	if (UpdateAmp_FLAG==0) {
+      	    	UpdateAmp_FLAG=1;
+      	    }
+      	   	sin_step=0;
+      	   	return;
+      }
+
+      	if (sinStatus==0) {
+      		   TIM3->CCR2=0;
+      		   TIM3->CCR1=GetSinus();
+      	   }
+      	   if (sinStatus==1) {
+      		   TIM3->CCR1=0;
+      		   TIM3->CCR2=GetSinus();
+      	   }
 
 
   /* USER CODE END TIM3_IRQn 1 */
