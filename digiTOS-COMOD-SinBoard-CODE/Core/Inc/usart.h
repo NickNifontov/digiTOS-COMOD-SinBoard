@@ -51,6 +51,7 @@
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
+extern DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN Private defines */
 

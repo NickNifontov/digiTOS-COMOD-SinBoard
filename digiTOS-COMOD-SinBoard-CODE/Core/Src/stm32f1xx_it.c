@@ -38,6 +38,16 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "stm32f103xb.h"
+#include "digiTOS-Lib/digiTOS-Core.h"
+#include "digiTOS-Lib/digiTOS-Generator.h"
+#include "digiTOS-Lib/digiTOS-Sinus.h"
+#include "digiTOS-Lib/digiTOS-ADC.h"
+#include "usart.h"
+#include "iwdg.h"
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -313,6 +323,19 @@ void TIM1_BRK_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_BRK_IRQn 1 */
 
+  __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
+
+  sin_step=0;
+
+  sinStatus=0;TempBuffer_Flag=0;ReadTempValue();
+
+  TIM3->CCR2=0;TIM3->CCR1=0;
+
+  if (SinWave==swStart) {
+	  SinWave=swGEN;
+	  TIM1->CCR3=500;
+  }
+
   /* USER CODE END TIM1_BRK_IRQn 1 */
 }
 
@@ -327,36 +350,38 @@ void TIM1_UP_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_IRQn 1 */
 
+  __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
+
   /* USER CODE END TIM1_UP_IRQn 1 */
 }
 
 /**
   * @brief This function handles TIM1 trigger and commutation interrupts.
   */
-void TIM1_TRG_COM_IRQHandler(void)
-{
+//void TIM1_TRG_COM_IRQHandler(void)
+//{
   /* USER CODE BEGIN TIM1_TRG_COM_IRQn 0 */
 
   /* USER CODE END TIM1_TRG_COM_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
+  //HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_TRG_COM_IRQn 1 */
 
   /* USER CODE END TIM1_TRG_COM_IRQn 1 */
-}
+//}
 
 /**
   * @brief This function handles TIM1 capture compare interrupt.
   */
-void TIM1_CC_IRQHandler(void)
-{
+//void TIM1_CC_IRQHandler(void)
+//{
   /* USER CODE BEGIN TIM1_CC_IRQn 0 */
 
   /* USER CODE END TIM1_CC_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
+  //HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_CC_IRQn 1 */
 
   /* USER CODE END TIM1_CC_IRQn 1 */
-}
+//}
 
 /**
   * @brief This function handles TIM2 global interrupt.
@@ -368,6 +393,125 @@ void TIM2_IRQHandler(void)
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
+
+  __HAL_TIM_CLEAR_FLAG(&htim2, TIM_FLAG_UPDATE);
+
+      	// Reset IWDG
+        ResetWDG();
+
+          //
+          switch(BoardStatus) {
+        	  case sBoot:
+        	  case sUnknown:
+        	  	  //TIM3->ARR=sBoot_Delay;
+        	  	  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+        	  	  HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+        	  	  HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+        	  	  HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
+
+        	  	  // when boot check faultflag
+        	  	  buttonUpdate(&FaultFlag);
+        		  break;
+        	  case sGEN:
+        		  //TIM3->ARR=sDEF_INV_Delay;
+        		  // Check Calibration code here
+        		  if (CalibMode == 1) {
+        			  if (CalibCmdCheck()==1) {
+        				  return;
+        			  }
+        		  }
+
+        		  	PrintCurrentState();
+  				#ifdef AMP_PROTECTION
+        		  	  if (AMP_BLOCKED==1) {
+        		  		AMP_PROTECTION_CNT_BEFORESTART++;
+        		  		if (AMP_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterAmpProtection) {
+        		  			AMP_PROTECTION_CNT_BEFORESTART=0;
+        		  			AMP_BLOCKED=0;
+        		  			AMP_PROTECTION_CNT=0;
+        		  			SetSoftstart();
+        		  		}
+        		  	  }
+  				#endif
+
+  				#ifdef VOUT_PROTECTION
+        		  	  if (VOUT_BLOCKED==1) {
+        		  		VOUT_PROTECTION_CNT_BEFORESTART++;
+        		  		if (VOUT_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterVOUTProtection) {
+        		  			VOUT_PROTECTION_CNT_BEFORESTART=0;
+        		  			VOUT_BLOCKED=0;
+        		  			VOUT_PROTECTION_CNT=0;
+        		  			SetSoftstart();
+        		  		}
+        		  	  }
+  				#endif
+
+  				#ifdef IOUT_PROTECTION
+        		  	  if (IOUT_BLOCKED==1) {
+        		  		IOUT_PROTECTION_CNT_BEFORESTART++;
+        		  		if (IOUT_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterIOUTProtection) {
+        		  			IOUT_PROTECTION_CNT_BEFORESTART=0;
+        		  			IOUT_BLOCKED=0;
+        		  			IOUT_PROTECTION_CNT=0;
+        		  			SetSoftstart();
+        		  		}
+        		  	  }
+  				#endif
+
+  				#ifdef DC_PROTECTION
+        		  	  if (DC_BLOCKED==1) {
+  					  if (DC_DataAverage<DC_PROTECTION_ROLLBACK) {
+  						DC_PROTECTION_CNT_BEFORESTART++;
+  						if (DC_PROTECTION_CNT_BEFORESTART>=DelaySecBeforeStartAfterDCProtection) {
+  							DC_PROTECTION_CNT_BEFORESTART=0;
+  							DC_BLOCKED=0;
+  							DC_PROTECTION_CNT=0;
+  							SetSoftstart();
+
+  						}
+  					  } else {
+  						  DC_PROTECTION_CNT_BEFORESTART=0;
+  					  }
+        		  	  }
+  				#endif
+
+        		  	//if ((DC_BLOCKED==1) || (VOUT_BLOCKED==1) || (AMP_BLOCKED==1)) {
+        		  	//	CalcAc_V_ByWave();
+        		  	//}
+      		  break;
+        	  case sFaultFlag:
+        		  	  	PrintCurrentState();
+  					if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)
+  						//	|| (RstCnt<=DelaySecBeforeAttemRst)
+  							) {
+  						RstCnt++;
+  						if (RstCnt==DelaySecBeforeAttemRst) {
+  							RstCnt=0;
+  							HAL_GPIO_WritePin(RST_GPIO_Port, RST_Pin,GPIO_PIN_SET);
+  							TIM2->ARR=sRST_Delay;
+  						} else {
+  							HAL_GPIO_WritePin(RST_GPIO_Port, RST_Pin,GPIO_PIN_RESET);
+  							TIM2->ARR=sDEF_Delay;
+  						}
+  						HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
+  						BoardStatus=sFaultFlag;
+  						SinWave=swNOP;
+  						FaultWaitCnt=0;
+  					  } else {
+  						  SinWave=swNOP;
+  						  RstCnt=0;
+  						  FaultWaitCnt++;
+  						  if (FaultWaitCnt>=DelaySecBeforeStartAfterFault) {
+  							  HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin,GPIO_PIN_RESET);
+  							  BoardStatus=sGEN;
+  						  } else {
+  							  BoardStatus=sFaultFlag;
+  							  HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
+  						  }
+  					  }
+        		  	  break;
+          }
+
 
   /* USER CODE END TIM2_IRQn 1 */
 }
@@ -383,6 +527,46 @@ void TIM3_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
 
+  __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
+
+  	if ((SinWave==swStop) || (SinWave==swStart) || (SinWave==swNOP))  {
+   		TIM3->CCR2=0;
+   		TIM3->CCR1=0;
+   		//TIM1->CCR3=0;
+   		sin_step=0;
+   	}
+
+  	if (SinWave==swNOP) {return;}
+
+     	if (SinWave==swStart)  {
+     		SinWave=swGEN;
+     	}
+
+      if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
+        	    sin_step=0;
+        	    TIM3->CCR1=0;
+        	    TIM3->CCR2=0;
+        	    if (UpdateAmp_FLAG==0) {
+        	    	UpdateAmp_FLAG=1;
+        	    }
+        	    sin_step=0;
+        	    TIM3->CCR1=0;
+        	    TIM3->CCR2=0;
+        	    //return;
+           }
+
+     if  (TIM1->CNT>499) { sinStatus=1;TempBuffer_Flag=0;ReadTempValue();} else { sinStatus=0;TempBuffer_Flag=0;ReadTempValue();}
+
+     if (sinStatus==0) {
+  	   TIM3->CCR2=0;
+  	   TIM3->CCR1=GetSinus();
+     }
+     if (sinStatus==1) {
+  	   TIM3->CCR1=0;
+  	   TIM3->CCR2=GetSinus();
+     }
+
+
   /* USER CODE END TIM3_IRQn 1 */
 }
 
@@ -396,6 +580,71 @@ void TIM4_IRQHandler(void)
   /* USER CODE END TIM4_IRQn 0 */
   HAL_TIM_IRQHandler(&htim4);
   /* USER CODE BEGIN TIM4_IRQn 1 */
+
+  __HAL_TIM_CLEAR_FLAG(&htim4, TIM_FLAG_UPDATE);
+
+
+    if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
+  	  BoardStatus=sFaultFlag;
+  	  FaultWaitCnt=0;
+  		  if (SinWave!=swGEN) {
+  			  SinWave=swGEN;
+  		  } else {
+  			  return;
+  		  }
+    } else {
+  	  //BoardStatus=sGEN;
+    }
+
+    	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)
+    			  && (DC_BLOCKED==0) && (VOUT_BLOCKED==0)  && (IOUT_BLOCKED==0) && (EEPROM_FLAG==0)) {
+  	//#ifndef AMP_PROTECTION
+    	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
+  	//#endif
+    	  sin_step=0;
+    	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
+      		SinWave=swStart;
+      		TIM3->CCR2=0;
+      		 		TIM3->CCR1=0;
+      		 		TIM1->CCR3=0;
+      		 		sin_step=0;
+      		PWM_50Hz_ON();
+      		PWM_Sinus_ON();
+      		return;
+      	  }
+        }
+
+    if (SinWave==swGEN) {
+  				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
+  						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) || (VOUT_BLOCKED==1)  || (IOUT_BLOCKED==1)) {
+  				//#ifndef AMP_PROTECTION
+  			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
+  				//#endif
+  		  SinWave=swNOP;
+  		  	  	TIM3->CCR2=0;
+  		   		TIM3->CCR1=0;
+  		   		TIM1->CCR3=0;
+  		   		sin_step=0;
+  		  PWM_50Hz_OFF();
+  		  PWM_Sinus_OFF();
+  		  return;
+  	  }
+    }
+
+    	  	  	  //if  (sin_step==0) {
+    	  	  	  //	 UpdateAmplitudeByV();
+    	  	  	  //}
+
+    	  	  	  CheckV_Feedback();
+    	  	  	  sin_step++;
+
+
+
+
+    	    	/*if (sin_step >= SinRes) {
+    	    		sin_step = 0;
+    	    	}*/
+
 
   /* USER CODE END TIM4_IRQn 1 */
 }

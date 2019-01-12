@@ -1,0 +1,81 @@
+
+(rules PCB digiTOS-COMOD-SinBoard
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 1436)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 2.6)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.6)
+    )
+  )
+  (rule
+    (width 1000.0)
+    (clear 400.2)
+    (clear 500.0 (type smd_to_turn_gap))
+    (clear 100.0 (type smd_smd))
+  )
+  (padstack "Via[0-1]_1800:900_um"
+    (shape
+      (circle F.Cu 1800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 1800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_1800:900_um" "Via[0-1]_1800:900_um" default
+  )
+  (via 
+    "Via[0-1]_1800:900_um-kicad_default" "Via[0-1]_1800:900_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_1800:900_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_1800:900_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 1000.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    GND NEUT AC "V_Trans_out2" "V_Trans_out1" +12V "Net-(F1-Pad2)" LINE
+    "Net-(D1-Pad1)" "Net-(D2-Pad1)" "Net-(D3-Pad1)" "Net-(D4-Pad1)" +3V3 LED1 LED2 LED3
+    LED4 RX TX CH1 "FAULT_FEEDBACK" CH2 RST CH3
+    "DC_FEEDBACK" CH4 "Net-(R5-Pad1)" "Net-(R6-Pad1)" "CT_out2" "DEV_MODE1" "DEV_MODE2" "Net-(C5-Pad1)"
+    "V_OUT" "Net-(C1-Pad1)" "Net-(R13-Pad2)" "Net-(R14-Pad1)" "Net-(R17-Pad2)" E2 E1 E3
+    E5 E4 E6 "Net-(STM321-Pad17)" "Net-(STM321-Pad2)" "Net-(STM321-Pad18)" "Net-(T3-Pad5)"
+    (clearance_class "kicad_default")
+    (via_rule kicad_default)
+    (rule
+      (width 1000.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)

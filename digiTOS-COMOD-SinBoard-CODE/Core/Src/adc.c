@@ -61,6 +61,7 @@ void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 1;
+
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -69,11 +70,58 @@ void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
   }
+
+  	/**Configure for the selected ADC regular channel to be converted.
+    */
+    sConfig.Channel = ADC_CHANNEL_2;
+    if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+	#ifdef USE_V_IN_SENSOR
+    	/**Configure for the selected ADC regular channel to be converted.
+        */
+        sConfig.Channel = ADC_CHANNEL_3;
+        if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+        {
+          Error_Handler();
+        }
+
+        /**Configure for the selected ADC regular channel to be converted.
+        */
+        sConfig.Channel = ADC_CHANNEL_4;
+        if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+        {
+        	Error_Handler();
+        }
+
+	#endif
+
+    /**Configure for the selected ADC regular channel to be converted.
+    */
+    sConfig.Channel = ADC_CHANNEL_5;
+    if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+
+
+	#ifdef USE_VREF
+		  /**Configure for the selected ADC regular channel to be converted.
+		  */
+		  sConfig.Channel = ADC_CHANNEL_VREFINT;
+		  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+		  {
+			Error_Handler();
+		  }
+	#endif
 
 }
 
@@ -93,10 +141,14 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     /**ADC1 GPIO Configuration    
     PA1     ------> ADC1_IN1
     PA2     ------> ADC1_IN2
+    PA3     ------> ADC1_IN3
+    PA4     ------> ADC1_IN4
     PA5     ------> ADC1_IN5 
     */
-    GPIO_InitStruct.Pin = V_OUT_Pin|C_OUT_Pin|DC_FEEDBACK_Pin;
+    GPIO_InitStruct.Pin = V_OUT_Pin|C_OUT_Pin|V_IN_Pin|V_IN_WAVE_DETECTOR_Pin 
+                          |DC_FEEDBACK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     /* ADC1 DMA Init */
@@ -139,9 +191,12 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     /**ADC1 GPIO Configuration    
     PA1     ------> ADC1_IN1
     PA2     ------> ADC1_IN2
+    PA3     ------> ADC1_IN3
+    PA4     ------> ADC1_IN4
     PA5     ------> ADC1_IN5 
     */
-    HAL_GPIO_DeInit(GPIOA, V_OUT_Pin|C_OUT_Pin|DC_FEEDBACK_Pin);
+    HAL_GPIO_DeInit(GPIOA, V_OUT_Pin|C_OUT_Pin|V_IN_Pin|V_IN_WAVE_DETECTOR_Pin 
+                          |DC_FEEDBACK_Pin);
 
     /* ADC1 DMA DeInit */
     HAL_DMA_DeInit(adcHandle->DMA_Handle);

@@ -51,6 +51,14 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "digiTOS-Lib/digiTOS-Generator.h"
+#include "digiTOS-Lib/digiTOS-Core.h"
+#include "digiTOS-Lib/digiTOS-Sinus.h"
+#include "digiTOS-Lib/digiTOS-ADC.h"
+#include <stdio.h>
+#include <string.h>
+#include "stm32_hal_legacy.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,6 +101,18 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+	#ifdef DEBUG_MODE
+		// Disable IWDG if core is halted
+	    //DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_IWDG_STOP;
+
+		//__HAL_RCC_DBGMCU_CLK_ENABLE();
+				//DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_WWDG_STOP;
+				//DBGMCU->APB2FZ = 0xFFFFFFFF;
+				//DBGMCU->APB1FZ = 0xFFFFFFFF;
+				DBGMCU->CR |=DBGMCU_CR_DBG_STOP;
+		__HAL_DBGMCU_FREEZE_IWDG();
+	#endif
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -124,15 +144,155 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
+  	// NEW IWDG
+    DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_16s);
+    ResetWDG();
+
+    //Init ADC, start DMA
+    //and prepare all data
+    StartADC();
+
+
+    SinWave=swNOP;
+
+    // Start generator and then stop to setup default GND level for transistor and dead times
+    PWM_50Hz_Init();
+    PWM_50Hz_ON();
+    PWM_50Hz_OFF();
+
+    PWM_Sinus_Init();
+    PWM_Sinus_ON();
+    PWM_Sinus_OFF();
+
+    ResetWDG();
+
+    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin,GPIO_PIN_SET);
+
+
+    HAL_TIM_Base_Start(&htim4);
+    HAL_TIM_Base_Start_IT(&htim4);
+
+    BoardStatus=sBoot;
+    TIM2->ARR=sBoot_Delay;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+      ResetWDG();
+
+      buttonInit(&CALIB_V, CALIB_V_GPIO_Port, CALIB_V_Pin, GPIO_PIN_RESET, 4000, 10000);
+      buttonInit(&CALIB_I, CALIB_I_GPIO_Port, CALIB_I_Pin, GPIO_PIN_RESET, 4000, 10000);
+      buttonInit(&CALIB_MODE, CALIB_MODE_GPIO_Port, CALIB_MODE_Pin, GPIO_PIN_RESET, 30, 2000);
+
+      buttonInit(&DevModeKey, DEV_MODE1_GPIO_Port, DEV_MODE1_Pin, GPIO_PIN_RESET, 30, 2000);
+      buttonInit(&DevModeKey2, DEV_MODE2_GPIO_Port, DEV_MODE2_Pin, GPIO_PIN_RESET, 30, 1000);
+      buttonInit(&FaultFlag, FAULT_FEEDBACK_GPIO_Port, FAULT_FEEDBACK_Pin, GPIO_PIN_RESET, 30, 1000);
+      buttonUpdate(&DevModeKey);
+      buttonUpdate(&DevModeKey2);
+      buttonUpdate(&FaultFlag);
+      buttonUpdate(&CALIB_V);
+      buttonUpdate(&CALIB_I);
+      buttonUpdate(&CALIB_MODE);
+
+      HAL_Delay(500);
+
+      // Init EEPROM and read data
+                 if (InitEEPROM()==0) {
+               	  strcpy(uart_buff,"NO EEPROM\r\n");
+               	  USE_DEF_CALIB();
+               	  //EEPROM_DATA[0]=250;
+               	  //StoreEEPROM(132,3636);
+               	  SerialPrintln(1);
+                 } else {
+              	  USE_NEW_CALIB();
+               	  strcpy(uart_buff,"OK EEPROM\r\n");
+               	  SerialPrintln(1);
+                 }
+
+
+      Get_Version();
+      SerialPrintln(1);
+
+
+      Get_ChipID();
+      SerialPrintln(1);
+
+      Get_FlashSize();
+      SerialPrintln(1);
+
+
+      ClearUART_Buff();
+
+      // Check for Calib Mode
+      if(buttonUpdate(&CALIB_MODE) == isPressed){
+    	  strcpy(uart_buff,"CALIB MODE ENABLED\r\n");
+    	  SerialPrintln(1);
+    	  CalibMode=1;
+      } else {
+    	  CalibMode=0;
+      }
+
+      buttonUpdate(&FaultFlag);
+      if(buttonUpdate(&DevModeKey) == isPressed){
+    	strcpy(uart_buff,"DEV MODE - wait\r\n");
+    	SerialPrintln(1);
+    	ResetWDG();
+        HAL_Delay(500);
+    	//if(buttonUpdate(&DevModeKey) == isPressedLong){
+    	if(buttonUpdate(&DevModeKey) == isPressed){
+    		//HAL_TIM_Base_Start_IT(&htim16);
+    		strcpy(uart_buff,"DEV MODE - confirmed\r\n");
+    	    SerialPrintln(1);
+    		DevMode1=1;
+    	}
+      }
+
+        strcpy(uart_buff,"Start Loop\r\n");
+        SerialPrintln(1);
+
+      	BoardStatus=sGEN;
+      	TIM2->ARR=sDEF_Delay;
+
+        //Start loop
+          HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin,GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin,GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin,GPIO_PIN_RESET);
+
+          // Start PWM Sinus
+          //SinWave=swStart;
+
+           buttonUpdate(&FaultFlag);
+           buttonUpdate(&DevModeKey2);
+           HAL_Delay(500);
+           if(buttonUpdate(&DevModeKey2) == isPressedLong){
+        	   strcpy(uart_buff,"Start GENERATOR\r\n");
+        	   SerialPrintln(1);
+        	   //PWM_50Hz_ON();
+        	   //PWM_Sinus_ON();
+           }
+
+
+           buttonUpdate(&FaultFlag);
+           TIM4->PSC=SinResPSC;
+
+           HAL_TIM_Base_Start(&htim4);
+           HAL_TIM_Base_Start_IT(&htim4);
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if (UpdateAmp_FLAG==1) {
+	  			UpdateAmp_FLAG=2;//busy Flag
+	  			UpdateAmplitudeByV();
+	  			UpdateAmp_FLAG=0; // clear Flag
+	  }
   }
   /* USER CODE END 3 */
 }

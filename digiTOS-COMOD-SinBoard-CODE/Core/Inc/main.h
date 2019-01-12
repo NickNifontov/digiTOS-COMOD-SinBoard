@@ -90,10 +90,10 @@ void Error_Handler(void);
 #define V_OUT_GPIO_Port GPIOA
 #define C_OUT_Pin GPIO_PIN_2
 #define C_OUT_GPIO_Port GPIOA
-#define FAULT_FEEDBACK_Pin GPIO_PIN_3
-#define FAULT_FEEDBACK_GPIO_Port GPIOA
-#define DEV_MODE2_Pin GPIO_PIN_4
-#define DEV_MODE2_GPIO_Port GPIOA
+#define V_IN_Pin GPIO_PIN_3
+#define V_IN_GPIO_Port GPIOA
+#define V_IN_WAVE_DETECTOR_Pin GPIO_PIN_4
+#define V_IN_WAVE_DETECTOR_GPIO_Port GPIOA
 #define DC_FEEDBACK_Pin GPIO_PIN_5
 #define DC_FEEDBACK_GPIO_Port GPIOA
 #define CH1_Pin GPIO_PIN_6
@@ -104,6 +104,10 @@ void Error_Handler(void);
 #define LED2_GPIO_Port GPIOB
 #define CH4_Pin GPIO_PIN_1
 #define CH4_GPIO_Port GPIOB
+#define DEV_MODE2_Pin GPIO_PIN_2
+#define DEV_MODE2_GPIO_Port GPIOB
+#define FAULT_FEEDBACK_Pin GPIO_PIN_10
+#define FAULT_FEEDBACK_GPIO_Port GPIOB
 #define LED3_Pin GPIO_PIN_12
 #define LED3_GPIO_Port GPIOB
 #define LED4_Pin GPIO_PIN_13
@@ -128,8 +132,6 @@ void Error_Handler(void);
 #define DI_GPIO_Port GPIOA
 #define DO_TRACE_Pin GPIO_PIN_3
 #define DO_TRACE_GPIO_Port GPIOB
-#define NRST_Pin GPIO_PIN_4
-#define NRST_GPIO_Port GPIOB
 #define RST_Pin GPIO_PIN_5
 #define RST_GPIO_Port GPIOB
 #define TX_Pin GPIO_PIN_6

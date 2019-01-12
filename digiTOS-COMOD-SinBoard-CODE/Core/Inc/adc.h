@@ -51,6 +51,7 @@
 /* USER CODE END Includes */
 
 extern ADC_HandleTypeDef hadc1;
+extern DMA_HandleTypeDef hdma_adc1;
 
 /* USER CODE BEGIN Private defines */
 

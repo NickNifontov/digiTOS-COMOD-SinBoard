@@ -105,9 +105,9 @@ void HAL_MspInit(void)
   HAL_NVIC_SetPriority(RCC_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(RCC_IRQn);
 
-  /**ENABLE: Full SWJ (JTAG-DP + SW-DP): Reset State 
+  /**NONJTRST: Full SWJ (JTAG-DP + SW-DP) but without NJTRST 
   */
-  __HAL_AFIO_REMAP_SWJ_ENABLE();
+  __HAL_AFIO_REMAP_SWJ_NONJTRST();
 
   /* USER CODE BEGIN MspInit 1 */
 
