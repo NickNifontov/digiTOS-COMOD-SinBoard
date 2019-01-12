@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2019 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -51,18 +51,18 @@
 /* USER CODE END Includes */
 
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
-extern TIM_HandleTypeDef htim14;
-extern TIM_HandleTypeDef htim16;
+extern TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
 void MX_TIM1_Init(void);
+void MX_TIM2_Init(void);
 void MX_TIM3_Init(void);
-void MX_TIM14_Init(void);
-void MX_TIM16_Init(void);
+void MX_TIM4_Init(void);
                         
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                         

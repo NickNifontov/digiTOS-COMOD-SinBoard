@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name digiTOS-COMOD-SinBoard-rescue)(type Legacy)(uri ${KIPRJMOD}/digiTOS-COMOD-SinBoard-rescue.lib)(options "")(descr ""))
-)

@@ -11,7 +11,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2019 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -48,7 +48,7 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx_hal.h"
+#include "stm32f1xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -78,10 +78,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define PF0_Pin GPIO_PIN_0
-#define PF0_GPIO_Port GPIOF
-#define PF1_Pin GPIO_PIN_1
-#define PF1_GPIO_Port GPIOF
+#define OSC32_IN_Pin GPIO_PIN_14
+#define OSC32_IN_GPIO_Port GPIOC
+#define OSC32_OUT_Pin GPIO_PIN_15
+#define OSC32_OUT_GPIO_Port GPIOC
+#define OSC_IN_Pin GPIO_PIN_0
+#define OSC_IN_GPIO_Port GPIOD
+#define OSC_OUT_Pin GPIO_PIN_1
+#define OSC_OUT_GPIO_Port GPIOD
 #define V_OUT_Pin GPIO_PIN_1
 #define V_OUT_GPIO_Port GPIOA
 #define C_OUT_Pin GPIO_PIN_2
@@ -100,28 +104,38 @@ void Error_Handler(void);
 #define LED2_GPIO_Port GPIOB
 #define CH4_Pin GPIO_PIN_1
 #define CH4_GPIO_Port GPIOB
+#define LED3_Pin GPIO_PIN_12
+#define LED3_GPIO_Port GPIOB
+#define LED4_Pin GPIO_PIN_13
+#define LED4_GPIO_Port GPIOB
+#define LED1_Pin GPIO_PIN_14
+#define LED1_GPIO_Port GPIOB
+#define CALIB_MODE_Pin GPIO_PIN_15
+#define CALIB_MODE_GPIO_Port GPIOB
 #define DEV_MODE1_Pin GPIO_PIN_8
 #define DEV_MODE1_GPIO_Port GPIOA
-#define TX_Pin GPIO_PIN_9
-#define TX_GPIO_Port GPIOA
 #define CH3_Pin GPIO_PIN_10
 #define CH3_GPIO_Port GPIOA
-#define RX_Pin GPIO_PIN_15
-#define RX_GPIO_Port GPIOA
-#define LED1_Pin GPIO_PIN_3
-#define LED1_GPIO_Port GPIOB
+#define CALIB_V_Pin GPIO_PIN_11
+#define CALIB_V_GPIO_Port GPIOA
+#define CALIB_I_Pin GPIO_PIN_12
+#define CALIB_I_GPIO_Port GPIOA
+#define DIO_Pin GPIO_PIN_13
+#define DIO_GPIO_Port GPIOA
+#define CLK_Pin GPIO_PIN_14
+#define CLK_GPIO_Port GPIOA
+#define DI_Pin GPIO_PIN_15
+#define DI_GPIO_Port GPIOA
+#define DO_TRACE_Pin GPIO_PIN_3
+#define DO_TRACE_GPIO_Port GPIOB
+#define NRST_Pin GPIO_PIN_4
+#define NRST_GPIO_Port GPIOB
 #define RST_Pin GPIO_PIN_5
 #define RST_GPIO_Port GPIOB
-#define LED3_Pin GPIO_PIN_6
-#define LED3_GPIO_Port GPIOB
-#define LED4_Pin GPIO_PIN_7
-#define LED4_GPIO_Port GPIOB
-#define CALIBV_Pin GPIO_PIN_11
-#define CALIBV_GPIO_Port GPIOA
-#define CALIBI_Pin GPIO_PIN_12
-#define CALIBI_GPIO_Port GPIOA
-#define CALIBMODE_Pin GPIO_PIN_0
-#define CALIBMODE_GPIO_Port GPIOA
+#define TX_Pin GPIO_PIN_6
+#define TX_GPIO_Port GPIOB
+#define RX_Pin GPIO_PIN_7
+#define RX_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

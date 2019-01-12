@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2019 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -65,46 +65,54 @@ void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOF_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LED2_Pin|LED1_Pin|RST_Pin|LED3_Pin 
-                          |LED4_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, LED2_Pin|LED3_Pin|LED4_Pin|LED1_Pin 
+                          |RST_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : PA0 PA11 PA12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_11|GPIO_PIN_12;
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA0 PA9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PAPin PAPin PAPin */
-  GPIO_InitStruct.Pin = FAULT_FEEDBACK_Pin|DEV_MODE2_Pin|DEV_MODE1_Pin|CALIBV_Pin|CALIBI_Pin|CALIBMODE_Pin;
+  /*Configure GPIO pins : PAPin PAPin PAPin PAPin 
+                           PAPin */
+  GPIO_InitStruct.Pin = FAULT_FEEDBACK_Pin|DEV_MODE2_Pin|DEV_MODE1_Pin|CALIB_V_Pin 
+                          |CALIB_I_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin 
                            PBPin */
-  GPIO_InitStruct.Pin = LED2_Pin|LED1_Pin|RST_Pin|LED3_Pin 
-                          |LED4_Pin;
+  GPIO_InitStruct.Pin = LED2_Pin|LED3_Pin|LED4_Pin|LED1_Pin 
+                          |RST_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PB4 */
-  GPIO_InitStruct.Pin = GPIO_PIN_4;
+  /*Configure GPIO pins : PB2 PB10 PB11 PB8 
+                           PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_8 
+                          |GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /**/
-  HAL_I2CEx_EnableFastModePlus(SYSCFG_CFGR1_I2C_FMP_PB6);
-
-  /**/
-  HAL_I2CEx_EnableFastModePlus(SYSCFG_CFGR1_I2C_FMP_PB7);
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = CALIB_MODE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(CALIB_MODE_GPIO_Port, &GPIO_InitStruct);
 
 }
 

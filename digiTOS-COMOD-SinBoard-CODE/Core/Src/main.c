@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2019 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -51,13 +51,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "digiTOS-Lib/digiTOS-Generator.h"
-#include "digiTOS-Lib/digiTOS-Core.h"
-#include "digiTOS-Lib/digiTOS-Sinus.h"
-#include "digiTOS-Lib/digiTOS-ADC.h"
-#include <stdio.h>
-#include <string.h>
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,7 +76,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -100,13 +92,6 @@ static void MX_NVIC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
-		__HAL_RCC_DBGMCU_CLK_ENABLE();
-	    DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_WWDG_STOP;
-	    DBGMCU->APB2FZ = 0xFFFFFFFF;
-	    DBGMCU->APB1FZ = 0xFFFFFFFF;
-	    DBGMCU->CR |=DBGMCU_CR_DBG_STOP;
-	    __HAL_DBGMCU_FREEZE_IWDG();
 
   /* USER CODE END 1 */
 
@@ -130,169 +115,25 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_CRC_Init();
-  MX_ADC_Init();
   MX_IWDG_Init();
   MX_TIM1_Init();
-  MX_TIM14_Init();
-  MX_USART1_UART_Init();
   MX_TIM3_Init();
-  MX_TIM16_Init();
-
-  /* Initialize interrupts */
-  MX_NVIC_Init();
+  MX_TIM4_Init();
+  MX_TIM2_Init();
+  MX_USART1_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-
-  // NEW IWDG
-  DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_16s);
-  ResetWDG();
-
-  //Init ADC, start DMA
-  //and prepare all data
-  StartADC();
-
-
-  SinWave=swNOP;
-
-  // Start generator and then stop to setup default GND level for transistor and dead times
-  PWM_50Hz_Init();
-  PWM_50Hz_ON();
-  PWM_50Hz_OFF();
-
-  PWM_Sinus_Init();
-  PWM_Sinus_ON();
-  PWM_Sinus_OFF();
-
-  ResetWDG();
-
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin,GPIO_PIN_SET);
-
-
-  HAL_TIM_Base_Start(&htim16);
-  HAL_TIM_Base_Start_IT(&htim16);
-
-  BoardStatus=sBoot;
-  TIM16->ARR=sBoot_Delay;
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  ResetWDG();
-
-  buttonInit(&CALIB_V, CALIBV_GPIO_Port, CALIBV_Pin, GPIO_PIN_RESET, 4000, 10000);
-  buttonInit(&CALIB_I, CALIBI_GPIO_Port, CALIBI_Pin, GPIO_PIN_RESET, 4000, 10000);
-  buttonInit(&CALIB_MODE, CALIBMODE_GPIO_Port, CALIBMODE_Pin, GPIO_PIN_RESET, 30, 2000);
-
-  buttonInit(&DevModeKey, DEV_MODE1_GPIO_Port, DEV_MODE1_Pin, GPIO_PIN_RESET, 30, 2000);
-  buttonInit(&DevModeKey2, DEV_MODE2_GPIO_Port, DEV_MODE2_Pin, GPIO_PIN_RESET, 30, 1000);
-  buttonInit(&FaultFlag, FAULT_FEEDBACK_GPIO_Port, FAULT_FEEDBACK_Pin, GPIO_PIN_RESET, 30, 1000);
-  buttonUpdate(&DevModeKey);
-  buttonUpdate(&DevModeKey2);
-  buttonUpdate(&FaultFlag);
-  buttonUpdate(&CALIB_V);
-  buttonUpdate(&CALIB_I);
-  buttonUpdate(&CALIB_MODE);
-
-  HAL_Delay(500);
-
-  // Init EEPROM and read data
-             if (InitEEPROM()==0) {
-           	  strcpy(uart_buff,"NO EEPROM\r\n");
-           	  USE_DEF_CALIB();
-           	  //EEPROM_DATA[0]=250;
-           	  //StoreEEPROM(132,3636);
-           	  SerialPrintln(1);
-             } else {
-          	  USE_NEW_CALIB();
-           	  strcpy(uart_buff,"OK EEPROM\r\n");
-           	  SerialPrintln(1);
-             }
-
-
-  Get_Version();
-  SerialPrintln(1);
-
-
-  Get_ChipID();
-  SerialPrintln(1);
-
-  Get_FlashSize();
-  SerialPrintln(1);
-
-
-  ClearUART_Buff();
-
-  // Check for Calib Mode
-  if(buttonUpdate(&CALIB_MODE) == isPressed){
-	  strcpy(uart_buff,"CALIB MODE ENABLED\r\n");
-	  SerialPrintln(1);
-	  CalibMode=1;
-  } else {
-	  CalibMode=0;
-  }
-
-  buttonUpdate(&FaultFlag);
-  if(buttonUpdate(&DevModeKey) == isPressed){
-	strcpy(uart_buff,"DEV MODE - wait\r\n");
-	SerialPrintln(1);
-	ResetWDG();
-    HAL_Delay(500);
-	//if(buttonUpdate(&DevModeKey) == isPressedLong){
-	if(buttonUpdate(&DevModeKey) == isPressed){
-		//HAL_TIM_Base_Start_IT(&htim16);
-		strcpy(uart_buff,"DEV MODE - confirmed\r\n");
-	    SerialPrintln(1);
-		DevMode1=1;
-	}
-  }
-
-    strcpy(uart_buff,"Start Loop\r\n");
-    SerialPrintln(1);
-
-  	BoardStatus=sGEN;
-  	TIM16->ARR=sDEF_Delay;
-
-    //Start loop
-      HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin,GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin,GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin,GPIO_PIN_RESET);
-
-      // Start PWM Sinus
-      //SinWave=swStart;
-
-       buttonUpdate(&FaultFlag);
-       buttonUpdate(&DevModeKey2);
-       HAL_Delay(500);
-       if(buttonUpdate(&DevModeKey2) == isPressedLong){
-    	   strcpy(uart_buff,"Start GENERATOR\r\n");
-    	   SerialPrintln(1);
-    	   //PWM_50Hz_ON();
-    	   //PWM_Sinus_ON();
-       }
-
-
-       buttonUpdate(&FaultFlag);
-       TIM14->PSC=SinResPSC;
-
-       HAL_TIM_Base_Start(&htim14);
-       HAL_TIM_Base_Start_IT(&htim14);
-
-
-    while (1)
-    {
+  while (1)
+  {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		if (UpdateAmp_FLAG==1) {
-			UpdateAmp_FLAG=2;//busy Flag
-			UpdateAmplitudeByV();
-			UpdateAmp_FLAG=0; // clear Flag
-		}
-    }
+  }
   /* USER CODE END 3 */
 }
 
@@ -308,16 +149,14 @@ void SystemClock_Config(void)
 
   /**Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI14|RCC_OSCILLATORTYPE_LSI
-                              |RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
-  RCC_OscInitStruct.HSI14CalibrationValue = 16;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
-  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -325,38 +164,22 @@ void SystemClock_Config(void)
   /**Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1;
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1;
-  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief NVIC Configuration.
-  * @retval None
-  */
-static void MX_NVIC_Init(void)
-{
-  /* DMA1_Channel2_3_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_3_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel2_3_IRQn);
-  /* RCC_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(RCC_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(RCC_IRQn);
-  /* FLASH_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(FLASH_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(FLASH_IRQn);
 }
 
 /* USER CODE BEGIN 4 */
@@ -383,7 +206,7 @@ void Error_Handler(void)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(char *file, uint32_t line)
+void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,

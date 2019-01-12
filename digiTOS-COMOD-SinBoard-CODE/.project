@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>digiTOS-COMOD-SinBoard-CODE</name>
-	<comment></comment>
+	<name>digiTOS-COMOD-SinBoard-CODE-F103</name>
+	<comment />
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>org.eclipse.mylyn.wikitext.ui.wikiTextValidationBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<triggers>clean,full,incremental,</triggers>
 			<arguments>
 				<dictionary>
 					<key>?children?</key>
@@ -19,7 +15,7 @@
 				</dictionary>
 				<dictionary>
 					<key>?name?</key>
-					<value></value>
+					<value />
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.append_environment</key>
@@ -27,7 +23,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildArguments</key>
-					<value></value>
+					<value />
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildCommand</key>
@@ -73,6 +69,8 @@
 		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
-		<nature>org.eclipse.mylyn.wikitext.ui.wikiTextNature</nature>
 	</natures>
+	<linkedResources>
+		
+	</linkedResources>
 </projectDescription>
