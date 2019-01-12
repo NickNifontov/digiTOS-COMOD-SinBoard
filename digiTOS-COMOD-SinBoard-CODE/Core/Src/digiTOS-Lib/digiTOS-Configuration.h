@@ -286,8 +286,7 @@ extern volatile float V_RATIO;
 
 
 // ************** SINUS DATA ************** //
-#define SinRes 240
-//#define SinRes 480
+#define SinRes 360
 
 #define MinSinusData 30
 #define MaxSinusData 970

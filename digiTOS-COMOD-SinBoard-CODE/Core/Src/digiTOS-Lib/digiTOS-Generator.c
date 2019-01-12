@@ -13,33 +13,33 @@
 
 
 ////////////////////// DEAD TIME - BEGIN //////////////////////
-//const int FOSC=48; // 48000 Hz
-//const long FTICK=10000; // 1 per 48000 Hz
+//const int FOSC=72; // 72000 Hz
+//const long FTICK=10000; // 1 per 72000 Hz
 //#define MIN_DEADTIME (unsigned long) (FTICK/FOSC);
 //#define MAX_DEADTIME (unsigned long) (255*MIN_DEADTIME);
 
-//#define DeadTime1X 					1 // Dead time base value 1/Fosc=1/48000=20.8ns
-//#define DeadTime2X 					1 //41,6ns
-//#define DeadTime4X					1 //83,2ns
-//#define DeadTime8X 					1 //166,4ns
-//#define DeadTime16X 				1 //332,8ns
-//#define DeadTime32X 				1 //665,6ns
-//#define DeadTime64X 				1 //1331,2ns
-//#define DeadTime128X 				1 //2662,4ns
+//#define DeadTime1X 					1 // Dead time base value 1/Fosc=1/72000=13.8ns
+//#define DeadTime2X 					1 //27,6ns
+//#define DeadTime4X					1 //55,2ns
+//#define DeadTime8X 					1 //110,4ns
+//#define DeadTime16X 				1 //220,8ns
+//#define DeadTime32X 				1 //441,6ns
+//#define DeadTime64X 				1 //883,2ns
+//#define DeadTime128X 				1 //1766,4ns
 void Set50HzDeadTimeNS(void) {
 
 		// Tdts = Tck_int //
 	    TIM1->CR1 &= ~TIM_CR1_CKD;
 	    TIM1->BDTR &= ~TIM_BDTR_DTG;
 
-	    //TIM1->BDTR  |= TIM_BDTR_DTG_7;//128x //2662,4ns
-	    TIM1->BDTR  |= TIM_BDTR_DTG_6;//64x //1331,2ns
-	    //TIM1->BDTR  |= TIM_BDTR_DTG_5;//32x //665,6ns
-	    TIM1->BDTR  |= TIM_BDTR_DTG_4;//16x //332,8ns
-	    TIM1->BDTR  |= TIM_BDTR_DTG_3;//8x //166,4ns
-	    TIM1->BDTR  |= TIM_BDTR_DTG_2;//4x //83,2ns
-	    TIM1->BDTR  |= TIM_BDTR_DTG_1;//2x  //41,6ns
-	    TIM1->BDTR  |= TIM_BDTR_DTG_0;//1x // Dead time base value 1/Fosc=1/48000=20.8ns
+	    TIM1->BDTR  |= TIM_BDTR_DTG_7;//128x //1766,4ns
+	    //TIM1->BDTR  |= TIM_BDTR_DTG_6;//64x //883,2ns
+	    //TIM1->BDTR  |= TIM_BDTR_DTG_5;//32x //441,6ns
+	    //TIM1->BDTR  |= TIM_BDTR_DTG_4;//16x //220,8ns
+	    TIM1->BDTR  |= TIM_BDTR_DTG_3;//8x //110,4ns
+	    TIM1->BDTR  |= TIM_BDTR_DTG_2;//4x //55,2ns
+	    TIM1->BDTR  |= TIM_BDTR_DTG_1;//2x  //27,6ns
+	    TIM1->BDTR  |= TIM_BDTR_DTG_0;//1x // Dead time base value 1/Fosc=1/72000=13.8ns
 }
 ////////////////////// DEAD TIME - END //////////////////////
 

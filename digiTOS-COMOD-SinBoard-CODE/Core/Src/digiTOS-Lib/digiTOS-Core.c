@@ -261,8 +261,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 }
 
 void ResetWDG() {
-	 HAL_IWDG_Refresh(&hiwdg);
-	 //IWDG->KR = 0x0000AAAAU;
+	 //HAL_IWDG_Refresh(&hiwdg);
+	 IWDG->KR = 0x0000AAAAU;
 }
 
 
