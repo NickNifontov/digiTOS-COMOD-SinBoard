@@ -87,8 +87,6 @@ void ResetV_data() {
 	#endif
 
 	 	//reset temp buffer
-	 	TempBuffer_Flag=0;
-
 	 	V_1_temp=0;
 	 	V_2_temp=0;
 	 	V_3_temp=0;
@@ -113,6 +111,8 @@ void ResetV_data() {
 	 		V_5_temp=0;
 	 		Vcnt_5_temp=0;
 	     #endif
+
+	 	TempBuffer_Flag=0;
 }
 
 float CheckAmp(float Value) {

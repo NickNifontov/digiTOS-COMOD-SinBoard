@@ -256,7 +256,7 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 
   sin_step=0;
 
-  sinStatus=0;ReadTempValue();
+  sinStatus=0;TempBuffer_Flag=0;ReadTempValue();
 
   TIM3->CCR2=0;TIM3->CCR1=0;
 
@@ -308,7 +308,7 @@ void TIM3_IRQHandler(void)
       	    //return;
          }
 
-   if  (TIM1->CNT>499) { sinStatus=1;ReadTempValue();} else { sinStatus=0;ReadTempValue();}
+   if  (TIM1->CNT>499) { sinStatus=1;TempBuffer_Flag=0;ReadTempValue();} else { sinStatus=0;TempBuffer_Flag=0;ReadTempValue();}
 
    if (sinStatus==0) {
 	   TIM3->CCR2=0;
