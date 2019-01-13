@@ -96,7 +96,7 @@ void PWM_50Hz_Init (void) {
 
 	/************************** Config PWM channel ************************************/
 
-	TIM1->PSC = 960-1; // div for clock: F = SYSCLK / [PSC + 1]
+	TIM1->PSC = 1440-1; // div for clock: F = SYSCLK / [PSC + 1]
 	TIM1->ARR = 999; // count to 1000
 	TIM1->CCR3 = 500; // duty cycle 50%
 	TIM1->CR1 &= ~TIM_CR1_DIR; // count up: 0 - up, 1 - down

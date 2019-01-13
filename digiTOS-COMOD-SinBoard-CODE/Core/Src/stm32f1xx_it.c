@@ -554,31 +554,29 @@ void TIM3_IRQHandler(void)
      		SinWave=swGEN;
      	}
 
+     		if  ((TIM1->CNT>=497) && (sinStatus==0) ){
+     					sinStatus=1;
+     		      	  	sin_step=0;
+     		      	  	TIM3->CCR1=0;
+     		      	  	TIM3->CCR2=0;
+     		      	  	ReadTempValue();
+     		      	  	if (UpdateAmp_FLAG==0) {
+     		      	  		UpdateAmp_FLAG=1;
+     		      	    }
+     		  }
 
-     	 if  ((TIM1->CNT>=500) && (sinStatus==0) ){
-      	  	sinStatus=1;
-      	  	sin_step=0;
-      	  	TIM3->CCR1=0;
-      	  	TIM3->CCR2=0;
-      	  	ReadTempValue();
-      	  	if (UpdateAmp_FLAG==0) {
-      	  		UpdateAmp_FLAG=1;
-      	    }
-      	  	return;
-      	  }
+     		 if  ((TIM1->CNT>=998) && (sinStatus==1) ){
+     			 	 	 	sinStatus=0;
+     			      		sin_step=0;
+     			      		TIM3->CCR1=0;
+     			      		TIM3->CCR2=0;
+     			      		ReadTempValue();
+     			      	   	if (UpdateAmp_FLAG==0) {
+     			      	    	UpdateAmp_FLAG=1;
+     			      	    }
+     			      	   	return;
+     	}
 
-
-      	 if  ( (TIM1->CNT<500) && (sinStatus==1) ){
-      		sinStatus=0;
-      		sin_step=0;
-      		TIM3->CCR1=0;
-      		TIM3->CCR2=0;
-      		ReadTempValue();
-      	   	if (UpdateAmp_FLAG==0) {
-      	    	UpdateAmp_FLAG=1;
-      	    }
-      	   	return;
-      }
 
       	if (sinStatus==0) {
       		   TIM3->CCR2=0;
@@ -589,6 +587,8 @@ void TIM3_IRQHandler(void)
       		   TIM3->CCR1=0;
       		   TIM3->CCR2=GetSinus();
       	   }
+
+      	 sin_step++;
 
       	   	   	   	   	  //if (CheckV_FLAG==0) {
       	    	  	  	//	CheckV_FLAG=1;
@@ -667,7 +667,7 @@ void TIM4_IRQHandler(void)
     	  	  	  //if (CheckV_FLAG==0) {
     	  	  	//	CheckV_FLAG=1;
     	  	  	 // }
-    	  	  	  sin_step++;
+    	  	  	  //sin_step++;
 
 
 
