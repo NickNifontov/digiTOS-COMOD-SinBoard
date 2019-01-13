@@ -44,6 +44,9 @@ extern volatile uint32_t V_Out_Cnt_temp;
 
 
 // GLOBAL
+extern volatile uint16_t Print_FLAG;
+//0 false or 1 true
+
 extern volatile uint16_t Fault_FLAG;
 //0 false or 1 true
 

@@ -7,6 +7,7 @@
 
 #include "digiTOS-Core.h"
 
+volatile uint16_t Print_FLAG=0;
 volatile uint16_t Fault_FLAG=0;
 volatile uint16_t GEN_FLAG=0;
 

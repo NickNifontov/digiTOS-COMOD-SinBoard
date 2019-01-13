@@ -424,7 +424,11 @@ void TIM2_IRQHandler(void)
         			  }
         		  }
 
-        		  	PrintCurrentState();
+        		  	//PrintCurrentState();
+        		  	if (Print_FLAG==0) {
+        		  		Print_FLAG=1;
+        		  	}
+
   				#ifdef AMP_PROTECTION
         		  	  if (AMP_BLOCKED==1) {
         		  		AMP_PROTECTION_CNT_BEFORESTART++;
@@ -491,7 +495,10 @@ void TIM2_IRQHandler(void)
         		  	//}
       		  break;
         	  case sFaultFlag:
-        		  	  	PrintCurrentState();
+        		  	  //PrintCurrentState();
+        		      if (Print_FLAG==0) {
+        		    	  Print_FLAG=1;
+        		      }
   					if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)
   						//	|| (RstCnt<=DelaySecBeforeAttemRst)
   							) {

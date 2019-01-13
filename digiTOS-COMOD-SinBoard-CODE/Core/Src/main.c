@@ -314,9 +314,8 @@ int main(void)
 		  //continue;
 	  //}
 	  //
-	  asm("NOP");
 	  if (UpdateAmp_FLAG==1) {
-	  			UpdateAmp_FLAG=0;//busy Flag
+	  			UpdateAmp_FLAG=2;//busy Flag
 	  			UpdateAmplitudeByV();
 	  			UpdateAmp_FLAG=0; // clear Flag
 	  			//continue;
@@ -332,6 +331,11 @@ int main(void)
 		  GEN_FLAG=1;
 	  } else {
 		  GEN_FLAG=0;
+	  }
+	  //
+	  if (Print_FLAG==1) {
+		  PrintCurrentState();
+		  Print_FLAG=0;
 	  }
 
   }

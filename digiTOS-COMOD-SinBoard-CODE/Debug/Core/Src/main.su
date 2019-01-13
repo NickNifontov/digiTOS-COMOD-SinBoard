@@ -1,5 +1,5 @@
 main.c:94:6:HAL_ADC_ConvCpltCallback	0	static
-main.c:345:6:SystemClock_Config	88	static
+main.c:349:6:SystemClock_Config	88	static
 main.c:105:5:main	16	static
-main.c:394:6:Error_Handler	0	static
-main.c:410:6:assert_failed	0	static
+main.c:398:6:Error_Handler	0	static
+main.c:414:6:assert_failed	0	static

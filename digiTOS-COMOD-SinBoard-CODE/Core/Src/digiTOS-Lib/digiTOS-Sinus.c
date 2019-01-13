@@ -83,7 +83,7 @@ float GetApmlitude() {
 }
 
 uint16_t GetSinus() {
-	if (sin_step >= SinRes) {
+	if (sin_step >= SinRes-1) {
 		//sin_step = 0;
 		return 0;
 	}
