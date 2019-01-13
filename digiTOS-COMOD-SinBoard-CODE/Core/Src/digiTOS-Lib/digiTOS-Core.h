@@ -49,6 +49,12 @@ extern volatile uint16_t UpdateAmp_FLAG;
 // 1- need to perform opeartion
 // 2-operation in proccess now
 
+
+extern volatile uint16_t CheckV_FLAG;
+// 0 - unset
+// 1- need to perform opeartion
+// 2-operation in proccess now
+
 // EEPROM
 extern int EEPROM_FLAG;
 int InitEEPROM();

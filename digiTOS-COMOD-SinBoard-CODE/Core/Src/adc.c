@@ -60,7 +60,7 @@ void MX_ADC1_Init(void)
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 3;
 
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
@@ -79,6 +79,8 @@ void MX_ADC1_Init(void)
   	/**Configure for the selected ADC regular channel to be converted.
     */
     sConfig.Channel = ADC_CHANNEL_2;
+    sConfig.Rank = ADC_REGULAR_RANK_2;
+    sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
     if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
     {
       Error_Handler();
@@ -88,6 +90,8 @@ void MX_ADC1_Init(void)
     	/**Configure for the selected ADC regular channel to be converted.
         */
         sConfig.Channel = ADC_CHANNEL_3;
+        sConfig.Rank = ADC_REGULAR_RANK_5;
+        sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
         if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
         {
           Error_Handler();
@@ -96,6 +100,8 @@ void MX_ADC1_Init(void)
         /**Configure for the selected ADC regular channel to be converted.
         */
         sConfig.Channel = ADC_CHANNEL_4;
+        sConfig.Rank = ADC_REGULAR_RANK_6;
+        sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
         if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
         {
         	Error_Handler();
@@ -106,6 +112,8 @@ void MX_ADC1_Init(void)
     /**Configure for the selected ADC regular channel to be converted.
     */
     sConfig.Channel = ADC_CHANNEL_5;
+    sConfig.Rank = ADC_REGULAR_RANK_3;
+    sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
     if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
     {
       Error_Handler();
@@ -117,6 +125,8 @@ void MX_ADC1_Init(void)
 		  /**Configure for the selected ADC regular channel to be converted.
 		  */
 		  sConfig.Channel = ADC_CHANNEL_VREFINT;
+		  sConfig.Rank = ADC_REGULAR_RANK_4;
+		  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
 		  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 		  {
 			Error_Handler();

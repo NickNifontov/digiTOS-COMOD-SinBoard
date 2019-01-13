@@ -1,4 +1,4 @@
-main.c:304:6:SystemClock_Config	88	static
+main.c:322:6:SystemClock_Config	88	static
 main.c:100:5:main	16	static
-main.c:353:6:Error_Handler	0	static
-main.c:369:6:assert_failed	0	static
+main.c:371:6:Error_Handler	0	static
+main.c:387:6:assert_failed	0	static

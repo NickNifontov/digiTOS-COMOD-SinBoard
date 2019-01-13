@@ -221,6 +221,7 @@ void CalcDC_Average() {
 }
 
 void ReadTempValue() {
+		return;
 		if (TempBuffer_Flag==1) {
 			return;
 		}
@@ -375,7 +376,6 @@ void CheckV_Feedback() {
 			#endif
 
 			//
-
 
 	    //Calc V_out data AC coltage
 		V_Out_Cnt++;

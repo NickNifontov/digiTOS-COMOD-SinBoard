@@ -145,7 +145,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   	// NEW IWDG
-    DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_16s);
+    DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_8s);
     ResetWDG();
 
     //Init ADC, start DMA
@@ -157,11 +157,12 @@ int main(void)
 
     // Start generator and then stop to setup default GND level for transistor and dead times
     PWM_50Hz_Init();
-    PWM_50Hz_ON();
-    PWM_50Hz_OFF();
-
     PWM_Sinus_Init();
+
+    PWM_50Hz_ON();
     PWM_Sinus_ON();
+
+    PWM_50Hz_OFF();
     PWM_Sinus_OFF();
 
     ResetWDG();
@@ -172,8 +173,8 @@ int main(void)
     HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin,GPIO_PIN_SET);
 
 
-    HAL_TIM_Base_Start(&htim4);
-    HAL_TIM_Base_Start_IT(&htim4);
+    HAL_TIM_Base_Start(&htim2);
+    HAL_TIM_Base_Start_IT(&htim2);
 
     BoardStatus=sBoot;
     TIM2->ARR=sBoot_Delay;
@@ -254,8 +255,18 @@ int main(void)
         strcpy(uart_buff,"Start Loop\r\n");
         SerialPrintln(1);
 
+        strcpy(uart_buff,"NOP\r\n");
+                   SerialPrintln(1);
+
       	BoardStatus=sGEN;
+
+      	strcpy(uart_buff,"NOP\r\n");
+      	           SerialPrintln(1);
+
       	TIM2->ARR=sDEF_Delay;
+
+      	strcpy(uart_buff,"NOP\r\n");
+      	           SerialPrintln(1);
 
         //Start loop
           HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
@@ -276,6 +287,8 @@ int main(void)
         	   //PWM_Sinus_ON();
            }
 
+           strcpy(uart_buff,"NOP\r\n");
+           SerialPrintln(1);
 
            buttonUpdate(&FaultFlag);
            TIM4->PSC=SinResPSC;
@@ -288,9 +301,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if (CheckV_FLAG==1) {
+		  CheckV_FLAG=2;//busy Flag
+		  //CheckV_Feedback();
+		  CheckV_FLAG=0; // clear Flag
+	  }
 	  if (UpdateAmp_FLAG==1) {
 	  			UpdateAmp_FLAG=2;//busy Flag
-	  			UpdateAmplitudeByV();
+	  			//UpdateAmplitudeByV();
 	  			UpdateAmp_FLAG=0; // clear Flag
 	  }
   }

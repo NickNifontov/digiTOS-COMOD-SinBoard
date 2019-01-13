@@ -8,6 +8,7 @@
 #include "digiTOS-Core.h"
 
 volatile uint16_t UpdateAmp_FLAG=0;
+volatile uint16_t CheckV_FLAG=0;
 
 volatile enum fBoardStatus BoardStatus=sBoot;
 volatile int DevMode1=0;
@@ -261,8 +262,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 }
 
 void ResetWDG() {
-	 //HAL_IWDG_Refresh(&hiwdg);
-	 IWDG->KR = 0x0000AAAAU;
+	 HAL_IWDG_Refresh(&hiwdg);
+	 //IWDG->KR = 0x0000AAAAU;
 }
 
 

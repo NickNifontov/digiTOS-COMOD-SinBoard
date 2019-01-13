@@ -104,7 +104,7 @@ void Error_Handler(void);
 #define LED2_GPIO_Port GPIOB
 #define CH4_Pin GPIO_PIN_1
 #define CH4_GPIO_Port GPIOB
-#define DEV_MODE2_Pin GPIO_PIN_2
+#define DEV_MODE2_Pin GPIO_PIN_9
 #define DEV_MODE2_GPIO_Port GPIOB
 #define FAULT_FEEDBACK_Pin GPIO_PIN_10
 #define FAULT_FEEDBACK_GPIO_Port GPIOB

@@ -325,6 +325,8 @@ void TIM1_BRK_IRQHandler(void)
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
 
+  return;
+
   TIM3->CNT=0;
 
   //sin_step=0;
@@ -353,6 +355,8 @@ void TIM1_UP_IRQHandler(void)
   /* USER CODE BEGIN TIM1_UP_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
+
+  return;
 
   if  (((TIM1->CNT==0) || (TIM1->CNT==999) ) && (sinStatus==1) ){
      	  	ReadTempValue();
@@ -525,6 +529,7 @@ void TIM3_IRQHandler(void)
 
   __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
 
+
   	if ((SinWave==swStop) || (SinWave==swStart) || (SinWave==swNOP))  {
    		TIM3->CCR2=0;
    		TIM3->CCR1=0;
@@ -537,6 +542,8 @@ void TIM3_IRQHandler(void)
      	if (SinWave==swStart)  {
      		SinWave=swGEN;
      	}
+
+     	 return;
 
      	/*if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
         	    sin_step=0;
@@ -611,6 +618,7 @@ void TIM4_IRQHandler(void)
   __HAL_TIM_CLEAR_FLAG(&htim4, TIM_FLAG_UPDATE);
 
 
+
     if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
   	  BoardStatus=sFaultFlag;
   	  FaultWaitCnt=0;
@@ -623,11 +631,10 @@ void TIM4_IRQHandler(void)
   	  //BoardStatus=sGEN;
     }
 
+
+
     	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)
     			  && (DC_BLOCKED==0) && (VOUT_BLOCKED==0)  && (IOUT_BLOCKED==0) && (EEPROM_FLAG==0)) {
-  	//#ifndef AMP_PROTECTION
-    	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
-  	//#endif
     	  sin_step=0;
     	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
       		SinWave=swStart;
@@ -640,6 +647,7 @@ void TIM4_IRQHandler(void)
       		return;
       	  }
         }
+
 
     if (SinWave==swGEN) {
   				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
@@ -662,7 +670,10 @@ void TIM4_IRQHandler(void)
     	  	  	  //	 UpdateAmplitudeByV();
     	  	  	  //}
 
-    	  	  	  CheckV_Feedback();
+    	  	  	  //CheckV_Feedback();
+    	  	  	  if (CheckV_FLAG==0) {
+    	  	  		CheckV_FLAG=1;
+    	  	  	  }
     	  	  	  sin_step++;
 
 
