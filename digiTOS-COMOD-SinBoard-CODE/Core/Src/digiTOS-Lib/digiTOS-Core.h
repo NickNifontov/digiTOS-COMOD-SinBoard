@@ -44,13 +44,19 @@ extern volatile uint32_t V_Out_Cnt_temp;
 
 
 // GLOBAL
+extern volatile uint16_t Fault_FLAG;
+//0 false or 1 true
+
+extern volatile uint16_t GEN_FLAG;
+//0 false or 1 true
+
 extern volatile uint16_t UpdateAmp_FLAG;
 // 0 - unset
 // 1- need to perform opeartion
 // 2-operation in proccess now
 
 
-extern volatile uint16_t CheckV_FLAG;
+//extern volatile uint16_t CheckV_FLAG;
 // 0 - unset
 // 1- need to perform opeartion
 // 2-operation in proccess now

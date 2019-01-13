@@ -55,7 +55,7 @@ void MX_ADC1_Init(void)
   /**Common config 
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
@@ -80,7 +80,7 @@ void MX_ADC1_Init(void)
     */
     sConfig.Channel = ADC_CHANNEL_2;
     sConfig.Rank = ADC_REGULAR_RANK_2;
-    sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+    //sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
     if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
     {
       Error_Handler();
@@ -90,8 +90,8 @@ void MX_ADC1_Init(void)
     	/**Configure for the selected ADC regular channel to be converted.
         */
         sConfig.Channel = ADC_CHANNEL_3;
-        sConfig.Rank = ADC_REGULAR_RANK_5;
-        sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+        sConfig.Rank = ADC_REGULAR_RANK_1;
+        sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
         if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
         {
           Error_Handler();
@@ -100,8 +100,8 @@ void MX_ADC1_Init(void)
         /**Configure for the selected ADC regular channel to be converted.
         */
         sConfig.Channel = ADC_CHANNEL_4;
-        sConfig.Rank = ADC_REGULAR_RANK_6;
-        sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+        sConfig.Rank = ADC_REGULAR_RANK_1;
+        sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
         if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
         {
         	Error_Handler();
@@ -113,7 +113,7 @@ void MX_ADC1_Init(void)
     */
     sConfig.Channel = ADC_CHANNEL_5;
     sConfig.Rank = ADC_REGULAR_RANK_3;
-    sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+    //sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
     if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
     {
       Error_Handler();
@@ -125,8 +125,8 @@ void MX_ADC1_Init(void)
 		  /**Configure for the selected ADC regular channel to be converted.
 		  */
 		  sConfig.Channel = ADC_CHANNEL_VREFINT;
-		  sConfig.Rank = ADC_REGULAR_RANK_4;
-		  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+		  sConfig.Rank = ADC_REGULAR_RANK_1;
+		  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
 		  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 		  {
 			Error_Handler();
@@ -158,7 +158,6 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     GPIO_InitStruct.Pin = V_OUT_Pin|C_OUT_Pin|V_IN_Pin|V_IN_WAVE_DETECTOR_Pin 
                           |DC_FEEDBACK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     /* ADC1 DMA Init */
@@ -167,8 +166,8 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     hdma_adc1.Init.Direction = DMA_PERIPH_TO_MEMORY;
     hdma_adc1.Init.PeriphInc = DMA_PINC_DISABLE;
     hdma_adc1.Init.MemInc = DMA_MINC_ENABLE;
-    hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-    hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+    hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+    hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
     hdma_adc1.Init.Mode = DMA_CIRCULAR;
     hdma_adc1.Init.Priority = DMA_PRIORITY_MEDIUM;
     if (HAL_DMA_Init(&hdma_adc1) != HAL_OK)

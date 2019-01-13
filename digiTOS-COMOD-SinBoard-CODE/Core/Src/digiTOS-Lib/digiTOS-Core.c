@@ -7,8 +7,11 @@
 
 #include "digiTOS-Core.h"
 
+volatile uint16_t Fault_FLAG=0;
+volatile uint16_t GEN_FLAG=0;
+
 volatile uint16_t UpdateAmp_FLAG=0;
-volatile uint16_t CheckV_FLAG=0;
+//volatile uint16_t CheckV_FLAG=0;
 
 volatile enum fBoardStatus BoardStatus=sBoot;
 volatile int DevMode1=0;
@@ -313,7 +316,7 @@ void PrintCurrentState() {
 								#ifdef USE_VREF
 								(uint16_t) (VDDA_Actual),
 								#endif
-	      		  				(uint16_t) (100*Sine_Amplitude_1),
+								(uint16_t) (100*Sine_Amplitude_1),
 	      		  				(uint16_t) (100*Sine_Amplitude_2),
 								(uint16_t) (100*Sine_Amplitude_3),
 								(uint16_t) (100*Sine_Amplitude_4),

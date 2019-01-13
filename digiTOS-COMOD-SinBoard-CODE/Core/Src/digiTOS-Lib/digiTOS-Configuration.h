@@ -16,6 +16,7 @@
 
 // ************** GLOBAL SETTINGS - digiTOS ************** //
 //#define USE_V_IN_SENSOR //detect V_IN voltage of AC 220v
+#define OFF_V_IN_SENSOR //detect V_IN voltage of AC 220v
 
 #define VOLTAGE_ETALONE 	230 // etalone for calibartion in Volts
 #define POWER_ETALONE 	1000 // etalone for calibartion in Watts
@@ -25,8 +26,8 @@
 #define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 //#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 
-#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
-//#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+//#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
 
 
 #define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
@@ -134,7 +135,7 @@
 #endif
 
 #ifndef VOUT_PROTECTION
-	VOUT_BLOCKED 0
+	#define  VOUT_BLOCKED 0
 #endif
 
 
@@ -184,7 +185,7 @@
 // Channel2=		DC_FEEDBACK			PA5
 #endif
 
-extern volatile uint16_t ADC_Data[ADC_ChannelCnt]; // ADC DMA's collected data
+extern volatile uint32_t ADC_Data[ADC_ChannelCnt]; // ADC DMA's collected data
 extern volatile uint32_t ADC_Cnt[ADC_ChannelCnt];  // count of collected data to calculate average
 
 extern volatile uint32_t V_1;  // Data for Slice 1 of Sinus form

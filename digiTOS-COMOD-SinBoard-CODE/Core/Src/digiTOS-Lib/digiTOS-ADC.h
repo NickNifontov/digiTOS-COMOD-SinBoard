@@ -26,7 +26,6 @@ void CalcAc_V_ByWave();
 void CalcAc_I_ByWave();
 void CalcDC_Average();
 void ReadTempValue();
-extern volatile uint16_t TempBuffer_Flag;
 //******* AMPLITUDE **********//
 
 

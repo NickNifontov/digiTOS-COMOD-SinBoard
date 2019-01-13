@@ -36,7 +36,7 @@
 #endif
 
 // ************** V_OUT SECTION ************** //
-volatile uint16_t ADC_Data[ADC_ChannelCnt];
+volatile uint32_t ADC_Data[ADC_ChannelCnt];
 volatile uint32_t ADC_Cnt[ADC_ChannelCnt];
 
 volatile uint32_t V_1=V1_etalon;

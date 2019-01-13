@@ -319,15 +319,13 @@ void TIM1_BRK_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_BRK_IRQn 0 */
 
+	TIM3->CNT=0;
+
   /* USER CODE END TIM1_BRK_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_BRK_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
-
-  return;
-
-  TIM3->CNT=0;
 
   //sin_step=0;
 
@@ -356,29 +354,34 @@ void TIM1_UP_IRQHandler(void)
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
 
-  return;
-
-  if  (((TIM1->CNT==0) || (TIM1->CNT==999) ) && (sinStatus==1) ){
-     	  	ReadTempValue();
+  /*if  ((TIM1->CNT>=0) && (TIM1->CNT<=499)  && (sinStatus==1) ){
        	  	sinStatus=0;
+       	  	sin_step=0;
        	  	TIM3->CCR2=0;
        	  	if (UpdateAmp_FLAG==0) {
        	  		UpdateAmp_FLAG=1;
        	    }
-       	  	sin_step=0;
        	  	return;
    }
 
-  if  ((TIM1->CNT==500) && (sinStatus==0) ){
-      	  		ReadTempValue();
-        	  	sinStatus=0;
+  if  ((TIM1->CNT>=500) && (sinStatus==0) ){
+        	  	sinStatus=1;
+        	  	sin_step=0;
         	  	TIM3->CCR1=0;
         	  	if (UpdateAmp_FLAG==0) {
         	  		UpdateAmp_FLAG=1;
         	    }
-        	  	sin_step=0;
         	  	return;
-    }
+    }*/
+
+
+          	  	sinStatus=0;
+          	  	sin_step=0;
+          	  	TIM3->CCR1=0;
+          	    TIM3->CCR2=0;
+          	  	if (UpdateAmp_FLAG==0) {
+          	  		UpdateAmp_FLAG=1;
+          	    }
 
   /* USER CODE END TIM1_UP_IRQn 1 */
 }
@@ -429,7 +432,9 @@ void TIM2_IRQHandler(void)
         		  			AMP_PROTECTION_CNT_BEFORESTART=0;
         		  			AMP_BLOCKED=0;
         		  			AMP_PROTECTION_CNT=0;
-        		  			SetSoftstart();
+							#ifdef AMP_CORRECTION_TYPE_STEP
+        		  				SetSoftstart();
+							#endif
         		  		}
         		  	  }
   				#endif
@@ -441,7 +446,9 @@ void TIM2_IRQHandler(void)
         		  			VOUT_PROTECTION_CNT_BEFORESTART=0;
         		  			VOUT_BLOCKED=0;
         		  			VOUT_PROTECTION_CNT=0;
-        		  			SetSoftstart();
+							#ifdef AMP_CORRECTION_TYPE_STEP
+									SetSoftstart();
+							#endif
         		  		}
         		  	  }
   				#endif
@@ -453,7 +460,9 @@ void TIM2_IRQHandler(void)
         		  			IOUT_PROTECTION_CNT_BEFORESTART=0;
         		  			IOUT_BLOCKED=0;
         		  			IOUT_PROTECTION_CNT=0;
-        		  			SetSoftstart();
+							#ifdef AMP_CORRECTION_TYPE_STEP
+									SetSoftstart();
+							#endif
         		  		}
         		  	  }
   				#endif
@@ -466,7 +475,9 @@ void TIM2_IRQHandler(void)
   							DC_PROTECTION_CNT_BEFORESTART=0;
   							DC_BLOCKED=0;
   							DC_PROTECTION_CNT=0;
-  							SetSoftstart();
+							#ifdef AMP_CORRECTION_TYPE_STEP
+									SetSoftstart();
+							#endif
 
   						}
   					  } else {
@@ -543,51 +554,29 @@ void TIM3_IRQHandler(void)
      		SinWave=swGEN;
      	}
 
-     	 return;
 
-     	/*if  ( (TIM1->CNT==498) || (TIM1->CNT==998) )  {
-        	    sin_step=0;
-        	    TIM3->CCR1=0;
-        	    TIM3->CCR2=0;
-        	    if (UpdateAmp_FLAG==0) {
-        	    	UpdateAmp_FLAG=1;
-        	    }
-        	    sin_step=0;
-        	    TIM3->CCR1=0;
-        	    TIM3->CCR2=0;
-        	    //return;
-           }
-
-     if  (TIM1->CNT>499) { sinStatus=1;TempBuffer_Flag=0;ReadTempValue();} else { sinStatus=0;TempBuffer_Flag=0;ReadTempValue();}
-
-     if (sinStatus==0) {
-  	   TIM3->CCR2=0;
-  	   TIM3->CCR1=GetSinus();
-     }
-     if (sinStatus==1) {
-  	   TIM3->CCR1=0;
-  	   TIM3->CCR2=GetSinus();
-     }*/
-
-      if  ((TIM1->CNT>=497) && (sinStatus==0) ){
-    	  	ReadTempValue();
+     	 if  ((TIM1->CNT>=500) && (sinStatus==0) ){
       	  	sinStatus=1;
+      	  	sin_step=0;
       	  	TIM3->CCR1=0;
+      	  	TIM3->CCR2=0;
+      	  	ReadTempValue();
       	  	if (UpdateAmp_FLAG==0) {
       	  		UpdateAmp_FLAG=1;
       	    }
-      	  	sin_step=0;
       	  	return;
       	  }
 
-      	 if  ((TIM1->CNT>=998) && (sinStatus==1) ){
-      		ReadTempValue();
+
+      	 if  ( (TIM1->CNT<500) && (sinStatus==1) ){
       		sinStatus=0;
-      	   	TIM3->CCR2=0;
+      		sin_step=0;
+      		TIM3->CCR1=0;
+      		TIM3->CCR2=0;
+      		ReadTempValue();
       	   	if (UpdateAmp_FLAG==0) {
       	    	UpdateAmp_FLAG=1;
       	    }
-      	   	sin_step=0;
       	   	return;
       }
 
@@ -595,10 +584,16 @@ void TIM3_IRQHandler(void)
       		   TIM3->CCR2=0;
       		   TIM3->CCR1=GetSinus();
       	   }
+
       	   if (sinStatus==1) {
       		   TIM3->CCR1=0;
       		   TIM3->CCR2=GetSinus();
       	   }
+
+      	   	   	   	   	  //if (CheckV_FLAG==0) {
+      	    	  	  	//	CheckV_FLAG=1;
+      	    	  	  	  //}
+
 
 
   /* USER CODE END TIM3_IRQn 1 */
@@ -618,8 +613,7 @@ void TIM4_IRQHandler(void)
   __HAL_TIM_CLEAR_FLAG(&htim4, TIM_FLAG_UPDATE);
 
 
-
-    if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
+    if (Fault_FLAG==1) {
   	  BoardStatus=sFaultFlag;
   	  FaultWaitCnt=0;
   		  if (SinWave!=swGEN) {
@@ -632,11 +626,10 @@ void TIM4_IRQHandler(void)
     }
 
 
-
     	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)
     			  && (DC_BLOCKED==0) && (VOUT_BLOCKED==0)  && (IOUT_BLOCKED==0) && (EEPROM_FLAG==0)) {
     	  sin_step=0;
-    	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
+    	  	  if  (GEN_FLAG==1) {
       		SinWave=swStart;
       		TIM3->CCR2=0;
       		 		TIM3->CCR1=0;
@@ -650,7 +643,7 @@ void TIM4_IRQHandler(void)
 
 
     if (SinWave==swGEN) {
-  				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
+  				if (  (BoardStatus == sFaultFlag) || (GEN_FLAG==0)
   						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) || (VOUT_BLOCKED==1)  || (IOUT_BLOCKED==1)) {
   				//#ifndef AMP_PROTECTION
   			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
@@ -671,9 +664,9 @@ void TIM4_IRQHandler(void)
     	  	  	  //}
 
     	  	  	  //CheckV_Feedback();
-    	  	  	  if (CheckV_FLAG==0) {
-    	  	  		CheckV_FLAG=1;
-    	  	  	  }
+    	  	  	  //if (CheckV_FLAG==0) {
+    	  	  	//	CheckV_FLAG=1;
+    	  	  	 // }
     	  	  	  sin_step++;
 
 

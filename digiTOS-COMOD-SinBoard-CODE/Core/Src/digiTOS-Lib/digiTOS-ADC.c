@@ -7,7 +7,6 @@
 
 #include "digiTOS-ADC.h"
 
-volatile uint16_t TempBuffer_Flag=0;
 
 #if( defined(Detect_ZeroV_Point) ||  defined(Detect_ZeroI_Point) )
 uint32_t TempVal=0;
@@ -87,7 +86,7 @@ void ResetV_data() {
 	#endif
 
 	 	//reset temp buffer
-	 	V_1_temp=0;
+	 	/*V_1_temp=0;
 	 	V_2_temp=0;
 	 	V_3_temp=0;
 	 	V_4_temp=0;
@@ -110,9 +109,7 @@ void ResetV_data() {
 	 	#ifdef USE_VREF
 	 		V_5_temp=0;
 	 		Vcnt_5_temp=0;
-	     #endif
-
-	 	TempBuffer_Flag=0;
+	     #endif*/
 }
 
 float CheckAmp(float Value) {
@@ -129,10 +126,10 @@ float CheckAmp(float Value) {
 float CalcNewAmp(uint32_t V_curr, uint32_t V_etalon) {
 	float fRes=1;
 	if (V_curr>V_etalon) {
-		fRes=fRes+(float)((V_curr-V_etalon)*Amp_CoefPlus);
+		fRes=fRes-(float)((V_curr-V_etalon)*Amp_CoefPlus);
 	}
 	if (V_curr<V_etalon) {
-		fRes=fRes-(float)((V_etalon-V_curr)*Amp_CoefMinus);
+		fRes=fRes+(float)((V_etalon-V_curr)*Amp_CoefMinus);
 	}
 
 	if (fRes>Amp_max) {
@@ -221,11 +218,6 @@ void CalcDC_Average() {
 }
 
 void ReadTempValue() {
-		return;
-		if (TempBuffer_Flag==1) {
-			return;
-		}
-		TempBuffer_Flag=1;
 		V_1_temp=V_1;
 		V_2_temp=V_2;
 		V_3_temp=V_3;
@@ -250,13 +242,13 @@ void ReadTempValue() {
 			V_5_temp=V_5;
 			Vcnt_5_temp=V_Cnt[4];
 	    #endif
+
+		ResetV_data();
 }
 
 void UpdateAmplitudeByV() {
 	//store value in temp
-	if (TempBuffer_Flag==0) {
-		ReadTempValue();
-	}
+	//ReadTempValue()
 	//
 
 	CalcAc_V_ByWave();
@@ -354,8 +346,6 @@ void UpdateAmplitudeByV() {
 						}
 				}
 	#endif
-
-	ResetV_data();
 }
 
 void CheckV_Feedback() {

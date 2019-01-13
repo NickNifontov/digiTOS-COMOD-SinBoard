@@ -88,7 +88,9 @@ uint16_t GetSinus() {
 		return 0;
 	}
 	uint16_t fSinusData=sin_data[sin_step];
+
 	float curAmplitude=GetApmlitude();
+
 	if (curAmplitude!=1) {
 		fSinusData=(uint16_t) (curAmplitude*fSinusData);
 	}

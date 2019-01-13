@@ -91,6 +91,11 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc1)
+{
+	CheckV_Feedback();
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -151,6 +156,7 @@ int main(void)
     //Init ADC, start DMA
     //and prepare all data
     StartADC();
+
 
 
     SinWave=swNOP;
@@ -301,16 +307,33 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (CheckV_FLAG==1) {
-		  CheckV_FLAG=2;//busy Flag
+	  //if (CheckV_FLAG==1) {
+		//  CheckV_FLAG=2;//busy Flag
 		  //CheckV_Feedback();
-		  CheckV_FLAG=0; // clear Flag
-	  }
+		//  CheckV_FLAG=0; // clear Flag
+		  //continue;
+	  //}
+	  //
+	  asm("NOP");
 	  if (UpdateAmp_FLAG==1) {
-	  			UpdateAmp_FLAG=2;//busy Flag
-	  			//UpdateAmplitudeByV();
+	  			UpdateAmp_FLAG=0;//busy Flag
+	  			UpdateAmplitudeByV();
 	  			UpdateAmp_FLAG=0; // clear Flag
+	  			//continue;
 	  }
+	  //
+	  if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
+		  Fault_FLAG=1;
+	  } else {
+		  Fault_FLAG=0;
+	  }
+	  //
+	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
+		  GEN_FLAG=1;
+	  } else {
+		  GEN_FLAG=0;
+	  }
+
   }
   /* USER CODE END 3 */
 }
