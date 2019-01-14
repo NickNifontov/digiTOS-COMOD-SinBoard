@@ -11,7 +11,7 @@ digiTOS-Core.c:229:6:WaitForUART_TX	0	static
 digiTOS-Core.c:216:6:SerialPrintln	8	static
 digiTOS-Core.c:233:6:HAL_UART_TxCpltCallback	8	static
 digiTOS-Core.c:242:6:ResetWDG	0	static
-digiTOS-Core.c:248:6:PrintCurrentState	0	static
+digiTOS-Core.c:248:6:PrintCurrentState	80	static
 digiTOS-Core.c:309:6:ResetEEPROM	0	static
 digiTOS-Core.c:315:6:CALC_RATIO	8	static
 digiTOS-Core.c:327:6:USE_DEF_CALIB	8	static

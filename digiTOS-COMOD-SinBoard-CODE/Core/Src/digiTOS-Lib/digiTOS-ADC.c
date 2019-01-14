@@ -191,6 +191,7 @@ void CalcDC_Average() {
 }
 
 void UpdateAmplitudeByV() {
+	uint32_t v1_tmp,v2_tmp,v3_tmp,v4_tmp;
 	CalcAc_V_ByWave();
 	CalcAc_I_ByWave();
 	CalcDC_Average();
@@ -201,10 +202,10 @@ void UpdateAmplitudeByV() {
     #endif
 
 	#ifndef USE_VREF_FOR_ADC_CORRECTION
-		V_1=(uint32_t) (V_1/V_Cnt[0]);
-		V_2=(uint32_t) (V_2/V_Cnt[1]);
-		V_3=(uint32_t) (V_3/V_Cnt[2]);
-		V_4=(uint32_t) (V_4/V_Cnt[3]);
+		v1_tmp=(uint32_t) (V_1/V_Cnt[0]);
+		v2_tmp=(uint32_t) (V_2/V_Cnt[1]);
+		v3_tmp=(uint32_t) (V_3/V_Cnt[2]);
+		v4_tmp=(uint32_t) (V_4/V_Cnt[3]);
 	#endif
 
 	#ifdef USE_VREF_FOR_ADC_CORRECTION
@@ -215,23 +216,23 @@ void UpdateAmplitudeByV() {
 	#endif
 
 	#ifdef AMP_CORRECTION_TYPE_IMMIDIATLY
-		Sine_Amplitude_1=CalcNewAmp(V_1,V1_etalon);
-		Sine_Amplitude_2=CalcNewAmp(V_2,V2_etalon);
-		Sine_Amplitude_3=CalcNewAmp(V_3,V3_etalon);
-		Sine_Amplitude_4=CalcNewAmp(V_4,V4_etalon);
+		Sine_Amplitude_1=CalcNewAmp(v1_tmp,V1_etalon);
+		Sine_Amplitude_2=CalcNewAmp(v2_tmp,V2_etalon);
+		Sine_Amplitude_3=CalcNewAmp(v3_tmp,V3_etalon);
+		Sine_Amplitude_4=CalcNewAmp(v4_tmp,V4_etalon);
 	#endif
 
 	#ifdef AMP_CORRECTION_TYPE_STEP
-		amp1_target=CalcNewAmp(V_1,V1_etalon);
+		amp1_target=CalcNewAmp(v1_tmp,V1_etalon);
 		Sine_Amplitude_1=CalcNewAmpByStep(Sine_Amplitude_1,amp1_target);
 
-		amp2_target=CalcNewAmp(V_2,V2_etalon);
+		amp2_target=CalcNewAmp(v2_tmp,V2_etalon);
 		Sine_Amplitude_2=CalcNewAmpByStep(Sine_Amplitude_2,amp2_target);
 
-		amp3_target=CalcNewAmp(V_3,V3_etalon);
+		amp3_target=CalcNewAmp(v3_tmp,V3_etalon);
 		Sine_Amplitude_3=CalcNewAmpByStep(Sine_Amplitude_3,amp3_target);
 
-		amp4_target=CalcNewAmp(V_4,V4_etalon);
+		amp4_target=CalcNewAmp(v4_tmp,V4_etalon);
 		Sine_Amplitude_4=CalcNewAmpByStep(Sine_Amplitude_4,amp4_target);
 	#endif
 

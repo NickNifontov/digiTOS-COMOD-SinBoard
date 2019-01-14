@@ -7,5 +7,5 @@ digiTOS-ADC.c:139:10:asqrt	8	static
 digiTOS-ADC.c:166:6:CalcAc_I_ByWave	16	static
 digiTOS-ADC.c:177:6:CalcAc_V_ByWave	16	static
 digiTOS-ADC.c:187:6:CalcDC_Average	0	static
-digiTOS-ADC.c:193:6:UpdateAmplitudeByV	24	static
-digiTOS-ADC.c:291:6:CheckV_Feedback	16	static
+digiTOS-ADC.c:193:6:UpdateAmplitudeByV	32	static
+digiTOS-ADC.c:292:6:CheckV_Feedback	16	static

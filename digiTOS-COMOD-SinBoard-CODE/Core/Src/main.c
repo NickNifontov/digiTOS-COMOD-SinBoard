@@ -155,11 +155,11 @@ int main(void)
 
   // Start generator and then stop to setup default GND level for transistor and dead times
   PWM_50Hz_Init();
-  PWM_50Hz_ON();
+ // PWM_50Hz_ON();
   PWM_50Hz_OFF();
 
   PWM_Sinus_Init();
-  PWM_Sinus_ON();
+ // PWM_Sinus_ON();
   PWM_Sinus_OFF();
 
   ResetWDG();
@@ -197,7 +197,7 @@ int main(void)
   buttonUpdate(&CALIB_MODE);
 
   HAL_Delay(500);
-/*
+
   // Init EEPROM
              if (InitEEPROM()==0) {
            	  strcpy(uart_buff,"NO EEPROM\r\n");
@@ -221,7 +221,7 @@ int main(void)
 
   Get_FlashSize();
   SerialPrintln(1);
-*/
+
 
   ClearUART_Buff();
 
@@ -276,10 +276,10 @@ int main(void)
 
 
        buttonUpdate(&FaultFlag);
-       TIM14->PSC=SinResPSC;
+ //      TIM14->PSC=SinResPSC;
 
-       HAL_TIM_Base_Start(&htim14);
-       HAL_TIM_Base_Start_IT(&htim14);
+   //    HAL_TIM_Base_Start(&htim14);
+   //    HAL_TIM_Base_Start_IT(&htim14);
 
 
     while (1)
@@ -290,8 +290,8 @@ int main(void)
   	__NOP();
   	if (Re_Update==1) {
   		Re_Update=0;
- // 		UpdateAmplitudeByV();
-  		HAL_Delay(2);
+  		UpdateAmplitudeByV();
+ /* 		HAL_Delay(2);
  		if (Sine_Amplitude_1>1.4){
  	 		Sine_Amplitude_1=0.4;
  	 		Sine_Amplitude_2=0.4;
@@ -304,8 +304,59 @@ int main(void)
  	 		Sine_Amplitude_3+=0.1;
  	 		Sine_Amplitude_4+=0.1;
  		}
-  	 __NOP();
+ */
   	}
+
+  if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
+	  BoardStatus=sFaultFlag;
+	  FaultWaitCnt=0;
+		  if (SinWave!=swGEN) {
+			  SinWave=swGEN;
+		  }
+		  //else {
+			//  return;
+		//  }
+  //} else {
+	  //BoardStatus=sGEN;
+  }
+
+  	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)
+  			  && (DC_BLOCKED==0) && (VOUT_BLOCKED==0)  && (IOUT_BLOCKED==0) && (EEPROM_FLAG==0)) {
+	//#ifndef AMP_PROTECTION
+  	  //if ((SinWave==swNOP) && (BoardStatus == sGEN)) {
+	//#endif
+ // 	  sin_step=0;
+  	  	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
+    		SinWave=swStart;
+    		TIM3->CCR2=0;
+    		 		TIM3->CCR1=0;
+    		 		TIM1->CCR3=0;
+    		 		sin_step=0;
+    		PWM_50Hz_ON();
+    		PWM_Sinus_ON();
+  //  		return;
+    	  }
+      }
+
+  if (SinWave==swGEN) {
+				if (  (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased)
+						|| (AMP_BLOCKED==1)  || (DC_BLOCKED==1) || (VOUT_BLOCKED==1)  || (IOUT_BLOCKED==1)) {
+				//#ifndef AMP_PROTECTION
+			  	//  	  if ( (BoardStatus == sFaultFlag) || (buttonUpdate(&DevModeKey2) == isReleased) ) {
+				//#endif
+		  SinWave=swNOP;
+		  	  	TIM3->CCR2=0;
+		   		TIM3->CCR1=0;
+		   		TIM1->CCR3=0;
+		   		sin_step=0;
+		  PWM_50Hz_OFF();
+		  PWM_Sinus_OFF();
+	//	  return;
+	  }
+  }
+
+  	 __NOP();
+//  	}
     }
   /* USER CODE END 3 */
 }

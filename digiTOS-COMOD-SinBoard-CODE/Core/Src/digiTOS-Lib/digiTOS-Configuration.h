@@ -18,7 +18,7 @@
 #define VOLTAGE_ETALONE 	230 // etalone for calibartion in Volts
 #define POWER_ETALONE 	1000 // etalone for calibartion in Watts
 
-//#define DEBUG_MODE // if TRUE then in UART print text state
+#define DEBUG_MODE // if TRUE then in UART print text state
 
 //#define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 #define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt

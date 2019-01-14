@@ -366,7 +366,7 @@ void TIM14_IRQHandler(void)
   /* USER CODE BEGIN TIM14_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim14, TIM_FLAG_UPDATE);
-
+/*
 
   if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
 	  BoardStatus=sFaultFlag;
@@ -413,8 +413,9 @@ void TIM14_IRQHandler(void)
 		  PWM_Sinus_OFF();
 		  return;
 	  }
-  }
 
+  }
+*/
   	  	  	  //if  (sin_step==0) {
   	  	  	  //	 UpdateAmplitudeByV();
   	  	  	  //}
