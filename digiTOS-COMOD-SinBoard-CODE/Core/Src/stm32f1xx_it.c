@@ -322,7 +322,7 @@ void TIM1_BRK_IRQHandler(void)
 	TIM3->CNT=0;
 
   /* USER CODE END TIM1_BRK_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
+  //HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_BRK_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
@@ -347,9 +347,9 @@ void TIM1_BRK_IRQHandler(void)
 void TIM1_UP_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_IRQn 0 */
-
+	TIM3->CNT=0;
   /* USER CODE END TIM1_UP_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
+//  HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
@@ -373,8 +373,8 @@ void TIM1_UP_IRQHandler(void)
         	    }
         	  	return;
     }*/
-
-
+/*
+return;
           	  	sinStatus=0;
           	  	sin_step=0;
           	  	TIM3->CCR1=0;
@@ -382,7 +382,7 @@ void TIM1_UP_IRQHandler(void)
           	  	if (UpdateAmp_FLAG==0) {
           	  		UpdateAmp_FLAG=1;
           	    }
-
+*/
   /* USER CODE END TIM1_UP_IRQn 1 */
 }
 
@@ -394,7 +394,7 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 0 */
 
   /* USER CODE END TIM2_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim2);
+ // HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim2, TIM_FLAG_UPDATE);
@@ -542,7 +542,7 @@ void TIM3_IRQHandler(void)
   /* USER CODE BEGIN TIM3_IRQn 0 */
 
   /* USER CODE END TIM3_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim3);
+//  HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
@@ -561,16 +561,18 @@ void TIM3_IRQHandler(void)
      		SinWave=swGEN;
      	}
 
-     		if  ((TIM1->CNT>=497) && (sinStatus==0) ){
+     		if  ((TIM1->CNT>=498) && (sinStatus==0) ){
+     			if  (TIM1->CNT>=500)
      					sinStatus=1;
-     		      	  	sin_step=0;
-     		      	  	TIM3->CCR1=0;
-     		      	  	TIM3->CCR2=0;
-     		      	  	ReadTempValue();
-     		      	  	if (UpdateAmp_FLAG==0) {
-     		      	  		UpdateAmp_FLAG=1;
-     		      	    }
-     		  }
+     		     sin_step=0;
+     		     TIM3->CCR1=0;
+     		     TIM3->CCR2=0;
+     		     ReadTempValue();
+     		     if (UpdateAmp_FLAG==0) {
+     		     	UpdateAmp_FLAG=1;
+     		      }
+			   	return;
+     		}
 
      		 if  ((TIM1->CNT>=998) && (sinStatus==1) ){
      			 	 	 	sinStatus=0;
@@ -614,7 +616,7 @@ void TIM4_IRQHandler(void)
   /* USER CODE BEGIN TIM4_IRQn 0 */
 
   /* USER CODE END TIM4_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim4);
+//  HAL_TIM_IRQHandler(&htim4);
   /* USER CODE BEGIN TIM4_IRQn 1 */
 
   __HAL_TIM_CLEAR_FLAG(&htim4, TIM_FLAG_UPDATE);

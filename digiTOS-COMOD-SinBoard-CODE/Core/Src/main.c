@@ -114,7 +114,9 @@ int main(void)
 				//DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_WWDG_STOP;
 				//DBGMCU->APB2FZ = 0xFFFFFFFF;
 				//DBGMCU->APB1FZ = 0xFFFFFFFF;
-				DBGMCU->CR |=DBGMCU_CR_DBG_STOP;
+				//DBGMCU->CR |=DBGMCU_CR_DBG_STOP;
+				DBGMCU->CR |=DBGMCU_CR_DBG_TIM1_STOP;
+				DBGMCU->CR |=DBGMCU_CR_DBG_TIM3_STOP;
 		__HAL_DBGMCU_FREEZE_IWDG();
 	#endif
 
@@ -315,11 +317,15 @@ int main(void)
 	  //}
 	  //
 	  if (UpdateAmp_FLAG==1) {
+		  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
 	  			UpdateAmp_FLAG=2;//busy Flag
 	  			UpdateAmplitudeByV();
 	  			UpdateAmp_FLAG=0; // clear Flag
+	  	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
 	  			//continue;
 	  }
+	  GEN_FLAG=1;
+	  /*
 	  //
 	  if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
 		  Fault_FLAG=1;
@@ -332,13 +338,15 @@ int main(void)
 	  } else {
 		  GEN_FLAG=0;
 	  }
+
 	  //
 	  if (Print_FLAG==1) {
 		  PrintCurrentState();
 		  Print_FLAG=0;
 	  }
-
+*/
   }
+
   /* USER CODE END 3 */
 }
 
