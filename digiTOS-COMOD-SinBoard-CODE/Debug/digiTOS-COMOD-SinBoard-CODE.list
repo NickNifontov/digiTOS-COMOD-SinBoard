@@ -5139,13 +5139,13 @@ void TIM1_UP_IRQHandler(void)
  80020a0:	b9a1      	cbnz	r1, 80020cc <TIM3_IRQHandler+0x78>
      			if  (TIM1->CNT>=500)
  80020a2:	6a5b      	ldr	r3, [r3, #36]	; 0x24
-     					sinStatus=1;
+     					sinStatus=1;//
      		     sin_step=0;
      		     TIM3->CCR1=0;
  80020a4:	4a22      	ldr	r2, [pc, #136]	; (8002130 <TIM3_IRQHandler+0xdc>)
      			if  (TIM1->CNT>=500)
  80020a6:	f5b3 7ffa 	cmp.w	r3, #500	; 0x1f4
-     					sinStatus=1;
+     					sinStatus=1;//
  80020aa:	bf24      	itt	cs
  80020ac:	2301      	movcs	r3, #1
  80020ae:	7023      	strbcs	r3, [r4, #0]
