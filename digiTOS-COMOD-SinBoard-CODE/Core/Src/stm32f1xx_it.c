@@ -564,7 +564,7 @@ void TIM3_IRQHandler(void)
 
      		if  ((TIM1->CNT>=498) && (sinStatus==0) ){
      			if  (TIM1->CNT>=500)
-     					sinStatus=1;//
+     					sinStatus=1;/////
      		     sin_step=0;
      		     TIM3->CCR1=0;
      		     TIM3->CCR2=0;
