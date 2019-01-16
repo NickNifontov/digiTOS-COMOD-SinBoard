@@ -123,7 +123,14 @@ void PWM_50Hz_Init (void) {
 ////////////////////// CONTROL 50Hz - BEGIN //////////////////////
 void PWM_50Hz_START(void)
 {
-	//TIM1->CNT = 0;
+	TIM1->CNT = 0;
+	TIM3->CNT = 0;
+	sin_step = 0;
+	sinStatus = 0;
+	//
+	TIM3->CCR1=0;
+	TIM3->CCR2=0;
+
 	TIM1->CCR3=500;
 	/* Enable channel outputs */
 		TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
@@ -142,7 +149,16 @@ void PWM_50Hz_START(void)
 
 void PWM_50Hz_STOP(void)
 {
-	//TIM1->CNT = 0;
+	TIM1->CNT = 0;
+	//TIM3->CNT = 0;
+	sin_step = 0;
+	sinStatus = 0;
+	//
+	//TIM3->CCR1=0;
+	//TIM3->CCR2=0;
+	TIM1->CCR3=0;
+
+
 	TIM1->SR&=~TIM_SR_UIF; // clear update flag
 
 	TIM1->DIER &= ~TIM_DIER_UIE; // stop interrupt
@@ -157,7 +173,7 @@ void PWM_50Hz_STOP(void)
 	TIM1->CCER |= TIM_CCER_CC3P; // active high level: 0 - high, 1 - low
 	TIM1->CCER &= ~TIM_CCER_CC3NP; // active high level: 0 - high, 1 - low
 
-	TIM1->CCR3=0;
+	//TIM1->CCR3=0;
 
 }
 
@@ -189,10 +205,14 @@ void PWM_50Hz_OFF(void){
 ////////////////////// INIT GENERATOR PWM LOW - BEGIN //////////////////////
 void PWM_Sinus_START(void)
 {
-	sin_step=0;
 	//TIM1->CNT = 0;
+	TIM3->CNT = 0;
+	sin_step = 0;
+	sinStatus = 0;
+	//
 	TIM3->CCR1=0;
 	TIM3->CCR2=0;
+	//TIM1->CCR3=0;
 
 	//TIM3->CCER |= TIM_CCER_CC1E; // enable PWM out to PA8
 	//TIM3->CCER |= TIM_CCER_CC1P;
@@ -208,14 +228,21 @@ void PWM_Sinus_START(void)
 
 void PWM_Sinus_STOP(void)
 {
-	//TIM1->CNT = 0;
+	TIM1->CNT = 0;
+	TIM3->CNT = 0;
+	sin_step = 0;
+	sinStatus = 0;
+	//
+	TIM3->CCR1=0;
+	TIM3->CCR2=0;
+
 	TIM3->SR&=~TIM_SR_UIF; // clear update flag
 
 	TIM3->DIER &= ~TIM_DIER_UIE; // stop interrupt
 	TIM3->CR1 &= (uint16_t)~TIM_CR1_CEN; // stop cnt
 
-	TIM3->CCR1=0;
-	TIM3->CCR2=0;
+	//TIM3->CCR1=0;
+	//TIM3->CCR2=0;
 }
 
 void PWM_Sinus_OUTEN(void)
