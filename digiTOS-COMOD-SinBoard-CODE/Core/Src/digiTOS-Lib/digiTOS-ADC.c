@@ -349,7 +349,7 @@ void UpdateAmplitudeByV() {
 }
 
 void CheckV_Feedback() {
-
+	//	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
 		///Calc I_out data AC coltage
 			I_Out_Cnt++;
 			#ifdef Detect_ZeroI_Point
@@ -393,7 +393,7 @@ void CheckV_Feedback() {
 			 DC_DataCnt=DC_DataCnt+1;
 		#endif
 
-
+//	    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
 		if (sin_step>Sin_Amp_ind[2]) {
 			V_4=V_4+ADC_Data[0];
 			V_Cnt[3]= V_Cnt[3]+1;

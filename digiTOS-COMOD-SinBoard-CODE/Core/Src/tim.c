@@ -39,7 +39,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "tim.h"
-
+extern void  PWM_50Hz_Init(void);
+extern void  PWM_Sinus_Init(void);
+extern void  PWM_50Hz_ON(void);
+extern void  PWM_50Hz_OFF(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -56,6 +59,10 @@ void MX_TIM1_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
   TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+	TIM1->CNT = 0;
+
+
+
 
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 1439;
@@ -84,7 +91,7 @@ void MX_TIM1_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_TIMING;
-  sConfigOC.Pulse = 500;
+  sConfigOC.Pulse = 0;//500;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
@@ -94,10 +101,10 @@ void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
-  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_ENABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSR_ENABLE;
   sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
-  sBreakDeadTimeConfig.DeadTime = 0b01011111;
+  sBreakDeadTimeConfig.DeadTime = 0;
   sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
   sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
   sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
@@ -105,7 +112,13 @@ void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  PWM_50Hz_Init();
+ // PWM_50Hz_ON();
+ // PWM_50Hz_OFF();
+
   HAL_TIM_MspPostInit(&htim1);
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
 
 }
 /* TIM2 init function */
@@ -181,6 +194,7 @@ void MX_TIM3_Init(void)
   {
     Error_Handler();
   }
+  PWM_Sinus_Init();
   HAL_TIM_MspPostInit(&htim3);
 
 }
@@ -295,22 +309,36 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
   /* USER CODE END TIM1_MspPostInit 0 */
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
+
     /**TIM1 GPIO Configuration    
     PB1     ------> TIM1_CH3N
     PA10     ------> TIM1_CH3 
     */
-    GPIO_InitStruct.Pin = CH4_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(CH4_GPIO_Port, &GPIO_InitStruct);
+    AFIO->MAPR |=AFIO_MAPR_TIM1_REMAP_PARTIALREMAP;
+    //Комплементарные выходы. Пуш/Пул - 50 Mhz.
+    GPIOB->CRL |= GPIO_CRL_CNF1_1|GPIO_CRL_MODE1;;//|GPIO_CRH_CNF14_1|GPIO_CRH_CNF15_1|GPIO_CRH_MODE15|GPIO_CRH_MODE14|GPIO_CRH_MODE13;
+    GPIOB->CRL &= ~(GPIO_CRL_CNF1_0);//|GPIO_CRH_CNF14_0|GPIO_CRH_CNF13_0);
 
-    GPIO_InitStruct.Pin = CH3_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(CH3_GPIO_Port, &GPIO_InitStruct);
+    //Основные выходы. Пуш/Пул - 50 Mhz.
+    GPIOA->CRH |= GPIO_CRH_CNF10_1|GPIO_CRH_MODE10;//|GPIO_CRH_CNF9_1|GPIO_CRH_CNF10_1|GPIO_CRH_MODE8|GPIO_CRH_MODE9|GPIO_CRH_MODE10;
+    GPIOA->CRH &= ~(GPIO_CRH_CNF10_0);//|GPIO_CRH_CNF9_0|GPIO_CRH_CNF10_0);
+ //   GPIO_InitStruct.Pin = CH4_Pin;
+ //   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ //   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+ //   HAL_GPIO_Init(CH4_GPIO_Port, &GPIO_InitStruct);
 
-    __HAL_AFIO_REMAP_TIM1_PARTIAL();
+ //   GPIO_InitStruct.Pin = CH3_Pin;
+ //   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ //   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+ //   HAL_GPIO_Init(CH3_GPIO_Port, &GPIO_InitStruct);
 
+//    __HAL_AFIO_REMAP_TIM1_PARTIAL();
+
+    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   /* USER CODE BEGIN TIM1_MspPostInit 1 */
 
   /* USER CODE END TIM1_MspPostInit 1 */

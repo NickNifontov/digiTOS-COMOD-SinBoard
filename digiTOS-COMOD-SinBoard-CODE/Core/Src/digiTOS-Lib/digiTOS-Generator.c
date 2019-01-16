@@ -106,12 +106,14 @@ void PWM_50Hz_Init (void) {
     TIM1->CCMR2 |= TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC3M_1; // positiv PWM
 
 	/* Enable channel outputs */
-	TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
+//	TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
 
 	SetNormalSignal(); // NORMAL or INVERSE
 	Idle_SET(); // se idle state /* output idle state HIGHT */
 
 	Set50HzDeadTimeNS(); // 1976 ns
+	/* Enable channel outputs */
+	TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
 
 	//ch50HZ_OUTEN(); // OUTPUT ENABLE
 	//ch50HZ_START(); // start CNT
@@ -123,7 +125,7 @@ void PWM_50Hz_Init (void) {
 ////////////////////// CONTROL 50Hz - BEGIN //////////////////////
 void PWM_50Hz_START(void)
 {
-	//TIM1->CNT = 0;
+	TIM1->CNT = 0;
 	TIM1->CCR3=500;
 	/* Enable channel outputs */
 		TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
@@ -190,18 +192,21 @@ void PWM_50Hz_OFF(void){
 void PWM_Sinus_START(void)
 {
 	sin_step=0;
-	//TIM1->CNT = 0;
-	TIM3->CCR1=0;
-	TIM3->CCR2=0;
+	sinStatus=0;
+	TIM3->CNT = 0;
+	//TIM3->CCR1=0;
+	//TIM3->CCR2=0;
 
 	//TIM3->CCER |= TIM_CCER_CC1E; // enable PWM out to PA8
 	//TIM3->CCER |= TIM_CCER_CC1P;
 
 	//TIM3->CCER |= TIM_CCER_CC2E; // enable PWM complementary out to PA9
 	//TIM3->CCER |= TIM_CCER_CC2P;
-
+	TIM3->SR&=~TIM_SR_UIF; // clear update flag
 	TIM3->DIER |= TIM_DIER_UIE;
 	TIM3->CR1 |= TIM_CR1_CEN;
+	TIM3->CCR1=0;
+	TIM3->CCR2=0;
 
 	ResetAmplitude();
 }
@@ -271,6 +276,10 @@ void PWM_Sinus_Init (void) {
 		TIM3->CCR1 = 0; // duty cycle 0%
 		TIM3->CCR2 = 0; // duty cycle 0%
 
+		// se idle state
+		TIM3->CR2 |= TIM_CR2_OIS1;
+		TIM3->CR2 |= TIM_CR2_OIS2;
+
 			TIM3->CCER |= TIM_CCER_CC1E; // enable PWM out to PA8
 			//TIM3->CCER &= ~TIM_CCER_CC1P; // active high level: 0 - high, 1 - low
 			TIM3->CCER |= TIM_CCER_CC1P;
@@ -280,8 +289,8 @@ void PWM_Sinus_Init (void) {
 			TIM3->CCER |= TIM_CCER_CC2P;
 
 		// se idle state
-		TIM3->CR2 |= TIM_CR2_OIS1;
-		TIM3->CR2 |= TIM_CR2_OIS2;
+//		TIM3->CR2 |= TIM_CR2_OIS1;
+//		TIM3->CR2 |= TIM_CR2_OIS2;
 
 		TIM3->CCMR1 &= ~(TIM_CCMR1_OC1M | TIM_CCMR1_OC2M);
 		TIM3->CCMR1 |= TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1 |

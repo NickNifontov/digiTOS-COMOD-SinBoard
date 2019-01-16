@@ -349,6 +349,8 @@ void TIM1_UP_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_IRQn 0 */
 	TIM3->CNT=0;
+	sinStatus=0;
+	sin_step=0;
   /* USER CODE END TIM1_UP_IRQn 0 */
 //  HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_IRQn 1 */
@@ -424,6 +426,7 @@ void TIM2_IRQHandler(void)
         				  return;
         			  }
         		  }
+
 
         		  	//PrintCurrentState();
         		  	if (Print_FLAG==0) {
@@ -563,9 +566,10 @@ void TIM3_IRQHandler(void)
      	}
 
      		if  ((TIM1->CNT>=498) && (sinStatus==0) ){
-     			if  (TIM1->CNT>=500)
+     			if  (TIM1->CNT>=500){
      					sinStatus=1;/////////
-     		     sin_step=0;
+     	     		     sin_step=0;
+     			}
      		     TIM3->CCR1=0;
      		     TIM3->CCR2=0;
      		     ReadTempValue();
@@ -638,13 +642,15 @@ void TIM4_IRQHandler(void)
 
     	  if ((SinWave==swNOP) && (BoardStatus == sGEN) && (AMP_BLOCKED==0)
     			  && (DC_BLOCKED==0) && (VOUT_BLOCKED==0)  && (IOUT_BLOCKED==0) && (EEPROM_FLAG==0)) {
-    	  sin_step=0;
+    	  //sin_step=0;
     	  	  if  (GEN_FLAG==1) {
       		SinWave=swStart;
       		TIM3->CCR2=0;
       		 		TIM3->CCR1=0;
       		 		TIM1->CCR3=0;
-      		 		sin_step=0;
+      		 		//sin_step=0;
+      		 		TIM1->CNT=0;
+      		 		TIM3->CNT=0;
       		PWM_50Hz_ON();
       		PWM_Sinus_ON();
       		return;
@@ -662,7 +668,7 @@ void TIM4_IRQHandler(void)
   		  	  	TIM3->CCR2=0;
   		   		TIM3->CCR1=0;
   		   		TIM1->CCR3=0;
-  		   		sin_step=0;
+  		   		//sin_step=0;
   		  PWM_50Hz_OFF();
   		  PWM_Sinus_OFF();
   		  return;

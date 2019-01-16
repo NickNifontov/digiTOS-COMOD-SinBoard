@@ -115,7 +115,7 @@ int main(void)
 				//DBGMCU->APB2FZ = 0xFFFFFFFF;
 				//DBGMCU->APB1FZ = 0xFFFFFFFF;
 				//DBGMCU->CR |=DBGMCU_CR_DBG_STOP;
-				DBGMCU->CR |=DBGMCU_CR_DBG_TIM1_STOP;
+			DBGMCU->CR |=DBGMCU_CR_DBG_TIM1_STOP;
 				DBGMCU->CR |=DBGMCU_CR_DBG_TIM3_STOP;
 		__HAL_DBGMCU_FREEZE_IWDG();
 	#endif
@@ -140,17 +140,29 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_DMA_Init();
   MX_CRC_Init();
   MX_IWDG_Init();
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_TIM1_Init();
+  //   PWM_50Hz_Init();
+//  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+ // HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_TIM3_Init();
+  //  PWM_Sinus_Init();
+
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_TIM4_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-
+  	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+  	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   	// NEW IWDG
     DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_8s);
     ResetWDG();
@@ -158,21 +170,25 @@ int main(void)
     //Init ADC, start DMA
     //and prepare all data
     StartADC();
+    /*
+while(1){
+    ResetWDG();
+}
 
-
-
+*/
     SinWave=swNOP;
 
     // Start generator and then stop to setup default GND level for transistor and dead times
-    PWM_50Hz_Init();
-    PWM_Sinus_Init();
-
-    PWM_50Hz_ON();
+ //   PWM_50Hz_Init();
+ //   PWM_Sinus_Init();
+	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
+/*    PWM_50Hz_ON();
     PWM_Sinus_ON();
 
     PWM_50Hz_OFF();
     PWM_Sinus_OFF();
-
+*/
     ResetWDG();
 
     HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
@@ -317,15 +333,21 @@ int main(void)
 	  //}
 	  //
 	  if (UpdateAmp_FLAG==1) {
-		  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
+	//	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
 	  			UpdateAmp_FLAG=2;//busy Flag
 	  			UpdateAmplitudeByV();
 	  			UpdateAmp_FLAG=0; // clear Flag
-	  	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
+	 // 	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
 	  			//continue;
 	  }
 	  GEN_FLAG=1;
-	  /*
+//	  uint32_t tmp =TIM2->CNT;
+//	    if(tmp >500)
+//			 GEN_FLAG=1;//	    	  SinWave=swStart;
+//	    else
+//	    	GEN_FLAG=0;// SinWave=swStop;
+
+/*
 	  //
 	  if ((buttonUpdate(&FaultFlag) == isPressed) || (buttonUpdate(&FaultFlag) == isPressedLong)) {
 		  Fault_FLAG=1;
