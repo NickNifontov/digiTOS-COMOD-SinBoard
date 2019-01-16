@@ -26,8 +26,8 @@
 #define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 //#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 
-//#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
-#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
+//#define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
 
 
 #define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
