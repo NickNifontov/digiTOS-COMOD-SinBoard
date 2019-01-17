@@ -140,29 +140,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_DMA_Init();
   MX_CRC_Init();
   MX_IWDG_Init();
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_TIM1_Init();
-  //   PWM_50Hz_Init();
-//  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
- // HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_TIM3_Init();
-  //  PWM_Sinus_Init();
-
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   MX_TIM4_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-  	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   	// NEW IWDG
     DigiTOS_IWDG_Init(DigiTOS_IWDG_Timeout_8s);
     ResetWDG();
@@ -178,17 +165,7 @@ while(1){
 */
     SinWave=swNOP;
 
-    // Start generator and then stop to setup default GND level for transistor and dead times
- //   PWM_50Hz_Init();
- //   PWM_Sinus_Init();
-	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
-/*    PWM_50Hz_ON();
-    PWM_Sinus_ON();
 
-    PWM_50Hz_OFF();
-    PWM_Sinus_OFF();
-*/
     ResetWDG();
 
     HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
@@ -340,12 +317,20 @@ while(1){
 	 // 	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
 	  			//continue;
 	  }
-	  GEN_FLAG=1;
-//	  uint32_t tmp =TIM2->CNT;
-//	    if(tmp >500)
-//			 GEN_FLAG=1;//	    	  SinWave=swStart;
-//	    else
-//	    	GEN_FLAG=0;// SinWave=swStop;
+//	  GEN_FLAG=1;
+//#pragma GCC push_options
+//#pragma GCC optimize ("-O0")
+
+//your code
+	  volatile uint32_t tmp =HAL_GetTick();
+	  tmp=tmp %4307;
+	    if(tmp %4307>2149){
+			 GEN_FLAG=1;//	    	  SinWave=swStart;
+	    }
+	    else{
+	    	GEN_FLAG=0;// SinWave=swStop;
+	    }
+//#pragma GCC pop_options
 
 /*
 	  //
@@ -355,7 +340,7 @@ while(1){
 		  Fault_FLAG=0;
 	  }
 	  //
-	  if  (buttonUpdate(&DevModeKey2) == isPressedLong) {
+	  if  (buttonUpdate(&DevModeKey2) == isPressed) {
 		  GEN_FLAG=1;
 	  } else {
 		  GEN_FLAG=0;
@@ -368,7 +353,6 @@ while(1){
 	  }
 */
   }
-
   /* USER CODE END 3 */
 }
 

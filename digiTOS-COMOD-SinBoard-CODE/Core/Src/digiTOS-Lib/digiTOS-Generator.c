@@ -40,6 +40,7 @@ void Set50HzDeadTimeNS(void) {
 	    TIM1->BDTR  |= TIM_BDTR_DTG_2;//4x //55,2ns
 	    TIM1->BDTR  |= TIM_BDTR_DTG_1;//2x  //27,6ns
 	    TIM1->BDTR  |= TIM_BDTR_DTG_0;//1x // Dead time base value 1/Fosc=1/72000=13.8ns
+
 }
 ////////////////////// DEAD TIME - END //////////////////////
 
@@ -125,21 +126,22 @@ void PWM_50Hz_Init (void) {
 ////////////////////// CONTROL 50Hz - BEGIN //////////////////////
 void PWM_50Hz_START(void)
 {
+	ResetV_data();
+	UpdateAmplitudeByV();
+	ResetAmplitude();
 	TIM1->CNT = 0;
-	TIM1->CCR3=500;
+//	TIM3->CNT = 990;
+//	TIM1->CCR3=500;
 	/* Enable channel outputs */
-		TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
-
+	TIM1->CCER |= TIM_CCER_CC3E | TIM_CCER_CC3NE; // enable PWM complementary out
 		SetNormalSignal(); // NORMAL or INVERSE
 		Idle_SET(); // se idle state /* output idle state HIGHT */
 
 		Set50HzDeadTimeNS(); // 1976 ns
-
+	TIM1->SR&=~TIM_SR_UIF; // clear update flag
 	TIM1->DIER |= TIM_DIER_UIE;
 	TIM1->CR1 |= TIM_CR1_CEN;
 
-	ResetV_data();
-	UpdateAmplitudeByV();
 }
 
 void PWM_50Hz_STOP(void)
@@ -149,17 +151,17 @@ void PWM_50Hz_STOP(void)
 
 	TIM1->DIER &= ~TIM_DIER_UIE; // stop interrupt
 	TIM1->CR1 &= (uint16_t)~TIM_CR1_CEN; // stop cnt
-
-	//TIM1->CR1 &= ~TIM_CR1_CKD; // off dead time
-	//TIM1->BDTR &= ~TIM_BDTR_DTG;
+/*
+	TIM1->CR1 &= ~TIM_CR1_CKD; // off dead time
+	TIM1->BDTR &= ~TIM_BDTR_DTG;
 
 	TIM1->CR2 |= TIM_CR2_OIS3N; // revert level
 	TIM1->CR2 &= ~TIM_CR2_OIS3;
 
 	TIM1->CCER |= TIM_CCER_CC3P; // active high level: 0 - high, 1 - low
 	TIM1->CCER &= ~TIM_CCER_CC3NP; // active high level: 0 - high, 1 - low
-
-	TIM1->CCR3=0;
+*/
+//	TIM1->CCR3=0;
 
 }
 
@@ -172,13 +174,17 @@ void PWM_50Hz_OUTEN(void)
 void PWM_50Hz_OUTDIS(void)
 {
     TIM1->BDTR &= ~TIM_BDTR_MOE;
-    TIM1->BDTR &= ~TIM_BDTR_AOE;
+   // TIM1->BDTR &= ~TIM_BDTR_AOE;
     //HAL_TIM_PWM_Stop(&htim1,TIM_CHANNEL_3);
 }
 
 void PWM_50Hz_ON(void){
-	PWM_50Hz_OUTEN(); // OUTPUT ENABLE
+
 	PWM_50Hz_START(); // start CNT
+		PWM_Sinus_OUTEN(); // OUTPUT ENABLE
+		PWM_Sinus_START(); // start CNT
+
+	PWM_50Hz_OUTEN(); // OUTPUT ENABLE
 }
 
 void PWM_50Hz_OFF(void){
@@ -193,7 +199,7 @@ void PWM_Sinus_START(void)
 {
 	sin_step=0;
 	sinStatus=0;
-	TIM3->CNT = 0;
+	TIM3->CNT = MaxSinusData+1;
 	//TIM3->CCR1=0;
 	//TIM3->CCR2=0;
 
@@ -202,13 +208,19 @@ void PWM_Sinus_START(void)
 
 	//TIM3->CCER |= TIM_CCER_CC2E; // enable PWM complementary out to PA9
 	//TIM3->CCER |= TIM_CCER_CC2P;
-	TIM3->SR&=~TIM_SR_UIF; // clear update flag
-	TIM3->DIER |= TIM_DIER_UIE;
-	TIM3->CR1 |= TIM_CR1_CEN;
+
 	TIM3->CCR1=0;
 	TIM3->CCR2=0;
 
-	ResetAmplitude();
+
+	TIM3->SR&=~TIM_SR_UIF; // clear update flag
+
+
+	TIM3->DIER |= TIM_DIER_UIE;
+	TIM3->CR1 |= TIM_CR1_CEN;
+
+
+//	ResetAmplitude();
 }
 
 void PWM_Sinus_STOP(void)
@@ -216,11 +228,13 @@ void PWM_Sinus_STOP(void)
 	//TIM1->CNT = 0;
 	TIM3->SR&=~TIM_SR_UIF; // clear update flag
 
+	TIM3->CNT = MaxSinusData+1;
+
 	TIM3->DIER &= ~TIM_DIER_UIE; // stop interrupt
 	TIM3->CR1 &= (uint16_t)~TIM_CR1_CEN; // stop cnt
 
-	TIM3->CCR1=0;
-	TIM3->CCR2=0;
+	//TIM3->CCR1=0;
+	//TIM3->CCR2=0;
 }
 
 void PWM_Sinus_OUTEN(void)
@@ -234,15 +248,15 @@ void PWM_Sinus_OUTEN(void)
 void PWM_Sinus_OUTDIS(void)
 {
     TIM3->BDTR &= ~TIM_BDTR_MOE;
-    TIM3->BDTR &= ~TIM_BDTR_AOE;
+ //   TIM3->BDTR &= ~TIM_BDTR_AOE;
 
-    //HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_1);
+   // HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_1);
     //HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_2);
 }
 
 void PWM_Sinus_ON(void) {
-	PWM_Sinus_OUTEN(); // OUTPUT ENABLE
-	PWM_Sinus_START(); // start CNT
+//	PWM_Sinus_OUTEN(); // OUTPUT ENABLE
+//	PWM_Sinus_START(); // start CNT
 }
 
 void PWM_Sinus_OFF(void){

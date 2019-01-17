@@ -320,7 +320,7 @@ void TIM1_BRK_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_BRK_IRQn 0 */
 
-	TIM3->CNT=0;
+//	TIM3->CNT=1;
 
   /* USER CODE END TIM1_BRK_IRQn 0 */
   //HAL_TIM_IRQHandler(&htim1);
@@ -557,13 +557,14 @@ void TIM3_IRQHandler(void)
    		TIM3->CCR1=0;
    		//TIM1->CCR3=0;
    		sin_step=0;
-   	}
+   	  	if (SinWave==swNOP) {return;}
 
-  	if (SinWave==swNOP) {return;}
+   	     	if (SinWave==swStart)  {
+   	     		SinWave=swGEN;
+   	     	}
+  	}
 
-     	if (SinWave==swStart)  {
-     		SinWave=swGEN;
-     	}
+
 
      		if  ((TIM1->CNT>=498) && (sinStatus==0) ){
      			if  (TIM1->CNT>=500){
@@ -645,14 +646,21 @@ void TIM4_IRQHandler(void)
     	  //sin_step=0;
     	  	  if  (GEN_FLAG==1) {
       		SinWave=swStart;
-      		TIM3->CCR2=0;
-      		 		TIM3->CCR1=0;
-      		 		TIM1->CCR3=0;
+      		//TIM3->CCR2=0;
+      		 		//TIM3->CCR1=0;
+      		 		//TIM1->CCR3=0;
       		 		//sin_step=0;
       		 		TIM1->CNT=0;
-      		 		TIM3->CNT=0;
-      		PWM_50Hz_ON();
-      		PWM_Sinus_ON();
+      		 		//TIM3->CNT=0;
+      	      		PWM_50Hz_ON();
+      	      		if (TIM3->CNT>0) {
+      	      			TIM3->CNT=990;
+      	      			//TIM3->CCR1=0;
+      	      			//TIM3->CCR2=0;
+      	      		}
+      	//	HAL_Delay(100);
+		 //		PWM_Sinus_ON();
+
       		return;
       	  }
         }
@@ -667,10 +675,15 @@ void TIM4_IRQHandler(void)
   		  SinWave=swNOP;
   		  	  	TIM3->CCR2=0;
   		   		TIM3->CCR1=0;
-  		   		TIM1->CCR3=0;
+  		   		//TIM1->CCR3=0;
   		   		//sin_step=0;
   		  PWM_50Hz_OFF();
   		  PWM_Sinus_OFF();
+  		/*if (TIM3->CNT>0) {
+  		      	      			TIM3->CNT=0;
+  		      	      			TIM3->CCR1=0;
+  		      	      			TIM3->CCR2=0;
+  		      	      		}*/
   		  return;
   	  }
     }

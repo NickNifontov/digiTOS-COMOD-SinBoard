@@ -23,15 +23,15 @@
 
 #define DEBUG_MODE // if TRUE then in UART print text state
 
-#define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
-//#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
+//#define IOUT_PROTECTION // protection from HIGH Power at out, in Watt
+#define OFF_IOUT_PROTECTION // protection from HIGH Power at out, in Watt
 
 //#define VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
 #define OFF_VOUT_PROTECTION // protection from HIGH Voltage at out, in Volts
 
 
-#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
-//#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+//#define DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
+#define OFF_DC_PROTECTION // protection MAX/MIN DC_FEEDBACK detected
 // Stop and then restart after DelaySecBeforeStartAfterDCProtection
 
 
@@ -116,7 +116,7 @@
 #endif
 
 #ifndef IOUT_PROTECTION
-	IOUT_BLOCKED 0
+#define IOUT_BLOCKED 0
 #endif
 
 

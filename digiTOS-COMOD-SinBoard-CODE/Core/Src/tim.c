@@ -117,8 +117,6 @@ void MX_TIM1_Init(void)
  // PWM_50Hz_OFF();
 
   HAL_TIM_MspPostInit(&htim1);
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
 
 }
 /* TIM2 init function */
@@ -205,7 +203,7 @@ void MX_TIM4_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 1000;
+  htim4.Init.Prescaler = 36000-1;//1000
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 1000;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -310,9 +308,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
-    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
-
     /**TIM1 GPIO Configuration    
     PB1     ------> TIM1_CH3N
     PA10     ------> TIM1_CH3 
@@ -337,8 +332,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 
 //    __HAL_AFIO_REMAP_TIM1_PARTIAL();
 
-    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
   /* USER CODE BEGIN TIM1_MspPostInit 1 */
 
   /* USER CODE END TIM1_MspPostInit 1 */
